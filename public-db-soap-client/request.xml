@@ -1,0 +1,23 @@
+<!-- <?xml version="1.0" charset="utf-8"?> -->
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:head="http://apache.org/headers" xmlns:ser="http://service.agecrlts.crlts.cha/">
+   <soapenv:Header>
+      <head:ComMsgHeader>
+         <RequestMsgID>netinamu42</RequestMsgID>
+         <!-- <ServiceKey>KEW9W2Z1YiQC91Gq6W1wr9MPMQDc2ZyqeVg2CA3QT5xqCVhPPKr2ubN4jmKNfdDalByyA6vTZ8nm2jOA/Pwjdw==</ServiceKey> -->
+         <!-- <ServiceKey>eAjezTHqM67AOhhUCiPC1UssDZfT8KzssHFNQCEhXbAIzneCqjCTtshKtqoBM3MBcMvq70odPjiSG4BGe+XMXw==</ServiceKey> -->
+         <ServiceKey>6i1zuQWddVTMFSqlHyhnbw8VL7uvfuHHt3Pth12H3VuFrUvdzFRcfYBZRfTE0Eidf/hV3otAz36MR1F/VDWUDw==</ServiceKey>
+       <!-- 
+         <RequestTime></RequestTime>
+         <CallBackURI></CallBackURI> -->
+      </head:ComMsgHeader>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ser:getAgeCrltsList>
+         <!--Optional:-->
+         <arg0>
+           <ageCd>01</ageCd>
+           <pageMg>13284</pageMg>
+         </arg0>
+      </ser:getAgeCrltsList>
+   </soapenv:Body>
+</soapenv:Envelope>
