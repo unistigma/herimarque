@@ -48,7 +48,7 @@ public class Main {
 		String filename = "";
 
 		
-		filename = "request.xml";
+		filename = "age_request.xml";
 		
 		WebSvcType wstype = WebSvcType.SOAP;
 		String url = "http://openapi.cha.go.kr:80/openapi/soap/crlts/AgeCrltsService";
