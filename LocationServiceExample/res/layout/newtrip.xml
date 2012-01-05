@@ -14,18 +14,20 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:textOff="Start"
-            android:textOn="Stop" />
+            android:textOn="Stop"
+            android:enabled="false" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:text="@string/hello" />
     </LinearLayout>
-    
-    <Button android:id="@+id/getlocation"
+
+    <Button
+        android:id="@+id/getlocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/getlocation"/>
+        android:text="@string/getlocation" />
 
     <com.google.android.maps.MapView
         android:id="@+id/mapView"
