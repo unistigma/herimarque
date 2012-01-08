@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="AgeCrltsServiceImplService" targetNamespace="http://impl.service.agecrlts.crlts.cha/" xmlns:ns1="http://service.agecrlts.crlts.cha/" xmlns:ns3="http://cxf.apache.org/bindings/xformat" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://impl.service.agecrlts.crlts.cha/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:import location="http://openapi.cha.go.kr:80/openapi/soap/crlts/AgeCrltsService?wsdl=AgeCrltsService.wsdl" namespace="http://service.agecrlts.crlts.cha/">
+    </wsdl:import>
+  <wsdl:binding name="AgeCrltsServiceImplServiceSoapBinding" type="ns1:AgeCrltsService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getAgeCrltsImage">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAgeCrltsImage">
+        <soap:header message="ns1:getAgeCrltsImage" part="ComMsgHeader" use="literal">
+        </soap:header>
+        <soap:body parts="parameters" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAgeCrltsImageResponse">
+        <soap:header message="ns1:getAgeCrltsImageResponse" part="ComMsgHeader" use="literal">
+        </soap:header>
+        <soap:body parts="result" use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAgeCrltsList">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAgeCrltsList">
+        <soap:header message="ns1:getAgeCrltsList" part="ComMsgHeader" use="literal">
+        </soap:header>
+        <soap:body parts="parameters" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAgeCrltsListResponse">
+        <soap:header message="ns1:getAgeCrltsListResponse" part="ComMsgHeader" use="literal">
+        </soap:header>
+        <soap:body parts="result" use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAgeCrltsDtls">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAgeCrltsDtls">
+        <soap:header message="ns1:getAgeCrltsDtls" part="ComMsgHeader" use="literal">
+        </soap:header>
+        <soap:body parts="parameters" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAgeCrltsDtlsResponse">
+        <soap:header message="ns1:getAgeCrltsDtlsResponse" part="ComMsgHeader" use="literal">
+        </soap:header>
+        <soap:body parts="result" use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AgeCrltsServiceImplService">
+    <wsdl:port binding="tns:AgeCrltsServiceImplServiceSoapBinding" name="AgeCrltsServiceImplPort">
+      <soap:address location="http://openapi.cha.go.kr:80/openapi/soap/crlts/AgeCrltsService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
