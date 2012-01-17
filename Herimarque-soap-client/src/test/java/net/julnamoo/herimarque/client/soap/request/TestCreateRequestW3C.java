@@ -55,7 +55,7 @@ public class TestCreateRequestW3C {
 		// set up root element
 		Element rootElement = document.createElement("soapenv:Envelope");
 		rootElement.setAttribute("xmlns:soapenv", "http://schemas.xmlsoap.org/soap/envelope/");
-		rootElement.setAttribute("xmlns:head", "http://apache.org/rootElements");
+		rootElement.setAttribute("xmlns:head", "http://apache.org/headers");
 		rootElement.setAttribute("xmlns:ser", "http://service.areacrlts.crlts.cha/");
 		document.appendChild(rootElement);
 		
@@ -69,6 +69,7 @@ public class TestCreateRequestW3C {
 		TransformerFactory transfac = TransformerFactory.newInstance();
 		Transformer transformer = transfac.newTransformer();
 		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 //		StreamResult result = new StreamResult(new FileWriter(new File("request.xml")));
 //		StreamResult result = new StreamResult(new BufferedWriter(new OutputStreamWriter(System.out)));
 		StringWriter writer = new StringWriter();
