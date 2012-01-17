@@ -1,23 +1,15 @@
 package net.julnamoo.herimarque.client.soap.request;
 
-import java.awt.font.TransformAttribute;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-
 import iros.gsb.constant.WebSvcType;
 import iros.gsb.sbe.api.IntegrationClientAPI;
 
-import javax.naming.spi.DirStateFactory.Result;
-import javax.xml.parsers.DocumentBuilder;
+import java.io.StringWriter;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
 
 import org.junit.After;
@@ -61,17 +53,15 @@ public class TestCreateRequestW3C {
 		
 		
 		//set up header parameter
-		rootElement.appendChild(setupHeader(document));
+		rootElement.appendChild(setHeader(document));
 		
 		//set up body parameter
-		rootElement.appendChild(setupBody(document));
+		rootElement.appendChild(setBody(document));
 		
 		TransformerFactory transfac = TransformerFactory.newInstance();
 		Transformer transformer = transfac.newTransformer();
 		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-//		StreamResult result = new StreamResult(new FileWriter(new File("request.xml")));
-//		StreamResult result = new StreamResult(new BufferedWriter(new OutputStreamWriter(System.out)));
 		StringWriter writer = new StringWriter();
 		StreamResult result = new StreamResult(writer);
 		DOMSource source = new DOMSource(document);
@@ -83,7 +73,7 @@ public class TestCreateRequestW3C {
 		System.out.println(rcv);
 	}
 	
-	private Element setupHeader(Document document)
+	private Element setHeader(Document document)
 	{
 		Element headerEnv = document.createElement("soapenv:Header");
 		Element header = document.createElement("head:ComMsgHeader");
@@ -101,7 +91,7 @@ public class TestCreateRequestW3C {
 		return headerEnv;
 	}
 	
-	private Element setupBody(Document document)
+	private Element setBody(Document document)
 	{
 		Element bodyRoot = document.createElement("soapenv:Body");
 		
