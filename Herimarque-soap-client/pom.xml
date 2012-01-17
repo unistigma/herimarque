@@ -112,5 +112,19 @@
 			<artifactId>jdom</artifactId>
 			<version>1.1</version>
 		</dependency>
+		<dependency>
+			<groupId>net.sf.jxls</groupId>
+			<artifactId>jxls</artifactId>
+			<version>1.0</version>
+			<type>pom</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 </project>
