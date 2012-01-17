@@ -14,7 +14,7 @@
       <ser:getAreaCrltsList>
          <!--Optional:-->
          <arg0>
-           <ctrdCd>11</ctrdCd>
+           <!-- <ctrdCd>11</ctrdCd> -->
            <pageMg>100</pageMg>
          </arg0>
       </ser:getAreaCrltsList>
