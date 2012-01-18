@@ -43,7 +43,7 @@ public class CreateListRequest {
 	private IntegrationClientAPI apiClient;
 	private String service;
 	private Document reqEnvelope;
-	private String pageMgSize = "100";
+	private String pageMgSize = "10000";
 
 	/**
 	 * Constructor for request runner.
