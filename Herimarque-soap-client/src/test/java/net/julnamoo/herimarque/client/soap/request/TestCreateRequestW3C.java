@@ -53,10 +53,10 @@ public class TestCreateRequestW3C {
 		
 		
 		//set up header parameter
-		rootElement.appendChild(setHeader(document));
+		rootElement.appendChild(getHeader(document));
 		
 		//set up body parameter
-		rootElement.appendChild(setBody(document));
+		rootElement.appendChild(getBody(document));
 		
 		TransformerFactory transfac = TransformerFactory.newInstance();
 		Transformer transformer = transfac.newTransformer();
@@ -73,7 +73,7 @@ public class TestCreateRequestW3C {
 		System.out.println(rcv);
 	}
 	
-	private Element setHeader(Document document)
+	private Element getHeader(Document document)
 	{
 		Element headerEnv = document.createElement("soapenv:Header");
 		Element header = document.createElement("head:ComMsgHeader");
@@ -91,7 +91,7 @@ public class TestCreateRequestW3C {
 		return headerEnv;
 	}
 	
-	private Element setBody(Document document)
+	private Element getBody(Document document)
 	{
 		Element bodyRoot = document.createElement("soapenv:Body");
 		
