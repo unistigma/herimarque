@@ -7,15 +7,12 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.StringWriter;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -139,18 +136,20 @@ public class CreateListRequest {
 		{
 			//process for age code request
 			rootElement.setAttribute("xmlns:ser", "http://service.agecrlts.crlts.cha/");
-			document.appendChild(rootElement);
 
-			document.appendChild(getHeader(document));
-			document.appendChild(getAgeBody(document));
+			rootElement.appendChild(getHeader(document));
+			rootElement.appendChild(getAgeBody(document));
+			
+			document.appendChild(rootElement);
 		}else if (service.equalsIgnoreCase(ServiceType.AREA.toString()))
 		{
 			//process for area code request
 			rootElement.setAttribute("xmlns:ser", "http://service.areacrlts.crlts.cha/");
-			document.appendChild(rootElement);
 
-			document.appendChild(getHeader(document));
-			document.appendChild(getAreaBody(document));
+			rootElement.appendChild(getHeader(document));
+			rootElement.appendChild(getAreaBody(document));
+
+			document.appendChild(rootElement);
 		}
 
 		// set my document for sending the request
@@ -172,11 +171,13 @@ public class CreateListRequest {
 
 		headerEnv.appendChild(header);
 
+		logger.debug("build SOAP Header");
 		return headerEnv;
 	}
 
 	private Element getAreaBody(Document document)
 	{
+		logger.debug("build SOAP body");
 		Element bodyRoot = document.createElement("soapenv:Body");
 
 		//set up the service operation for getting list
