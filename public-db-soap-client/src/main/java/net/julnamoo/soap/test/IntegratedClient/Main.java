@@ -48,12 +48,12 @@ public class Main {
 		String filename = "";
 
 		
-//		filename = "age_request.xml";
-		filename="spec_request.xml";
+		filename = "age_request.xml";
+//		filename="spec_request.xml";
 		
 		WebSvcType wstype = WebSvcType.SOAP;
-//		String url = "http://openapi.cha.go.kr:80/openapi/soap/crlts/AgeCrltsService";
-		String url = "http://openapi.cha.go.kr:80/openapi/soap/crlts/AreaCrltsService";
+		String url = "http://openapi.cha.go.kr:80/openapi/soap/crlts/AgeCrltsService";
+//		String url = "http://openapi.cha.go.kr:80/openapi/soap/crlts/AreaCrltsService";
 		String reqStr = FileUtils.readFileToString(new File(filename));
 		Map headerCnt = null;
 

@@ -6,6 +6,7 @@
 	<artifactId>public-db-soap-client</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>public-db-soap-client</name>
+	<packaging>jar</packaging>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
