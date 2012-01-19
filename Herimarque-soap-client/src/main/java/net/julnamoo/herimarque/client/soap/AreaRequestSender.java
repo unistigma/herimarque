@@ -123,7 +123,7 @@ public class AreaRequestSender extends RequestSender {
 
 	public void run() throws Exception
 	{
-		requestURI = "http://openapi.cha.go.kr/openapi/soap/crlts/AreaCrltsService";
+//		requestURI = "http://openapi.cha.go.kr/openapi/soap/crlts/AreaCrltsService";
 		String xmlPath = "area_list_request.xml";
 		String msgTemplate = FileUtils.readFileToString(new File(xmlPath));
 		String requestMsg = msgTemplate.replace("size", pageSize);
