@@ -117,10 +117,10 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.geronimo.bundles</groupId>
-			<artifactId>jaxb-impl</artifactId>
-			<version>2.2.3-1_1</version>
-			<type>bundle</type>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.1</version>
+			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

@@ -24,6 +24,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public class TestResponseParser {
 
 	String fpath;
@@ -78,6 +81,8 @@ public class TestResponseParser {
 							e.printStackTrace();
 						}
 					}
+					
+					//for testing
 					resultList.add(instance);
 				}
 			}
@@ -85,10 +90,10 @@ public class TestResponseParser {
 			if(resultList.size() > 0)
 			{
 				System.out.println("Total size : " + resultList.size());
-				for(Item i : resultList)
-				{
-					System.out.println(i.getItemCd() + ", " + i.getCrltsNm());
-				}
+				Gson gson = new Gson();
+				String res = gson.toJson(resultList);
+				FileUtils.writeStringToFile(new File("area.json"), res);
+//				System.out.println(res);
 			}
 		}
 	}
@@ -120,7 +125,7 @@ public class TestResponseParser {
 				f.setAccessible(true);
 				
 				f.set(item, value);
-				System.out.println(item + ", " + value);
+//				System.out.println(item + ", " + value);
 				return item;
 			}
 		}
