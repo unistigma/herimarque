@@ -11,6 +11,8 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
 
+import net.julnamoo.herimarque.client.soap.AreaRequestSender;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;

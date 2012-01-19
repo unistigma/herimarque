@@ -1,0 +1,17 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:head="http://apache.org/headers" xmlns:ser="http://service.agecrlts.crlts.cha/">
+   <soapenv:Header>
+      <head:ComMsgHeader>
+         <RequestMsgID>bkang721</RequestMsgID>
+         <ServiceKey>MPHu5G24D83bt0QFJcqYcmY28G6N2dXPLmCHmOSoYrdRTJX1Upr7y+IGIw9XaLLYzt+zap7UUVqbTwamrRzScw==</ServiceKey>
+      </head:ComMsgHeader>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ser:getAgeCrltsList>
+         <arg0>
+           <ageCd>code</ageCd>
+           <pageMg>size</pageMg>
+           <nowPageNo>pagenum</nowPageNo>
+         </arg0>
+      </ser:getAgeCrltsList>
+   </soapenv:Body>
+</soapenv:Envelope> 
