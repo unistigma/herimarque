@@ -25,17 +25,18 @@ public abstract class RequestSender {
 	
 	/** Fields to build and send the request and parse the response **/
 	//Some of them are must be SET!
+	IntegrationClientAPI client;
 	String requestURI;
 	List<String> codes;
 	String pageSize;
 	String reqMsg;
 	List<Item> item;
-	Gson gson;
 	
 	public RequestSender(String requestURI) throws Exception
 	{
 		pageSize = "9999";
 		this.requestURI = requestURI;
+		client = new IntegrationClientAPI();
 	}
 	
 	//read codes from the excel
@@ -45,13 +46,13 @@ public abstract class RequestSender {
 	//The file name formatted to serivce_operation_request.xml, like area_list_request.xml
 	public abstract String buildRequest() throws IOException;
 	
-//	//send the request to the wsdl server and set the response msg to resMsg field.
-//	public String sendRequest()
-//	{
-//		return client.send(WebSvcType.SOAP, requestURI, reqMsg, null);
-//	}
+	//send the request to the wsdl server and set the response msg to resMsg field.
+	public String sendRequest()
+	{
+		return client.send(WebSvcType.SOAP, requestURI, reqMsg, null);
+	}
 	
 	//Response msg is converted to DOM then transfer to json or lucene document.
-//	public abstract String pasreResponse();
+	public abstract String pasreResponse();
 	
 }
