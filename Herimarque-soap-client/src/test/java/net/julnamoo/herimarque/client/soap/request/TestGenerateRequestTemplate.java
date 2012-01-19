@@ -1,6 +1,5 @@
 package net.julnamoo.herimarque.client.soap.request;
 
-import iros.gsb.constant.WebSvcType;
 import iros.gsb.sbe.api.IntegrationClientAPI;
 
 import java.io.File;

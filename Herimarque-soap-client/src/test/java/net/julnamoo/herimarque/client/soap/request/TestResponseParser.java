@@ -92,7 +92,7 @@ public class TestResponseParser {
 				System.out.println("Total size : " + resultList.size());
 				Gson gson = new Gson();
 				String res = gson.toJson(resultList);
-				FileUtils.writeStringToFile(new File("area.json"), res);
+				FileUtils.writeStringToFile(new File( "area.json"), res);
 //				System.out.println(res);
 			}
 		}
