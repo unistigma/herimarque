@@ -71,11 +71,12 @@ public class TestGenerateRequestTemplate {
 				requestMsg = requestMsg.replace("pagenum", "1");
 				
 				System.out.println("Sending request with code num"+ cell.getContents());
-				String response = client.send(WebSvcType.SOAP, requestURI, requestMsg, null);
+				//consider the servicekey
+				String  response = "";
+//				String response = client.send(WebSvcType.SOAP, requestURI, requestMsg, null);
 				
 				String respFile = "response_" + pastNum + ".txt";
 				FileUtils.writeStringToFile(new File(respFile), response);
-				
 				
 			}
 		}
