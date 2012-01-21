@@ -1,0 +1,21 @@
+<!-- <?xml version="1.0" charset="utf-8"?> -->
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:head="http://apache.org/headers" xmlns:ser="http://service.agecrlts.crlts.cha/">
+   <soapenv:Header>
+      <head:ComMsgHeader>
+         <!-- <RequestMsgID>bkang721</RequestMsgID>
+         <ServiceKey>r4kz8tI1CNlZ/CnyNqeS/qjFaWpwFfjbj+DlBFL7t5/aYDO5N63Ec748ICA0FQJ2dAzgWtY49qqNrgNF+dvubw==</ServiceKey> -->
+         <RequestMsgID>netinamu42</RequestMsgID>
+         <ServiceKey>6i1zuQWddVTMFSqlHyhnbw8VL7uvfuHHt3Pth12H3VuFrUvdzFRcfYBZRfTE0Eidf/hV3otAz36MR1F/VDWUDw==</ServiceKey>
+      </head:ComMsgHeader>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ser:getAgeCrltsDtls>
+         <!--Optional:-->
+         <arg0>
+           <itemCd>11</itemCd>
+           <crltsNo>00610000</crltsNo>
+           <ctrdCd>11</ctrdCd> 
+         </arg0>
+      </ser:getAgeCrltsDtls>
+   </soapenv:Body>
+</soapenv:Envelope>

@@ -153,8 +153,8 @@ public class AreaRequestSender extends RequestSender {
 				
 				System.out.println("Sending request with code num"+ cell.getContents());
 				//consider the servicekey
-				String  response = "";
-//				String response = client.send(WebSvcType.SOAP, requestURI, requestMsg, null);
+//				String  response = "";
+				String response = client.send(WebSvcType.SOAP, requestURI, requestMsg, null);
 				
 				String respFile = "are_response_" + pastNum + ".txt";
 				FileUtils.writeStringToFile(new File(respFile), response);

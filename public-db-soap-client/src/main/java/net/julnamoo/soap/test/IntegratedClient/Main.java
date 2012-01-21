@@ -48,7 +48,7 @@ public class Main {
 		String filename = "";
 
 		
-		filename = "age_request.xml";
+		filename = "age_request2.xml";
 //		filename="spec_request.xml";
 		
 		WebSvcType wstype = WebSvcType.SOAP;

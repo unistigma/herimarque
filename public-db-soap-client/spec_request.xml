@@ -14,9 +14,15 @@
       <ser:getAreaCrltsList>
          <!--Optional:-->
          <arg0>
-           <!-- <ctrdCd>11</ctrdCd> -->
+           <ctrdCd>11</ctrdCd>
            <pageMg>100</pageMg>
          </arg0>
+         <!-- <arg0>
+         	<ctrdCd>12</ctrdCd>
+         </arg0>
+         <arg0>
+         	<ctrdCd>13</ctrdCd>
+         </arg0> -->
       </ser:getAreaCrltsList>
    </soapenv:Body>
 </soapenv:Envelope>
