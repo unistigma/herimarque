@@ -1,14 +1,12 @@
 package net.julnamoo.herimarque.client.soap;
 
-import iros.gsb.constant.WebSvcType;
+import java.lang.reflect.Field;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import iros.gsb.sbe.api.IntegrationClientAPI;
 
-import java.io.IOException;
-import java.util.List;
-
-import jxl.read.biff.BiffException;
-
-import com.google.gson.Gson;
 
 /**
  * Build the request xml with each code.
@@ -22,37 +20,66 @@ import com.google.gson.Gson;
  */
 
 public abstract class RequestSender {
+
+	Logger logger = LoggerFactory.getLogger(RequestSender.class.getSimpleName());
 	
-	/** Fields to build and send the request and parse the response **/
-	//Some of them are must be SET!
-	IntegrationClientAPI client;
+	/** Fields to build and send the request **/
 	String requestURI;
-	List<String> codes;
 	String pageSize;
-	String reqMsg;
-	List<Item> item;
+	IntegrationClientAPI client;
 	
-	public RequestSender(String requestURI) throws Exception
+	int number;
+
+	public RequestSender() throws Exception
 	{
 		pageSize = "9999";
-		this.requestURI = requestURI;
+		number = 0; //number of request. 100 request per Day
 		client = new IntegrationClientAPI();
 	}
-	
-	//read codes from the excel
-	public abstract List<String> getCodes() throws IOException, BiffException;
-	
-	//write the request SOAP xml with each template written with service and operation
-	//The file name formatted to serivce_operation_request.xml, like area_list_request.xml
-	public abstract String buildRequest() throws IOException;
-	
-	//send the request to the wsdl server and set the response msg to resMsg field.
-	public String sendRequest()
+
+	protected Item setValue(Item item, String field, String value) throws Exception
 	{
-		return client.send(WebSvcType.SOAP, requestURI, reqMsg, null);
+		//convert each field to object field with inflection api
+		Class target = null;
+
+		try 
+		{
+			target = Class.forName(item.getClass().getName());
+
+		} catch (ClassNotFoundException e) 
+		{
+			//internal error
+			e.printStackTrace();
+			throw new Exception("Cannot convert object to Item instance");
+		}
+
+		Field[] fields = target.getDeclaredFields();
+
+		for(Field f : fields)
+		{
+			if(f.getName().equals(field))
+			{
+				f.setAccessible(true);
+
+				f.set(item, value);
+				
+//				logger.debug("Set ({}, {})", item, value);
+				return item;
+			}
+		}
+
+		return null;
 	}
+
 	
-	//Response msg is converted to DOM then transfer to json or lucene document.
-	public abstract String pasreResponse();
+	public boolean checkNumber()
+	{
+		return ((number == 100 | number > 99) ? false : true);
+	}
+
 	
+	public void initNumber()
+	{
+		number = 0;
+	}
 }
