@@ -13,6 +13,6 @@ public class Main {
 
 	public static void main( String[] args ) throws Exception {
 		new AreaRequestSender("http://openapi.cha.go.kr/openapi/soap/crlts/AreaCrltsService").run();
-//		new AgeRequestSender("http://openapi.cha.go.kr/openapi/soap/crlts/AgeCrltsService").run();
+		new AgeRequestSender("http://openapi.cha.go.kr/openapi/soap/crlts/AgeCrltsService").run();
 	}
 }
