@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <!-- Info activity -->
+        <LinearLayout
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="1" 
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="문화유산보기" />
+
+            <Button
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="내 주변 문화유산 보기" />
+        </LinearLayout>
+        
+        <!-- Create Activity -->
+        <LinearLayout 
+            android:id="@+id/create"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible">
+            
+            <Button 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="createTestButton"/>
+        </LinearLayout>
+        
+        <!-- Show Activity -->
+        <LinearLayout 
+            android:id="@+id/show"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible">
+            
+            <Button 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="showTestButt"/>
+        </LinearLayout>
+        
+        <!-- Config Activity -->
+        <LinearLayout 
+            android:id="@+id/config"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible">
+            
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="configTestButt"/> 
+        </LinearLayout>
+    </FrameLayout>
+
+    <RadioGroup 
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:gravity="center_vertical"
+        android:checkedButton="@+id/infoButt" 
+        android:weightSum="1">
+        
+        <RadioButton 
+            android:id="@+id/infoButt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="Info"/>
+        
+        <RadioButton 
+            android:id="@+id/createButt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="생성"/>
+        
+        <RadioButton 
+            android:id="@+id/showButt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="보기"/>
+        
+        <RadioButton 
+            android:id="@+id/configButt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="설정"/>
+    </RadioGroup>
+</LinearLayout>

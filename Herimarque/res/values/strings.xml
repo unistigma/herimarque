@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, HerimarqueActivity!</string>
+    <string name="app_name">Herimarque</string>
+    <string name="information">문화유산 보기</string>
+
+</resources>
