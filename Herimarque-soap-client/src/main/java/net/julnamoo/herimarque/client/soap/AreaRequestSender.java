@@ -45,11 +45,11 @@ public class AreaRequestSender extends RequestSender{
 
 	public void run() throws Exception
 	{
-		String xmlPath = "request\\area_list_request.xml";
+		String xmlPath = "request/area_list_request.xml";
 		String msgTemplate = FileUtils.readFileToString(new File(xmlPath));
 		String requestMsg = msgTemplate.replace("size", pageSize);
 
-		File workbookFile = new File("request\\area.xls");
+		File workbookFile = new File("request/area.xls");
 		Workbook workBook = Workbook.getWorkbook(workbookFile);
 		Sheet codeSheet = workBook.getSheet(0);
 
