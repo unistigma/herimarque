@@ -132,98 +132,6 @@ public class AgeRequestSender extends RequestSender {
 		String res = gson.toJson(ageList);
 		FileUtils.writeStringToFile(new File("response/ageList.json"), res);
 		
-		/** for test details **/
-////		DocumentBuilder tdb = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-////		InputSource tis = new InputSource(new FileInputStream(new File("response/ageList.json")));
-////
-////		Gson gson = new Gson();
-////		List<Item> ageList = new ArrayList<Item>();
-////		ageList = gson.fromJson(new FileReader(new File("response/ageList.json")), ArrayList.class);
-//		
-//		/** Get detail information of the item **/
-//		String dreq = FileUtils.readFileToString(new File("request/age_detail_request.xml"));
-//		String oldItemCd = null;
-//		String oldCrltsNo = null;
-//		String oldCtrdCd = null;
-//		
-//		for(Item item : ageList)
-//		{
-//			//get values
-//			String itemCd = item.getItemCd();
-//			String crltsNo = item.getCrltsNo();
-//			String ctrdCd = item.getCtrdCd();
-//			
-//			//set parameters
-//			if(dreq.contains("code"))
-//			{
-//				dreq = dreq.replace("code", itemCd);
-//			}else
-//			{
-//				dreq = dreq.replace(oldItemCd, itemCd);
-//			}
-//			
-//			if(dreq.contains("number"))
-//			{
-//				dreq = dreq.replace("number", crltsNo);
-//			}else
-//			{
-//				dreq = dreq.replace(oldCrltsNo, crltsNo);
-//			}
-//			
-//			if(dreq.contains("locale"))
-//			{
-//				dreq = dreq.replace("locale", ctrdCd);
-//			}else
-//			{
-//				dreq = dreq.replace(oldCtrdCd, ctrdCd);
-//			}
-//			
-//			oldItemCd = itemCd;
-//			oldCrltsNo = crltsNo;
-//			oldCtrdCd = ctrdCd;
-//			
-//			if(!checkNumber())
-//			{
-//				logger.info("Current request number is {}. Sleep this thread for a day.....", number);
-//				logger.info("Set the request number to zero");
-//				initNumber();
-//				Thread.currentThread().sleep(1000*60);
-//				logger.info("Awake the Thread! Continue to send the request");
-//				
-//				//for test
-//				return;
-//			}
-//			
-//			String response = client.send(WebSvcType.SOAP, requestURI, dreq, null);
-//			
-//			// Set the value to the instance
-//			DocumentBuilder docbuilBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-//			InputSource is = new InputSource(new StringReader(response));
-//			Document doc = docbuilBuilder.parse(is);
-//			
-//			//Parse the item xml
-//			Node iNode = doc.getElementsByTagName("return").item(0);
-//			NodeList fields = iNode.getChildNodes();
-//			for(int fnum = 0; fnum < fields.getLength(); ++fnum)
-//			{
-//				Node field = fields.item(fnum);
-//				
-//				String fname = field.getNodeName();
-//				String value = field.getTextContent();
-//				
-//				try
-//				{
-//					//set detail information
-//					item = setValue(item, fname, value);
-//				}catch (Exception e) 
-//				{
-//					logger.error(e.getMessage(), e.getCause());
-////					logger.info("Remove {}, name is {}", item.getCrltsNoNm(), item.getCrltsNm());
-//					// If there is blocking in set the value, remove the object from the list
-//					ageList.remove(item);
-//				}
-//			}
-//		}
 	}
 	
 	public Item getDetail(Item item) throws ParserConfigurationException, SAXException, IOException
@@ -232,7 +140,7 @@ public class AgeRequestSender extends RequestSender {
 		requestMsg = requestMsg.replace("number", item.getCrltsNo());
 		requestMsg = requestMsg.replace("locale", item.getCtrdCd());
 		
-		logger.info("Setting detail request msg with {}, {}", item.getCrltsNm(), item.getCrltsNoNm());
+		logger.info("Setting detail age request msg with {}, {}", item.getCrltsNm(), item.getCrltsNoNm());
 		String response = client.send(WebSvcType.SOAP, requestURI, requestMsg, null);
 		
 		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();

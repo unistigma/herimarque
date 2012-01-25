@@ -1,4 +1,4 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:head="http://apache.org/headers" xmlns:ser="http://service.agecrlts.crlts.cha/">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:head="http://apache.org/headers" xmlns:ser="http://service.areacrlts.crlts.cha/">
    <soapenv:Header>
       <head:ComMsgHeader>
          <RequestMsgID>netinamu42</RequestMsgID>

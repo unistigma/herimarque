@@ -16,6 +16,7 @@ import java.util.concurrent.Executors;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import jxl.Cell;
 import jxl.CellType;
@@ -30,6 +31,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.google.gson.Gson;
 
@@ -37,17 +39,20 @@ public class AreaRequestSender extends RequestSender{
 
 	Logger logger = LoggerFactory.getLogger(AreaRequestSender.class.getSimpleName());
 
+	String dMsg;
+
 	public AreaRequestSender(String url) throws Exception 
 	{
 		super();
 		requestURI = url;
+		dMsg = FileUtils.readFileToString(new File("request/area_detail_request.xml"));
 	}
 
 	public void run() throws Exception
 	{
 		String xmlPath = "request/area_list_request.xml";
 		String msgTemplate = FileUtils.readFileToString(new File(xmlPath));
-//		String requestMsg = msgTemplate.replace("size", pageSize);
+		//		String requestMsg = msgTemplate.replace("size", pageSize);
 		msgTemplate = msgTemplate.replace("size", pageSize);
 
 		File workbookFile = new File("request/area.xls");
@@ -59,7 +64,7 @@ public class AreaRequestSender extends RequestSender{
 		for(int i = 0; i < codeSheet.getRows(); ++i)
 		{
 			String requestMsg = msgTemplate;
-			
+
 			Cell cell = codeSheet.getCell(0, i);
 
 			//get the code number
@@ -86,7 +91,7 @@ public class AreaRequestSender extends RequestSender{
 				NodeList items = doc.getElementsByTagName("item");
 				for(int i_num = 0; i_num < items.getLength(); ++i_num)
 				{
-					Node item = items.item(i);
+					Node item = items.item(i_num);
 					NodeList subs = item.getChildNodes();
 
 					//set field value
@@ -101,27 +106,65 @@ public class AreaRequestSender extends RequestSender{
 						try 
 						{
 							instance = setValue(instance, field, value);
-							
+
 						} catch (Exception e) 
 						{
 							logger.error(e.getMessage(), e.getCause());
 						}
 					}
 					
+					instance = getdetail(instance);
 					areaList.add(instance);
+					logger.info("Add new instance : {}, {}", instance.getCrltsNm(), instance.getCrltsNoNm());
 				}
 			}
 		}
-		
+
 		logger.info("Area List size is {}", areaList.size());
 		Gson gson = new Gson();
 		String res = gson.toJson(areaList);
 		FileUtils.writeStringToFile(new File("response/areaList.json"), res);
 	}
-	
-	public Item getdetail(Item item)
+
+	public Item getdetail(Item item) throws ParserConfigurationException, SAXException, IOException
 	{
-		
-		return null;
+		String requestMsg = dMsg.replace("code", item.getItemCd());
+		requestMsg = requestMsg.replace("number", item.getCrltsNo());
+		requestMsg = requestMsg.replace("locale", item.getCtrdCd());
+
+		logger.info("Setting detail area request msg with {}, {}", item.getCrltsNm(), item.getCrltsNoNm());
+		String response = client.send(WebSvcType.SOAP, requestURI, requestMsg, null);
+
+		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		InputSource is = new InputSource(new StringReader(response));
+		Document doc = db.parse(is);
+
+		try
+		{
+			Node desc = doc.getElementsByTagName("crltsDc").item(0);
+			item.setCrltsDc(desc.getTextContent());
+		}catch (Exception e){
+
+			item.setCrltsDc("");
+		}
+
+		try
+		{
+			Node guCd = doc.getElementsByTagName("signguCd").item(0);
+			item.setSignguCd(guCd.getTextContent());
+		}catch (Exception e) {	
+			item.setSignguCd("");
+		}
+
+		try
+		{
+			Node guNm = doc.getElementsByTagName("signguNm").item(0);
+			item.setSignguNm(guNm.getTextContent());
+		}catch (Exception e) {
+			item.setSignguNm("");
+		}
+
+		return item;
+
 	}
 }
