@@ -5,12 +5,14 @@ import iros.gsb.constant.WebSvcType;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import jxl.Cell;
 import jxl.CellType;
@@ -22,15 +24,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.google.gson.Gson;
 
 public class AgeRequestSender extends RequestSender {
 
+	String dmsg;
+	
 	public AgeRequestSender(String url) throws Exception 
 	{
 		super();
 		requestURI = url;
+		dmsg = FileUtils.readFileToString(new File("request/age_detail_request.xml"));
 	}
 
 	public void run() throws Exception
@@ -114,6 +120,7 @@ public class AgeRequestSender extends RequestSender {
 						}
 					}
 					
+					instance = getDetail(instance);
 					ageList.add(instance);
 					logger.info("Add new instance : {}, {}", instance.getCrltsNm(), instance.getCrltsNo());
 				}
@@ -217,5 +224,33 @@ public class AgeRequestSender extends RequestSender {
 //				}
 //			}
 //		}
+	}
+	
+	public Item getDetail(Item item) throws ParserConfigurationException, SAXException, IOException
+	{
+		String requestMsg = dmsg.replace("code", item.getItemCd());
+		requestMsg = requestMsg.replace("number", item.getCrltsNo());
+		requestMsg = requestMsg.replace("locale", item.getCtrdCd());
+		
+		logger.info("Setting detail request msg with {}, {}", item.getCrltsNm(), item.getItemCd());
+		String response = client.send(WebSvcType.SOAP, requestURI, requestMsg, null);
+		
+		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		InputSource is = new InputSource(new StringReader(response));
+		Document doc = db.parse(is);
+
+		NodeList val = doc.getElementsByTagName("return");
+		Node itemval = val.item(0);
+		
+		Node desc = doc.getElementsByTagName("crltsDc").item(0);
+		item.setCrltsDc(desc.getTextContent());
+		
+		Node guCd = doc.getElementsByTagName("signguCd").item(0);
+		item.setSignguCd(guCd.getTextContent());
+		
+		Node guNm = doc.getElementsByTagName("signguNm").item(0);
+		item.setSignguNm(guNm.getTextContent());
+		
+		return item;
 	}
 }
