@@ -47,7 +47,8 @@ public class AreaRequestSender extends RequestSender{
 	{
 		String xmlPath = "request/area_list_request.xml";
 		String msgTemplate = FileUtils.readFileToString(new File(xmlPath));
-		String requestMsg = msgTemplate.replace("size", pageSize);
+//		String requestMsg = msgTemplate.replace("size", pageSize);
+		msgTemplate = msgTemplate.replace("size", pageSize);
 
 		File workbookFile = new File("request/area.xls");
 		Workbook workBook = Workbook.getWorkbook(workbookFile);
@@ -57,23 +58,18 @@ public class AreaRequestSender extends RequestSender{
 		String pastNum = null;
 		for(int i = 0; i < codeSheet.getRows(); ++i)
 		{
+			String requestMsg = msgTemplate;
+			
 			Cell cell = codeSheet.getCell(0, i);
 
 			//get the code number
 			if(cell.getType() == CellType.LABEL || cell.getType() == CellType.NUMBER)
 			{
-				if(requestMsg.contains("code"))
-				{
-					requestMsg = requestMsg.replace("code", cell.getContents());
-				}else if(pastNum != null)
-				{
-					requestMsg = requestMsg.replace(pastNum, cell.getContents());
-				}
-
-				pastNum = cell.getContents();
+				requestMsg = requestMsg.replace("code", cell.getContents());
 				requestMsg = requestMsg.replace("pagenum", "1");
 
 				logger.info("Sending request with code num {}", cell.getContents());
+
 				//consider the servicekey
 				//String  response = "";
 				String response = client.send(WebSvcType.SOAP, requestURI, requestMsg, null);
@@ -105,12 +101,14 @@ public class AreaRequestSender extends RequestSender{
 						try 
 						{
 							instance = setValue(instance, field, value);
-							areaList.add(instance);
+							
 						} catch (Exception e) 
 						{
 							logger.error(e.getMessage(), e.getCause());
 						}
 					}
+					
+					areaList.add(instance);
 				}
 			}
 		}
@@ -119,5 +117,11 @@ public class AreaRequestSender extends RequestSender{
 		Gson gson = new Gson();
 		String res = gson.toJson(areaList);
 		FileUtils.writeStringToFile(new File("response/areaList.json"), res);
+	}
+	
+	public Item getdetail(Item item)
+	{
+		
+		return null;
 	}
 }

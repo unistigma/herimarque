@@ -1,20 +1,18 @@
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:head="http://apache.org/headers" xmlns:ser="http://service.agecrlts.crlts.cha/">
    <soapenv:Header>
       <head:ComMsgHeader>
-         <RequestMsgID>bkang721</RequestMsgID>
+         <RequestMsgID>netinamu42</RequestMsgID>
          <ServiceKey>6i1zuQWddVTMFSqlHyhnbw8VL7uvfuHHt3Pth12H3VuFrUvdzFRcfYBZRfTE0Eidf/hV3otAz36MR1F/VDWUDw==</ServiceKey>
-         <!-- <RequestMsgID>netinamu42</RequestMsgID>
-         <ServiceKey>6i1zuQWddVTMFSqlHyhnbw8VL7uvfuHHt3Pth12H3VuFrUvdzFRcfYBZRfTE0Eidf/hV3otAz36MR1F/VDWUDw==</ServiceKey> -->
       </head:ComMsgHeader>
    </soapenv:Header>
    <soapenv:Body>
-      <ser:getAgeCrltsDtls>
+      <ser:getAreaCrltsDtls>
          <!--Optional:-->
          <arg0>
            <itemCd>code</itemCd>
            <crltsNo>number</crltsNo>
            <ctrdCd>locale</ctrdCd> 
          </arg0>
-      </ser:getAgeCrltsDtls>
+      </ser:getAreaCrltsDtls>
    </soapenv:Body>
 </soapenv:Envelope>

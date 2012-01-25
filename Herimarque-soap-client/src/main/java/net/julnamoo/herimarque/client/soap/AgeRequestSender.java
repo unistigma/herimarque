@@ -72,19 +72,19 @@ public class AgeRequestSender extends RequestSender {
 				logger.info("Sending request with code num {}", cell.getContents());
 				//consider the servicekey
 //				String  response = "";
-				if(!checkNumber())
-				{
-					logger.info("Current request number is {}. Sleep this thread for a day.....", number);
-					logger.info("Set the request number to zero");
-					initNumber();
-					Thread.currentThread().sleep(1000*60);
-					logger.info("Awake the Thread! Continue to send the request");
-					
-					//for test
-					return;
-				}
+//				if(!checkNumber())
+//				{
+//					logger.info("Current request number is {}. Sleep this thread for a day.....", number);
+//					logger.info("Set the request number to zero");
+//					initNumber();
+//					Thread.currentThread().sleep(1000*60);
+//					logger.info("Awake the Thread! Continue to send the request");
+//					
+//					//for test
+//					return;
+//				}
 				String response = client.send(WebSvcType.SOAP, requestURI, requestMsg, null);
-				++number;
+//				++number;
 				
 				//save the naive response to string
 //				String respFile = "response/age_response_" + pastNum + ".txt";
@@ -122,7 +122,7 @@ public class AgeRequestSender extends RequestSender {
 					
 					instance = getDetail(instance);
 					ageList.add(instance);
-					logger.info("Add new instance : {}, {}", instance.getCrltsNm(), instance.getCrltsNo());
+					logger.info("Add new instance : {}, {}", instance.getCrltsNm(), instance.getCrltsNoNm());
 				}
 			}
 		}
@@ -232,24 +232,37 @@ public class AgeRequestSender extends RequestSender {
 		requestMsg = requestMsg.replace("number", item.getCrltsNo());
 		requestMsg = requestMsg.replace("locale", item.getCtrdCd());
 		
-		logger.info("Setting detail request msg with {}, {}", item.getCrltsNm(), item.getItemCd());
+		logger.info("Setting detail request msg with {}, {}", item.getCrltsNm(), item.getCrltsNoNm());
 		String response = client.send(WebSvcType.SOAP, requestURI, requestMsg, null);
 		
 		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		InputSource is = new InputSource(new StringReader(response));
 		Document doc = db.parse(is);
 
-		NodeList val = doc.getElementsByTagName("return");
-		Node itemval = val.item(0);
+		try
+		{
+			Node desc = doc.getElementsByTagName("crltsDc").item(0);
+			item.setCrltsDc(desc.getTextContent());
+		}catch (Exception e){
+			
+			item.setCrltsDc("");
+		}
 		
-		Node desc = doc.getElementsByTagName("crltsDc").item(0);
-		item.setCrltsDc(desc.getTextContent());
+		try
+		{
+			Node guCd = doc.getElementsByTagName("signguCd").item(0);
+			item.setSignguCd(guCd.getTextContent());
+		}catch (Exception e) {	
+			item.setSignguCd("");
+		}
 		
-		Node guCd = doc.getElementsByTagName("signguCd").item(0);
-		item.setSignguCd(guCd.getTextContent());
-		
-		Node guNm = doc.getElementsByTagName("signguNm").item(0);
-		item.setSignguNm(guNm.getTextContent());
+		try
+		{
+			Node guNm = doc.getElementsByTagName("signguNm").item(0);
+			item.setSignguNm(guNm.getTextContent());
+		}catch (Exception e) {
+			item.setSignguNm("");
+		}
 		
 		return item;
 	}
