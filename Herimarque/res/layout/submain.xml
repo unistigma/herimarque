@@ -10,28 +10,7 @@
         android:layout_weight="1" >
 
         <!-- Info activity -->
-        <LinearLayout
-            android:id="@+id/info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="1" 
-            android:gravity="center"
-            android:visibility="visible"
-            android:background="@drawable/infoback" >
-
-            <Button
-                android:id="@+id/all"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="문화유산보기" />
-
-            <Button
-                android:id="@+id/location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="내 주변 문화유산 보기" />
-        </LinearLayout>
+       <include android:id="@+id/info" layout="@layout/info_main"/>
         
         <!-- Create Activity -->
         <LinearLayout 
@@ -64,19 +43,8 @@
         </LinearLayout>
         
         <!-- Config Activity -->
-        <LinearLayout 
-            android:id="@+id/config"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"
-            android:background="@drawable/configback">
-            
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="configTestButt"/> 
-        </LinearLayout>
+        <include android:id="@+id/config" layout="@layout/config_main"/>
+  
     </FrameLayout>
 
     <RadioGroup 

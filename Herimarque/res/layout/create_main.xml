@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@drawable/createback">
+
+    <LinearLayout
+        android:id="@+id/layout_create_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="23sp"
+            android:text="나만의 Heritage Mark 만들기" />
+
+        <Button
+            android:id="@+id/butt_create_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Herimarque!" />
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:id="@+id/layout_create_infoin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="마크의 이름을 정해주세요."/>
+        <EditText 
+            android:id="@+id/create_etxt_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="나의 첫 헤리마크"/>
+        
+        <Button 
+            android:id="@+id/butt_create_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="시작!"/>
+    </LinearLayout>
+
+</FrameLayout>

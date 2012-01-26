@@ -68,7 +68,6 @@ public class SubMainActivity extends Activity {
 		show.setVisibility(View.INVISIBLE);
 		config.setVisibility(View.INVISIBLE);
 
-		
 		switch (id) {
 		case 0:
 			info.setVisibility(View.VISIBLE);
