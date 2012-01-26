@@ -49,27 +49,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.25"
-            android:text="Info"/>
+            android:text="@string/info_short"/>
         
         <RadioButton 
             android:id="@+id/createButt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.25"
-            android:text="생성"/>
+            android:text="@string/create_short"/>
         
         <RadioButton 
             android:id="@+id/showButt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.25"
-            android:text="보기"/>
+            android:text="@string/show_short"/>
         
         <RadioButton 
             android:id="@+id/configButt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.25"
-            android:text="설정"/>
+            android:text="@string/config_short"/>
     </RadioGroup>
 </LinearLayout>

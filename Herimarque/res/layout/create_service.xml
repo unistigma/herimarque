@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:background="#FFFFFFFF"
-        android:hint="nameofHerimarque" />
+        android:hint="@string/create_new_hint" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -26,12 +26,6 @@
             android:apiKey="0UyzqHINdFIG4Ims3IKo0B3ZnVnwfC-njU10P8g"
             android:clickable="true"
             android:enabled="true" />
-<!--  <ImageView
-            android:id="@+id/map_mylocation"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="test for mapview"
-            android:src="@drawable/ic_launcher" /> -->
 
         <Button
             android:id="@+id/butt_mylocation"
@@ -53,7 +47,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="Start" />
+            android:text="@string/start" />
 
         <Button
             android:id="@+id/butt_create_finish"
@@ -61,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:clickable="false"
-            android:text="Finish" />
+            android:text="@string/finish" />
     </LinearLayout>
 
 </LinearLayout>

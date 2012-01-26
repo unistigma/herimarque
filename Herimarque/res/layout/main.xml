@@ -11,21 +11,22 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/container1"
         android:orientation="horizontal"
+        android:baselineAligned="false"
         android:weightSum="1" >
 
         <Button
             android:id="@+id/info"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.3"
-            android:text="Info" />
+            android:text="@string/information" />
 
         <Button
             android:id="@+id/create"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:text="생성" />
+            android:text="@string/create" />
     </LinearLayout>
 
     <LinearLayout
@@ -41,14 +42,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
-            android:text="보기" />
+            android:text="@string/show" />
 
         <Button
             android:id="@+id/config"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:text="설정" />
+            android:text="@string/config" />
     </LinearLayout>
 
 </RelativeLayout>

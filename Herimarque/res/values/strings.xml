@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Commong String -->
     <string name="hello">Hello World, HerimarqueActivity!</string>
     <string name="app_name">Herimarque</string>
-    <string name="information">문화유산 보기</string>
+    
+    <!-- For info service -->
+    <string name="information">우리의 문화유산</string>
+    <string name="info_short">정보</string>
+    
+    <!-- For create Service -->
+    <string name="create">나만의 문화유산 만들기</string>
+    <string name="create_short">생성</string>
+    <string name="create_new_hint">나의 Herimarque</string>
+    <string name="start">Start</string>
+    <string name="finish">Finish</string>
+    <string name="create_desc1">나만의 문화유산을\n만들어 봅시다!</string>
+    <string name="create_start">Start Herimarque!</string>
+    <string name="create_desc2">이번 여행의 제목은 무엇인가요?</string>
+    
+    <!-- For show Service -->
+    <string name="show">나의 문화유산</string>
+    <string name="show_short">보기</string>
 
+    <!-- For configure Service -->
+    <string name="config">설정</string>
+    <string name="config_short">설정</string>
 </resources>

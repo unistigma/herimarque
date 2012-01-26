@@ -2,15 +2,8 @@ package net.julnamoo.swm.herimarque;
 
 import java.util.List;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
-
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.model.MyLocation;
-import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
@@ -18,8 +11,15 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
 
 public class CreateServiceActivity extends MapActivity {
 
@@ -33,7 +33,7 @@ public class CreateServiceActivity extends MapActivity {
 	LocationManager locationManager;
 	LocationListener locationListener;
 	Criteria criteria;
-	
+
 	//for map view
 	MapView map;
 	MapController mapController;
@@ -42,9 +42,20 @@ public class CreateServiceActivity extends MapActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.create_service);
-		
+
 		//Get the trip name
 		name = getIntent().getStringExtra("name");
+
+		//for getting my location with button....
+		//it needs to log the location with this button click listener
+		findViewById(R.id.butt_mylocation).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				MyLocation ml = getCurrentLocation();
+				showUpdate(ml);
+			}
+		});
 
 		//Get the current location
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -73,8 +84,8 @@ public class CreateServiceActivity extends MapActivity {
 			@Override
 			public void onLocationChanged(Location location) {
 				StringBuilder sb = new StringBuilder();
-				sb.append("changed location : ");
-				sb.append(location.getLatitude()).append(", ");
+				sb.append("changed location:");
+				sb.append(location.getLatitude()).append(",");
 				sb.append(location.getLongitude());
 				Log.d(tag, sb.toString());
 
@@ -84,15 +95,7 @@ public class CreateServiceActivity extends MapActivity {
 		MyLocation currloc = getCurrentLocation();
 
 		//set map view
-		map = (MapView) findViewById(R.id.create_map_mylocation);
-		mapController = map.getController();
-		
-		GeoPoint curr = new GeoPoint(currloc.getLatitude().intValue(), currloc.getLongitude().intValue());
-		mapController.setCenter(curr);
-		mapController.animateTo(curr);
-		mapController.setZoom(18);
-
-		map.invalidate();
+		showUpdate(currloc);
 
 		txtname = (TextView) findViewById(R.id.create_txt_name);
 		txtname.setText(name);
@@ -106,25 +109,37 @@ public class CreateServiceActivity extends MapActivity {
 			List<String> providers = locationManager.getAllProviders();
 			for(String provider : providers)
 			{
-				locationManager.requestLocationUpdates(provider, 0, 0, locationListener );
+				locationManager.requestLocationUpdates(provider, 0, 5, locationListener );
 				Location loc = locationManager.getLastKnownLocation(provider);
 				if(loc != null)
 				{
 					double latitude = loc.getLatitude();
 					double longitude = loc.getLongitude();
 					StringBuilder sb = new StringBuilder().append("Set new location, ").append(latitude)
-					.append(", ").append(longitude);
+							.append(", ").append(longitude);
 					String msg = new String(sb.toString());
 					Log.i(tag, msg);
-					
-//					Log.d(tag, "Remove locationlistener");
-//					locationManager.removeUpdates(locationListener);
+
 					return new MyLocation(latitude * 1E6, longitude * 1E6);
 				}
 			}
 		}
 		Log.i(tag, "Fail to get current location");
 		return null;
+	}
+
+	private void showUpdate(MyLocation location)
+	{
+		//set map view
+		map = (MapView) findViewById(R.id.create_map_mylocation);
+		mapController = map.getController();
+
+		GeoPoint curr = new GeoPoint(location.getLatitude().intValue(), location.getLongitude().intValue());
+		mapController.setCenter(curr);
+		mapController.animateTo(curr);
+		mapController.setZoom(18);
+
+		map.invalidate();
 	}
 
 	@Override
