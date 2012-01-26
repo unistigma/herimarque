@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 public class SubMainActivity extends Activity {
 
 	View info, create, show, config;
+	RadioGroup menuG;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -20,6 +23,8 @@ public class SubMainActivity extends Activity {
 		create = (View) findViewById(R.id.create);
 		show = (View) findViewById(R.id.show);
 		config = (View) findViewById(R.id.config);
+		
+		menuG = (RadioGroup) findViewById(R.id.gmenu);
 		
 		findViewById(R.id.infoButt).setOnClickListener(flipper);
 		findViewById(R.id.createButt).setOnClickListener(flipper);
@@ -62,19 +67,24 @@ public class SubMainActivity extends Activity {
 		create.setVisibility(View.INVISIBLE);
 		show.setVisibility(View.INVISIBLE);
 		config.setVisibility(View.INVISIBLE);
+
 		
 		switch (id) {
 		case 0:
 			info.setVisibility(View.VISIBLE);
+			menuG.check(R.id.infoButt);
 			break;
 		case 1:
 			create.setVisibility(View.VISIBLE);
+			menuG.check(R.id.createButt);
 			break;
 		case 2:
 			show.setVisibility(View.VISIBLE);
+			menuG.check(R.id.showButt);
 			break;
 		case 3:
 			config.setVisibility(View.VISIBLE);
+			menuG.check(R.id.configButt);
 			break;
 		default:
 			break;

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/container1"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/configback" >
+
+    <Button
+        android:id="@+id/loginbutt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="로그인" />
+
+    <Button
+        android:id="@+id/companybutt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Herimarque" />
+    
+    <Button 
+        android:id="@+id/terms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="이용약관"/>
+
+</LinearLayout>
