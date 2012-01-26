@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -13,35 +14,38 @@ public class SubMainActivity extends Activity {
 
 	View info, create, show, config;
 	RadioGroup menuG;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.submain);
-		
+
 		info = (View) findViewById(R.id.info);
 		create = (View) findViewById(R.id.create);
 		show = (View) findViewById(R.id.show);
 		config = (View) findViewById(R.id.config);
-		
+
 		menuG = (RadioGroup) findViewById(R.id.gmenu);
-		
+
 		findViewById(R.id.infoButt).setOnClickListener(flipper);
 		findViewById(R.id.createButt).setOnClickListener(flipper);
 		findViewById(R.id.showButt).setOnClickListener(flipper);
 		findViewById(R.id.configButt).setOnClickListener(flipper);
-		
+
 		Intent intent = getIntent();
 		int menu = intent.getIntExtra("menu", 0);
-		
+
 		changeView(menu);
+
+		//for create service
+		findViewById(R.id.butt_create_start).setOnClickListener(startCreateService);
 	}
-	
+
 	OnClickListener flipper = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
-			
+
 			switch (v.getId()) {
 			case R.id.infoButt:
 				changeView(0);
@@ -60,7 +64,7 @@ public class SubMainActivity extends Activity {
 			}
 		}
 	};
-	
+
 	private void changeView(int id)
 	{
 		info.setVisibility(View.INVISIBLE);
@@ -89,4 +93,16 @@ public class SubMainActivity extends Activity {
 			break;
 		}
 	}
+
+	public OnClickListener startCreateService = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+
+			String name = findViewById(R.id.create_etxt_name).toString();
+
+			Intent intent = new Intent(SubMainActivity.this, CreateServiceStarterActivity.class);
+			startActivity(intent);
+		}
+	};
 }

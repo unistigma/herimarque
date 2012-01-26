@@ -20,24 +20,26 @@
 
         <Button
             android:id="@+id/butt_create_start"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Herimarque!" />
+            android:layout_gravity="bottom"
+            android:text="Start Herimarque!" />
     </LinearLayout>
     
     <LinearLayout 
         android:id="@+id/layout_create_infoin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:visibility="invisible">
         
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="마크의 이름을 정해주세요."/>
+            android:textSize="25sp"
+            android:text="이번 여행 제목은 무엇인가요?"/>
+        
         <EditText 
             android:id="@+id/create_etxt_name"
             android:layout_width="match_parent"
@@ -46,7 +48,7 @@
         
         <Button 
             android:id="@+id/butt_create_ok"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="시작!"/>

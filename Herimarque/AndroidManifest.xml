@@ -27,8 +27,14 @@
         
         <activity 
             android:name=".swm.herimarque.SubMainActivity">
-            
-            
+        </activity>
+        
+        <activity 
+            android:name=".swm.herimarque.CreateServiceStarterActivity">
+        </activity>
+        
+        <activity 
+            android:name=".swm.herimarque.CreateServiceActivity">
         </activity>
         
     </application>

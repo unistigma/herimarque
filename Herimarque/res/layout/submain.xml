@@ -13,19 +13,7 @@
        <include android:id="@+id/info" layout="@layout/info_main"/>
         
         <!-- Create Activity -->
-        <LinearLayout 
-            android:id="@+id/create"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"
-            android:background="@drawable/createback">
-            
-            <Button 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="createTestButton"/>
-        </LinearLayout>
+        <include android:id="@+id/create" layout="@layout/create_main"/>
         
         <!-- Show Activity -->
         <LinearLayout 
