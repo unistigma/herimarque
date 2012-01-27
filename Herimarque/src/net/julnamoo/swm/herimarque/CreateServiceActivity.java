@@ -119,7 +119,7 @@ public class CreateServiceActivity extends MapActivity {
 			Log.d(tag, "Enroll the provider " + provider);
 			locationManager.requestLocationUpdates(provider, 5, 15, locationListener);
 		}
-		
+		super.onResume();
 	};
 
 	private MyLocation getCurrentLocation()
