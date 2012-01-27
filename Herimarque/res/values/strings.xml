@@ -4,6 +4,7 @@
     <!-- Commong String -->
     <string name="hello">Hello World, HerimarqueActivity!</string>
     <string name="app_name">Herimarque</string>
+    <string name="company">Incredieble</string>
     
     <!-- For info service -->
     <string name="information">우리의 문화유산</string>
@@ -26,4 +27,6 @@
     <!-- For configure Service -->
     <string name="config">설정</string>
     <string name="config_short">설정</string>
+    <string name="config_fblogin">Facebook Login</string>
+    <string name="config_terms">이용약관</string>
 </resources>

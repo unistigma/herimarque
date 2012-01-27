@@ -1,5 +1,6 @@
 package net.julnamoo.swm.herimarque;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,7 +9,7 @@ import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 
-public class ConfigFacebookLoginActivity extends SubMainActivity {
+public class ConfigFacebookLoginActivity extends Activity {
 
 	Facebook facebook;
 	
@@ -35,7 +36,7 @@ public class ConfigFacebookLoginActivity extends SubMainActivity {
 	}
 	
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		facebook.authorizeCallback(requestCode, resultCode, data);
 	}

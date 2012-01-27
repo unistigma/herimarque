@@ -39,6 +39,9 @@ public class SubMainActivity extends Activity {
 
 		//for create service
 		findViewById(R.id.butt_create_start).setOnClickListener(startCreateService);
+		
+		//facebook login activity
+		findViewById(R.id.butt_config_fblogin).setOnClickListener(fbLogin);
 	}
 
 	OnClickListener flipper = new OnClickListener() {
@@ -102,6 +105,15 @@ public class SubMainActivity extends Activity {
 			String name = findViewById(R.id.create_etxt_name).toString();
 
 			Intent intent = new Intent(SubMainActivity.this, CreateServiceStarterActivity.class);
+			startActivity(intent);
+		}
+	};
+	
+	public OnClickListener fbLogin = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(SubMainActivity.this, ConfigFacebookLoginActivity.class);
 			startActivity(intent);
 		}
 	};

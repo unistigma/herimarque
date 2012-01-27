@@ -30,6 +30,11 @@
         </activity>
         
         <activity 
+            android:name=".swm.herimarque.ConfigFacebookLoginActivity">
+            
+        </activity>
+        
+        <activity 
             android:name=".swm.herimarque.CreateServiceStarterActivity">
         </activity>
         
