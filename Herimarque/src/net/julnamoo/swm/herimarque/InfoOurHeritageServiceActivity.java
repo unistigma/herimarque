@@ -5,13 +5,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.GridView;
 import android.widget.Toast;
 
 public class InfoOurHeritageServiceActivity extends Activity {
 
-	View category;
-	GridView list;
+	View category, list;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -19,15 +17,13 @@ public class InfoOurHeritageServiceActivity extends Activity {
 		setContentView(R.layout.info_our_main);
 		
 		//set main layout for each menus
-		list = (GridView) findViewById(R.id.info_our_list);
-		//need to be initiate the list
-		
+		list = (View) findViewById(R.id.info_our_list);
 		category = (View) findViewById(R.id.info_our_category);
 		
 		//connect views to buttons
 		findViewById(R.id.butt_info_our_list).setOnClickListener(flipper);
 		findViewById(R.id.butt_info_our_category).setOnClickListener(flipper);
-		
+		changeView(0);
 	}
 	
 	OnClickListener flipper = new OnClickListener() {
@@ -50,13 +46,14 @@ public class InfoOurHeritageServiceActivity extends Activity {
 	
 	public void changeView(int key)
 	{
+		list.setVisibility(View.INVISIBLE);
+		category.setVisibility(View.INVISIBLE);
+		
 		switch (key) {
 		case 0:
-			category.setVisibility(View.INVISIBLE);
 			list.setVisibility(View.VISIBLE);
 			break;
 		case 1:
-			list.setVisibility(View.INVISIBLE);
 			category.setVisibility(View.VISIBLE);
 			break;
 		default:

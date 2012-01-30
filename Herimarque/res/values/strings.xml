@@ -18,6 +18,37 @@
     <string name="info_area">지역</string>
     <string name="kind_national_treasure">국보</string>
     <string name="kind_treasure">보물</string>
+    <string name="kind_historical_site">사적</string>
+    
+    <string name="kind_spot_place">명승</string>
+    <string name="kind_natural_monument">천연기념물</string>
+    <string name="kind_intangible_cultural_asset">무형문화재</string>
+
+    <string name="kind_folklore_asset">민속문화재</string>
+    <string name="kind_registered_asset">등록문화재</string>
+    <string name="kind_local_tangible_cultural_asset">시도 유형문화재</string>
+  
+    <string name="kind_local_intangible_cultural_asset">시도 무형문화재</string>
+    <string name="kind_local_monument">시도 기념물</string>
+    <string name="kind_local_folklore_asset">시도 민속문화재</string>
+    <string name="kind_cultural_asset">문화재자료</string>
+    
+    <string name="age_prehistoric_age">선사시대</string>
+    <string name="age_stone_age">석기시대</string>
+    <string name="age_bronze_age">청동기시대</string>
+    <string name="age_iron_age">철기시대</string>
+    <string name="age_three_hans">삼한시대</string>
+    <string name="age_three_countries">삼국시대</string>
+    <string name="age_goguryeo">고구려</string>
+    <string name="age_baekje">백제</string>
+    <string name="age_silla">신라</string>
+    <string name="age_gaya">가야</string>
+    <string name="age_balhae">발해</string>
+    <string name="age_unified_silla">통일 신라</string>
+    <string name="age_goryeo">고려</string>
+    <string name="age_chosun">조선</string>
+    <string name="age_daehan">대한제국</string>
+    <string name="age_japanese_colonial">일제강점기</string>
     
     <!-- For create Service -->
     <string name="create">나만의 문화유산 만들기</string>

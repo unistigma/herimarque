@@ -30,11 +30,9 @@
     </RadioGroup>
 
     <include
-        android:id="@+id/info_our_list"
-        layout="@layout/info_our_list" />
+        android:id="@+id/info_our_list" layout="@layout/info_our_list" />
 
     <include
-        android:id="@+id/info_our_category"
-        layout="@layout/info_our_category" />
+        android:id="@+id/info_our_category" layout="@layout/info_our_category" />
 
 </LinearLayout>
