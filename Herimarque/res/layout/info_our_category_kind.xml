@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp" >
+
+    <RelativeLayout
+        android:id="@+id/kind_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:columnCount="3"
+        android:padding="10dp"
+        android:scrollbars="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/info_our_category_test_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/info_our_kind_national_treasure"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/kind_national_treasure"
+            android:padding="5dp"
+            android:src="@drawable/kind_national_treasure" />
+
+        <ImageView
+            android:id="@+id/info_our_kind_treasure"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_toRightOf="@id/info_our_kind_national_treasure"
+            android:contentDescription="@string/kind_treasure"
+            android:padding="5dp"
+            android:src="@drawable/kind_treasure" />
+
+        <ImageView
+            android:id="@+id/info_our_kind_historical_site"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_toRightOf="@id/info_our_kind_treasure"
+            android:contentDescription="@string/kind_historical_site"
+            android:padding="5dp"
+            android:src="@drawable/kind_historical_site" />
+
+        <ImageView
+            android:id="@+id/info_our_kind_spot_place"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/info_our_kind_national_treasure"
+            android:contentDescription="@string/kind_spot_place"
+            android:padding="5dp"
+            android:src="@drawable/kind_spot_place" />
+
+        <ImageView
+            android:id="@+id/info_our_kind_natural_monument"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/info_our_kind_treasure"
+            android:layout_toRightOf="@id/info_our_kind_spot_place"
+            android:contentDescription="@string/kind_natural_monument"
+            android:padding="5dp"
+            android:src="@drawable/kind_natural_monument" />
+
+        <ImageView
+            android:id="@+id/info_our_kind_intangible_cultural_asset"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/info_our_kind_historical_site"
+            android:layout_toRightOf="@id/info_our_kind_natural_monument"
+            android:contentDescription="@string/kind_intangible_cultural_asset"
+            android:padding="5dp"
+            android:src="@drawable/kind_intangible_cultural_asset" />
+
+        <ImageView
+            android:id="@+id/info_our_kind_folklore_asset"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/info_our_kind_spot_place"
+            android:contentDescription="@string/kind_folklore_asset"
+            android:padding="5dp"
+            android:src="@drawable/kind_folklore_asset" />
+
+        <ImageView
+            android:id="@+id/info_our_kind_registered_asset"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/info_our_kind_natural_monument"
+            android:layout_toRightOf="@id/info_our_kind_folklore_asset"
+            android:contentDescription="@string/kind_registered_asset"
+            android:padding="5dp"
+            android:src="@drawable/kind_registered_asset" />
+
+        <ImageView
+            android:id="@+id/info_our_kind_local_tangible_cultural_asset"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/info_our_kind_intangible_cultural_asset"
+            android:layout_toRightOf="@id/info_our_kind_registered_asset"
+            android:contentDescription="@string/kind_local_tangible_cultural_asset"
+            android:padding="5dp"
+            android:src="@drawable/kind_local_tangible_cultural_asset" />
+
+        <ImageView
+            android:id="@+id/info_our_kind_local_intangible_cultural_asset"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/info_our_kind_folklore_asset"
+            android:contentDescription="@string/kind_local_intangible_cultural_asset"
+            android:padding="5dp"
+            android:src="@drawable/kind_local_intangible_cultural_asset" />
+
+        <ImageView
+            android:id="@+id/info_our_kind_local_monument"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/info_our_kind_registered_asset"
+            android:layout_toRightOf="@id/info_our_kind_local_intangible_cultural_asset"
+            android:contentDescription="@string/kind_local_monument"
+            android:padding="5dp"
+            android:src="@drawable/kind_local_monument" />
+
+        <ImageView
+            android:id="@+id/info_our_kind_local_folklore_asset"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/info_our_kind_local_tangible_cultural_asset"
+            android:layout_toRightOf="@id/info_our_kind_local_monument"
+            android:contentDescription="@string/kind_local_folklore_asset"
+            android:padding="5dp"
+            android:src="@drawable/kind_local_folklore_asset" />
+
+        <ImageView
+            android:id="@+id/info_our_kind_cultural_asset"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/info_our_kind_local_intangible_cultural_asset"
+            android:contentDescription="@string/kind_cultural_asset"
+            android:padding="5dp"
+            android:src="@drawable/kind_cultural_asset" />
+    </RelativeLayout>
+
+</ScrollView>

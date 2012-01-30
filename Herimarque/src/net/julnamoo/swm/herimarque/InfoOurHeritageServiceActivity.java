@@ -24,6 +24,11 @@ public class InfoOurHeritageServiceActivity extends Activity {
 		findViewById(R.id.butt_info_our_list).setOnClickListener(flipper);
 		findViewById(R.id.butt_info_our_category).setOnClickListener(flipper);
 		changeView(0);
+		
+		//click listener for category search buttons
+		findViewById(R.id.butt_info_our_kind).setOnClickListener(categoryStarter);
+		findViewById(R.id.butt_info_our_age).setOnClickListener(categoryStarter);
+		findViewById(R.id.butt_info_our_area).setOnClickListener(categoryStarter);
 	}
 	
 	OnClickListener flipper = new OnClickListener() {

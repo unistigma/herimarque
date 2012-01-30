@@ -36,10 +36,16 @@
         <include
             android:id="@+id/info_our_list"
             layout="@layout/info_our_list" />
-
-        <include
+        
+        <fragment 
             android:id="@+id/info_our_category"
-            layout="@layout/info_our_category" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="net.julnamoo.swm.herimarque.InfoOurHeritageListFragment"/>
+
+  <!--       <include
+            android:id="@+id/info_our_category"
+            layout="@layout/info_our_category" /> -->
     </FrameLayout>
 
 </LinearLayout>
