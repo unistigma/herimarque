@@ -9,6 +9,15 @@
     <!-- For info service -->
     <string name="information">우리의 문화유산</string>
     <string name="info_short">정보</string>
+    <string name="info_ourheritage">우리의 문화유산 보기</string>
+    <string name="info_nearheritage">내 주변 문화유산 보기</string>
+    <string name="info_our_list">List</string>
+    <string name="info_our_category">상세검색</string>
+    <string name="info_kind">종목</string>
+    <string name="info_age">시대</string>
+    <string name="info_area">지역</string>
+    <string name="kind_national_treasure">국보</string>
+    <string name="kind_treasure">보물</string>
     
     <!-- For create Service -->
     <string name="create">나만의 문화유산 만들기</string>

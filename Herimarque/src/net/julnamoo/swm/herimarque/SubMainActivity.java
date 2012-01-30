@@ -36,10 +36,16 @@ public class SubMainActivity extends Activity {
 		int menu = intent.getIntExtra("menu", 0);
 
 		changeView(menu);
-
+		
+		/** Info **/
+		findViewById(R.id.butt_info_ourheritage).setOnClickListener(startOurHeritage);
+		findViewById(R.id.butt_info_nearheritage).setOnClickListener(startNearHeritage);
+		
+		/** Create **/
 		//for create service
 		findViewById(R.id.butt_create_start).setOnClickListener(startCreateService);
 		
+		/** Config **/
 		//facebook login activity
 		findViewById(R.id.butt_config_fblogin).setOnClickListener(fbLogin);
 	}
@@ -97,6 +103,26 @@ public class SubMainActivity extends Activity {
 		}
 	}
 
+	/** Info **/
+	public OnClickListener startOurHeritage = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(SubMainActivity.this, InfoOurHeritageServiceActivity.class);
+			startActivity(intent);
+		}
+	};
+	
+	public OnClickListener startNearHeritage = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
+	/** Create **/
 	public OnClickListener startCreateService = new OnClickListener() {
 
 		@Override
@@ -109,6 +135,7 @@ public class SubMainActivity extends Activity {
 		}
 	};
 	
+	/** Config **/
 	public OnClickListener fbLogin = new OnClickListener() {
 		
 		@Override
