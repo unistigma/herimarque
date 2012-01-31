@@ -1,16 +1,22 @@
 package net.julnamoo.swm.herimarque;
 
 import net.julnamoo.R;
+import net.julnamoo.swm.herimarque.adapter.KindImageAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class InfoOurHeritageServiceActivity extends Activity {
 
+	private String tag = InfoOurHeritageServiceActivity.class.getSimpleName();
 	final static int CATEGORY_KIND = 0;
 	
 	//search menu view
@@ -28,6 +34,22 @@ public class InfoOurHeritageServiceActivity extends Activity {
 		list = (View) findViewById(R.id.info_our_list);
 		category = (View) findViewById(R.id.info_our_category);
 
+		//init list search view
+		GridView grid = (GridView) list;
+		if(grid == null) Log.d(tag, "grid is null");
+		KindImageAdapter adapter = new KindImageAdapter(InfoOurHeritageServiceActivity.this);
+		grid.setAdapter(adapter);
+		
+		grid.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Toast.makeText(InfoOurHeritageServiceActivity.this, arg1.getId() + "선택", Toast.LENGTH_SHORT).show();
+			}
+			
+		});
+		
 		/** connect views to buttons **/
 		//for main search
 		findViewById(R.id.butt_info_our_list).setOnClickListener(flipper);
