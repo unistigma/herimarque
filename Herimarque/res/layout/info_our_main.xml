@@ -41,7 +41,7 @@
             android:id="@+id/info_our_category"
             layout="@layout/info_our_category" />
         
-        <include 
+        <!-- <include 
             android:id="@+id/info_our_category_kind"
             layout="@layout/info_our_category_kind"/>
         
@@ -51,7 +51,7 @@
         
         <include 
             android:id="@+id/info_our_category_area"
-            layout="@layout/info_our_category_area"/>
+            layout="@layout/info_our_category_area"/> -->
     </FrameLayout>
 
 </LinearLayout>

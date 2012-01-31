@@ -1,4 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView 
+        android:id="@+id/info_our_kind_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:background="#F9A600"
+        android:text="@string/info_kind" />
+    <GridView
+        android:id="@+id/info_our_category_kind_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/info_back"
+        android:columnWidth="100dp"
+        android:horizontalSpacing="5dp"
+        android:numColumns="auto_fit"
+        android:padding="10dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="5dp" />
+
+</LinearLayout><!--
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +38,8 @@
         android:layout_gravity="center"
         android:columnCount="3"
         android:padding="10dp"
-        android:scrollbars="vertical" >
+        android:scrollbars="vertical"
+        android:clickable="true" >
 
         <ImageView
             android:id="@+id/info_our_kind_national_treasure"
@@ -137,3 +165,4 @@
     </RelativeLayout>
 
 </ScrollView>
+-->

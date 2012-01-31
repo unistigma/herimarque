@@ -33,7 +33,13 @@
         
         <!-- Info -->
         <activity 
-            android:name=".swm.herimarque.InfoOurHeritageServiceActivity" >
+            android:name=".swm.herimarque.InfoOurHeritageServiceActivity" 
+            android:screenOrientation="portrait">
+            
+        </activity>
+        <activity 
+            android:name=".swm.herimarque.InfoOurHeritageKindActivity"
+            android:screenOrientation="portrait">
             
         </activity>
         

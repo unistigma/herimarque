@@ -2,18 +2,22 @@ package net.julnamoo.swm.herimarque;
 
 import net.julnamoo.R;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class InfoOurHeritageServiceActivity extends Activity {
 
+	final static int CATEGORY_KIND = 0;
+	
 	//search menu view
 	View category, list;
 
-	//category search view
-	View kindList, ageList, areaList;
+	//category search 
+	Button kindList, ageList, areaList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -28,21 +32,14 @@ public class InfoOurHeritageServiceActivity extends Activity {
 		//for main search
 		findViewById(R.id.butt_info_our_list).setOnClickListener(flipper);
 		findViewById(R.id.butt_info_our_category).setOnClickListener(flipper);
-		changeView(0);
+		list.setVisibility(View.VISIBLE);
+		category.setVisibility(View.INVISIBLE);
 
 		//for category search
 		//click listener for category search buttons
 		findViewById(R.id.butt_info_our_kind).setOnClickListener(categoryStarter);
 		findViewById(R.id.butt_info_our_age).setOnClickListener(categoryStarter);
 		findViewById(R.id.butt_info_our_area).setOnClickListener(categoryStarter);
-		//set sub layout for sub search services
-//		kindList = (View) findViewById(R.id.info_our_category_kind);
-//		kindList.setVisibility(View.INVISIBLE);
-//		ageList = (View) findViewById(R.id.info_our_category_age);
-//		ageList.setVisibility(View.INVISIBLE);
-//		areaList = (View) findViewById(R.id.info_our_category_area);
-//		areaList.setVisibility(View.INVISIBLE);
-
 	}
 
 	/** for changing view **/
@@ -95,28 +92,36 @@ public class InfoOurHeritageServiceActivity extends Activity {
 		@Override
 		public void onClick(View v) 
 		{
-			kindList.setVisibility(View.INVISIBLE);
-			ageList.setVisibility(View.INVISIBLE);
-			areaList.setVisibility(View.INVISIBLE);
 			switch (v.getId()) {
 			case R.id.butt_info_our_kind:
-//				Toast.makeText(InfoOurHeritageServiceActivity.this, "kind pressed", Toast.LENGTH_SHORT).show();
-				kindList.setVisibility(View.VISIBLE);
+				Toast.makeText(InfoOurHeritageServiceActivity.this, "kind pressed", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(InfoOurHeritageServiceActivity.this, InfoOurHeritageKindActivity.class);
+				startActivityForResult(intent, CATEGORY_KIND);
 				break;
 
 			case R.id.butt_info_our_age:
 //				Toast.makeText(InfoOurHeritageServiceActivity.this, "age pressed", Toast.LENGTH_SHORT).show();
-				ageList.setVisibility(View.VISIBLE);
 				break;
 
 			case R.id.butt_info_our_area:
 //				Toast.makeText(InfoOurHeritageServiceActivity.this, "area pressed", Toast.LENGTH_SHORT).show();
-				areaList.setVisibility(View.VISIBLE);
 				break;
 
 			default:
 				break;
 			}
+		}
+	};
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+		switch (requestCode) {
+		case CATEGORY_KIND:
+			Toast.makeText(InfoOurHeritageServiceActivity.this, "return from kind", Toast.LENGTH_SHORT).show();
+			break;
+
+		default:
+			break;
 		}
 	};
 }
