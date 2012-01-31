@@ -3,10 +3,10 @@ package net.julnamoo.swm.herimarque;
 import java.lang.reflect.Field;
 
 import net.julnamoo.swm.herimarque.model.Item;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 public class HeritageDataWrapper extends SQLiteOpenHelper {
@@ -17,15 +17,37 @@ public class HeritageDataWrapper extends SQLiteOpenHelper {
 	private static final int DB_VERSION = 1;
 	private static final String TABLE_NAME = "heritage";
 	
-	private Context context;
 	private SQLiteDatabase db;
-	private SQLiteStatement stmt;
 	
 	public HeritageDataWrapper(Context context)
 	{
 		super(context, DB_NAME, null, DB_VERSION);
-		this.context = context;
 		this.db = getWritableDatabase();
+	}
+	
+	public void insert(Item item)
+	{
+		ContentValues row = new ContentValues();;
+		
+		//insert values of the item instance
+		try
+		{
+			Field[] fields = item.getClass().getDeclaredFields();
+			for(Field field : fields)
+			{
+				String fname = field.getName();
+				String value = (String) field.get(item);
+				if(value == null) value = "";
+				
+				row.put(fname, value);
+			}
+		}catch (Exception e) {
+			Log.e(tag, "error in building insert sql string with " + item.getCrltsNm());
+		}
+		db.insert(TABLE_NAME, null, row);
+		Log.d(tag, "Success to insert " +item.getCrltsNm());
+		
+		return;
 	}
 	
 	
