@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 
 public class HerimarqueActivity extends Activity {
     /** Called when the activity is first created. */
@@ -19,6 +18,9 @@ public class HerimarqueActivity extends Activity {
         findViewById(R.id.create).setOnClickListener(selector);
         findViewById(R.id.show).setOnClickListener(selector);
         findViewById(R.id.config).setOnClickListener(selector);
+        
+        /** set up db **/
+        HeritageDataWrapper hdw = new HeritageDataWrapper(HerimarqueActivity.this);
     }
     
     OnClickListener selector = new OnClickListener() {

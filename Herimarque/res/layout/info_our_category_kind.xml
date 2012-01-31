@@ -13,12 +13,13 @@
         android:gravity="center"
         android:background="#F9A600"
         android:text="@string/info_kind" />
+    
     <GridView
         android:id="@+id/info_our_category_kind_grid"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/info_back"
-        android:columnWidth="100dp"
+        android:columnWidth="80dp"
         android:horizontalSpacing="5dp"
         android:numColumns="auto_fit"
         android:padding="10dp"
