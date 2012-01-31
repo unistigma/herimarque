@@ -3,6 +3,7 @@ package net.julnamoo.swm.herimarque;
 import net.julnamoo.R;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ public class InfoOurHeritageListKindFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.i(tag, "onCreate");
 	}
 	
 	@Override

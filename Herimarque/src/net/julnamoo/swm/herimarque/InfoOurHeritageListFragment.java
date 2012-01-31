@@ -13,7 +13,11 @@ public class InfoOurHeritageListFragment extends ListFragment {
 
 	private String tag = InfoOurHeritageListFragment.class.getSimpleName();
 	
-	public void onCreate(android.os.Bundle savedInstanceState) {};
+	public void onCreate(android.os.Bundle savedInstanceState) 
+	{
+		super.onCreate(savedInstanceState);
+		Log.i(tag, "onCreate listfragment");
+	};
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
