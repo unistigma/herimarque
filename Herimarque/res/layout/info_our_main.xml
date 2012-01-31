@@ -37,17 +37,17 @@
             android:id="@+id/info_our_list"
             layout="@layout/info_our_list" />
 
-        <fragment
-            android:id="@+id/info_our_category"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            class="net.julnamoo.swm.herimarque.InfoOurHeritageListFragment" />
-
-        <!--
-             <include
+        <include
             android:id="@+id/info_our_category"
             layout="@layout/info_our_category" />
-        -->
+        
+        <include 
+            android:id="@+id/info_our_category_kind"
+            layout="@layout/info_our_category_kind"/>
+        
+        <include 
+            android:id="@+id/info_our_category_age"
+            layout="@layout/info_our_category_age"/>
     </FrameLayout>
 
 </LinearLayout>

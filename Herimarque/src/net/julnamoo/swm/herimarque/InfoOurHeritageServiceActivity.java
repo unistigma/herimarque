@@ -9,7 +9,11 @@ import android.widget.Toast;
 
 public class InfoOurHeritageServiceActivity extends Activity {
 
+	//search menu view
 	View category, list;
+	
+	//category search view
+	View kindList, ageList, areaList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -20,10 +24,18 @@ public class InfoOurHeritageServiceActivity extends Activity {
 		list = (View) findViewById(R.id.info_our_list);
 		category = (View) findViewById(R.id.info_our_category);
 		
-		//connect views to buttons
+		//set sub layout for sub search services
+		kindList = (View) findViewById(R.id.info_our_category_kind);
+		ageList = (View) findViewById(R.id.info_our_category_age);
+		
+		
+		/** connect views to buttons **/
+		//for main search
 		findViewById(R.id.butt_info_our_list).setOnClickListener(flipper);
 		findViewById(R.id.butt_info_our_category).setOnClickListener(flipper);
 		changeView(0);
+		//for category search
+		
 		
 		//click listener for category search buttons
 		findViewById(R.id.butt_info_our_kind).setOnClickListener(categoryStarter);

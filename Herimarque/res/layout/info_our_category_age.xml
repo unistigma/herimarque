@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/info_back"
+    android:paddingTop="10dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/butt_info_our_age_prehistoric_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_prehistoric_age" />
+
+        <Button
+            android:id="@+id/butt_info_our_age_stone_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_stone_age" />
+
+        <Button
+            android:id="@+id/butt_info_our_age_bronze_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_bronze_age" />
+
+        <Button
+            android:id="@+id/butt_info_our_age_iron_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_iron_age" />
+
+        <Button
+            android:id="@+id/butt_info_our_age_three_hans"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_three_hans" />
+        
+        <Button
+            android:id="@+id/butt_info_our_age_three_countries"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_three_countries" />
+        
+        <Button 
+            android:id="@+id/butt_info_our_age_goguryeo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_goguryeo"/>
+        
+        <Button 
+            android:id="@+id/butt_info_our_age_baekje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_baekje"/>
+        
+        <Button 
+            android:id="@+id/butt_info_our_age_silla"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_silla"/>
+        
+        <Button 
+            android:id="@+id/butt_info_our_age_gaya"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_gaya"/>
+        
+        <Button 
+            android:id="@+id/butt_info_our_age_balhae"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_balhae"/>
+        
+        <Button 
+            android:id="@+id/butt_info_our_age_chosun"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_chosun"/>
+        
+        <Button 
+            android:id="@+id/butt_info_our_age_daehan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_daehan"/>
+        
+        <Button 
+            android:id="@+id/butt_info_our_age_japanese_colonial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_japanese_colonial"/>
+    </LinearLayout>
+</ScrollView>
