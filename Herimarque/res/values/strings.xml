@@ -46,8 +46,22 @@
     <string name="age_daehan">대한제국</string>
     <string name="age_japanese_colonial">일제강점기</string>
     <string name="area_seoul">서울</string>
-    <string name="area_busan">부산</string>
-    
+    <string name="area_bs">부산</string>
+    <string name="area_dg">대구</string>
+    <string name="area_ich">인천</string>
+    <string name="area_gj">광주</string>
+    <string name="area_dj">대전</string>
+    <string name="area_ulsan">울산</string>
+    <string name="area_gg">경기</string>
+    <string name="area_gw">강원</string>
+    <string name="area_chb">충북</string>
+    <string name="area_chn">충남</string>
+    <string name="area_jb">전북</string>
+    <string name="area_jn">전남</string>
+    <string name="area_kb">경북</string>
+    <string name="area_kn">경남</string>
+    <string name="area_jj">제주</string>
+    <string name="area_etc">기타</string>
     
     <!-- For create Service -->
     <string name="create">나만의 문화유산 만들기</string>

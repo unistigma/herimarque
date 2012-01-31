@@ -48,6 +48,10 @@
         <include 
             android:id="@+id/info_our_category_age"
             layout="@layout/info_our_category_age"/>
+        
+        <include 
+            android:id="@+id/info_our_category_area"
+            layout="@layout/info_our_category_area"/>
     </FrameLayout>
 
 </LinearLayout>
