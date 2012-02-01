@@ -4,6 +4,7 @@ import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.adapter.InfoOurListAdapter;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -57,11 +58,13 @@ public class InfoOurHeritageListActivity extends Activity {
 			cursor.moveToFirst();
 			cursor.move(arg2);
 			
-			
 			String temp = cursor.getString(cursor.getColumnIndex("crltsNm"));
 			TwoLineListItem tv = (TwoLineListItem)arg1;
 			Toast.makeText(InfoOurHeritageListActivity.this, tv.getText2().getText() + ", "+temp+" 항목 선택", Toast.LENGTH_SHORT).show();
 			
+			//connect the tuple to item and pass it with intent
+			Intent intent = new Intent(InfoOurHeritageListActivity.this, InfoDetailHeritage.class);
+			//how about using preference?
 		}
 	};
 	

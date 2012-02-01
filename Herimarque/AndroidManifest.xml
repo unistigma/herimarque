@@ -49,6 +49,12 @@
             
         </activity>
         
+        <activity 
+            android:name=".swm.herimarque.InfoDetailHeritage"
+            android:screenOrientation="portrait">
+            
+        </activity>
+        
         <!-- config -->
         <activity 
             android:name=".swm.herimarque.ConfigFacebookLoginActivity"

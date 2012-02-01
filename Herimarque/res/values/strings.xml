@@ -6,6 +6,12 @@
     <string name="app_name">Herimarque</string>
     <string name="company">Incredieble</string>
     
+    <!-- For Test -->
+    <string name="info_detail_name">name</string>
+    <string name="info_detail_code">code</string>
+    <string name="info_detail_age">age</string>
+    <string name="info_detail_area">area</string>
+    
     <!-- For info service -->
     <string name="information">우리의 문화유산</string>
     <string name="info_short">정보</string>
@@ -62,6 +68,9 @@
     <string name="area_kn">경남</string>
     <string name="area_jj">제주</string>
     <string name="area_etc">기타</string>
+    <string name="info_detail_location">문화재 위치 보기</string>
+    <string name="info_detail_near">주변 문화재</string>
+    <string name="info_detail_sns">공유하기</string>
     
     <!-- For create Service -->
     <string name="create">나만의 문화유산 만들기</string>
