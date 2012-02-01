@@ -22,4 +22,8 @@ public class Constants {
 		"ctrdCd", "ctrdNm", "ageCd", "imageUrl", "imageYn", "listImageUrl",
 		"itemCd", "itemNm", "signguCd", "signguNm", "XCnts", "YCnts"
 	};
+	
+	public static final String DB_NAME = "herimarque.db";
+	public static final int DB_VERSION = 1;
+	public static final String TABLE_NAME = "heritage";
 }

@@ -1,5 +1,6 @@
 package net.julnamoo.swm.herimarque.db;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +18,11 @@ public class HeritageDataConnector extends SQLiteOpenHelper {
 
 	private static final String tag = HeritageDataConnector.class.getSimpleName();
 	
-	private static final String DB_NAME = "herimarque.db";
-	private static final int DB_VERSION = 1;
-	private static final String TABLE_NAME = "heritage";
-	
 	private SQLiteDatabase db;
 	
 	public HeritageDataConnector(Context context)
 	{
-		super(context, DB_NAME, null, DB_VERSION);
+		super(context, Constants.DB_NAME, null, Constants.DB_VERSION);
 		this.db = getWritableDatabase();
 	}
 	
@@ -37,19 +34,26 @@ public class HeritageDataConnector extends SQLiteOpenHelper {
 		try
 		{
 			Field[] fields = item.getClass().getDeclaredFields();
+			Log.d(tag, "Total " + fields.length + " fields");
 			for(Field field : fields)
 			{
+				field.setAccessible(true);
+				
 				String fname = field.getName();
 				String value = (String) field.get(item);
-				if(value == null) value = "";
+				if(value == null || value.equals("null")) value = "default";
+				value.replace('\n', ' ');
 				
+				Log.d(fname, value);
 				row.put(fname, value);
 			}
+			
+			db.insert(Constants.TABLE_NAME, null, row);
+			Log.d(tag, "Success to insert " +item.getCrltsNm());
 		}catch (Exception e) {
-			Log.e(tag, "error in building insert sql string with " + item.getCrltsNm());
+			Log.e(tag, e.getLocalizedMessage());
+			e.printStackTrace();
 		}
-		db.insert(TABLE_NAME, null, row);
-		Log.d(tag, "Success to insert " +item.getCrltsNm());
 		
 		return;
 	}
@@ -63,7 +67,7 @@ public class HeritageDataConnector extends SQLiteOpenHelper {
 		List<Item> result = new ArrayList<Item>();
 		
 		//build select query
-		StringBuilder sb = new StringBuilder("SELECT * FROM ").append(DB_NAME);
+		StringBuilder sb = new StringBuilder("SELECT * FROM ").append(Constants.DB_NAME);
 		sb.append(" WHERE ").append(key).append("= '").append(value).append("';");
 		String sql = sb.toString();
 		Log.d(tag, "exec run query, " + sql);
@@ -94,13 +98,14 @@ public class HeritageDataConnector extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		
 		StringBuilder sb = new StringBuilder("CREATE TABLE ");
-		sb.append(TABLE_NAME).append(" ");
-		
-		for(String column : Constants.itemFields)
+		sb.append(Constants.TABLE_NAME).append(" (");
+
+		int i = 0;
+		for(i = 0; i < Constants.itemFields.length -1 ; ++i)
 		{
-			sb.append(column).append(" TEXT");
+			sb.append(Constants.itemFields[i]).append(" TEXT, ");
 		}
-		sb.append(");");
+		sb.append(Constants.itemFields[i]).append(" TEXT);");
 		
 		String q = sb.toString();
 		Log.d(tag, "create query:" + q);
