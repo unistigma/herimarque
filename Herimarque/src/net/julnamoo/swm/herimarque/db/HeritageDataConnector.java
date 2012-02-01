@@ -13,9 +13,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class HeritageDataWrapper extends SQLiteOpenHelper {
+public class HeritageDataConnector extends SQLiteOpenHelper {
 
-	private static final String tag = HeritageDataWrapper.class.getSimpleName();
+	private static final String tag = HeritageDataConnector.class.getSimpleName();
 	
 	private static final String DB_NAME = "herimarque.db";
 	private static final int DB_VERSION = 1;
@@ -23,7 +23,7 @@ public class HeritageDataWrapper extends SQLiteOpenHelper {
 	
 	private SQLiteDatabase db;
 	
-	public HeritageDataWrapper(Context context)
+	public HeritageDataConnector(Context context)
 	{
 		super(context, DB_NAME, null, DB_VERSION);
 		this.db = getWritableDatabase();

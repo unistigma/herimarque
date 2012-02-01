@@ -1,7 +1,7 @@
 package net.julnamoo.swm.herimarque;
 
 import net.julnamoo.R;
-import net.julnamoo.swm.herimarque.db.HeritageDataWrapper;
+import net.julnamoo.swm.herimarque.db.HeritageDataConnector;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ public class HerimarqueActivity extends Activity {
         findViewById(R.id.config).setOnClickListener(selector);
         
         /** set up db **/
-        HeritageDataWrapper hdw = new HeritageDataWrapper(HerimarqueActivity.this);
+        HeritageDataConnector hdw = new HeritageDataConnector(HerimarqueActivity.this);
     }
     
     OnClickListener selector = new OnClickListener() {
