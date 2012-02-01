@@ -1,22 +1,14 @@
 package net.julnamoo.swm.herimarque.db;
 
 import java.io.BufferedReader;
-import java.io.CharArrayWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.nio.CharBuffer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
+import net.julnamoo.swm.herimarque.Constants;
 import net.julnamoo.swm.herimarque.model.Item;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -49,20 +41,14 @@ public class HeritageDataFromJSON implements Runnable{
 	@Override
 	public void run()
 	{
-		HeritageDataConnector dbCon = new HeritageDataConnector(mContext);
+		Log.i(tag, "Create the new table");
+		HeritageDataSource dataSource = new HeritageDataSource(mContext);
+		dataSource.open();
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		
 		try 
 		{
-//			StringBuffer sb = new StringBuffer();
-//			byte[] buffer = new byte[2048];
-//			int offset = 0;
-//			while((offset = is.read(buffer)) > 0)
-//			{
-//				String s = new String(buffer);
-//				Log.d(tag, "append " + s);
-//				sb.append(s);
-//			}
 			StringBuffer sb = new StringBuffer();
 			String line = br.readLine();
 			while(line != null)
@@ -73,7 +59,6 @@ public class HeritageDataFromJSON implements Runnable{
 			
 			is.close();
 			String string = sb.toString();
-			Log.d(tag, "read json, " + string);
 			JsonParser jsonparser = new JsonParser();
 			JsonArray jsonArray = jsonparser.parse(string).getAsJsonArray();
 			
@@ -82,15 +67,30 @@ public class HeritageDataFromJSON implements Runnable{
 			{
 				Item item = gson.fromJson(je, Item.class);
 				Log.d(tag, "insert " + item.getCrltsNm());
-				dbCon.insert(item);
+				dataSource.insert(item);
 			}
-		} catch (IOException e) 
+		} catch (Exception e) 
 		{
-//			e.printStackTrace();
+			e.printStackTrace();
 			Log.e(tag, "Fail to init db");
-		}
-		dbCon.close();
+		} 
+		dataSource.close();
+		
+		Log.d(tag, "Finish to import");
 	}
 	
+	private boolean isTableExist()
+	{
+		boolean exist;
+		HeritageSQLiteHelper sqlHelper = new HeritageSQLiteHelper(mContext);
+		SQLiteDatabase db = sqlHelper.getReadableDatabase();
+		Cursor cursor = db.rawQuery("SELECT tbl_name FROM sqlite_master WHERE tbl_name='"+Constants.TABLE_NAME+"';", null);
+		
+		exist = cursor != null && cursor.getCount() > 0 ? true : false;
+		cursor.close();
+		db.close();
+		sqlHelper.close();
+		return exist;
+	}
 }
 	

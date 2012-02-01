@@ -13,11 +13,24 @@ public class Constants {
 	}; 
 
 	public static String[] kindImgsCD = {
-		"국보", "보물", "사적", "명승", "천연기념물", "무형문화재", "민속문화재", "등록문화재",
-		"시도 유형문화재", "시도 무형문화재", "시도 기념물", "시도 민속문화재", "문화재 자료"
+		"국보", "보물", "사적", "명승", "천연기념물", "중요 무형문화재", "중요 민속자료", "등록문화재",
+		"시도 유형문화재", "시도 무형문화재", "시도 기념물", "시도 민속자료", "문화재 자료"
+	};
+	
+	//code 14 is the exception with 사적 & 명승
+	public static String[] kindCode = {
+		"11", "12", "13", "15", "16", "17", "18", "79",
+		"21", "22", "23", "24", "31"
 	};
 
 	public static String[] itemFields = {
+		"crltsDc", "crltsNm", "crltsNmChcrt", "crltsNo", "crltsNoNm",
+		"ctrdCd", "ctrdNm", "ageCd", "imageUrl", "imageYn", "listImageUrl",
+		"itemCd", "itemNm", "signguCd", "signguNm", "XCnts", "YCnts"
+	};
+	
+	public static String[] columns = {
+		"_id",
 		"crltsDc", "crltsNm", "crltsNmChcrt", "crltsNo", "crltsNoNm",
 		"ctrdCd", "ctrdNm", "ageCd", "imageUrl", "imageYn", "listImageUrl",
 		"itemCd", "itemNm", "signguCd", "signguNm", "XCnts", "YCnts"

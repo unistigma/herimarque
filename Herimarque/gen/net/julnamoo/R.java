@@ -94,24 +94,24 @@ public final class R {
         public static final int butt_info_our_age_three_countries=0x7f050017;
         public static final int butt_info_our_age_three_hans=0x7f050016;
         public static final int butt_info_our_area=0x7f050011;
-        public static final int butt_info_our_category=0x7f050036;
+        public static final int butt_info_our_category=0x7f050038;
         public static final int butt_info_our_kind=0x7f05000f;
-        public static final int butt_info_our_list=0x7f050035;
+        public static final int butt_info_our_list=0x7f050037;
         public static final int butt_info_ourheritage=0x7f05000d;
         public static final int butt_mylocation=0x7f05000a;
-        public static final int config=0x7f05003f;
-        public static final int configButt=0x7f050044;
-        public static final int container1=0x7f05003a;
-        public static final int container2=0x7f05003d;
-        public static final int create=0x7f05003c;
-        public static final int createButt=0x7f050042;
+        public static final int config=0x7f050041;
+        public static final int configButt=0x7f050046;
+        public static final int container1=0x7f05003c;
+        public static final int container2=0x7f05003f;
+        public static final int create=0x7f05003e;
+        public static final int createButt=0x7f050044;
         public static final int create_etxt_name=0x7f050006;
         public static final int create_map_mylocation=0x7f050009;
         public static final int create_txt_name=0x7f050008;
-        public static final int gmenu=0x7f050040;
-        public static final int info=0x7f05003b;
-        public static final int infoButt=0x7f050041;
-        public static final int info_our_category=0x7f050038;
+        public static final int gmenu=0x7f050042;
+        public static final int info=0x7f05003d;
+        public static final int infoButt=0x7f050043;
+        public static final int info_our_category=0x7f05003a;
         public static final int info_our_category_area_bs=0x7f050021;
         public static final int info_our_category_area_chb=0x7f050029;
         public static final int info_our_category_area_chn=0x7f05002a;
@@ -131,14 +131,16 @@ public final class R {
         public static final int info_our_category_area_ulsan=0x7f050026;
         public static final int info_our_category_kind_grid=0x7f050032;
         public static final int info_our_kind_bar=0x7f050031;
-        public static final int info_our_list=0x7f050037;
+        public static final int info_our_list=0x7f050039;
+        public static final int info_our_list_bar=0x7f050034;
         public static final int info_our_list_grid=0x7f050033;
-        public static final int info_our_menu=0x7f050034;
+        public static final int info_our_list_view=0x7f050035;
+        public static final int info_our_menu=0x7f050036;
         public static final int layout_create_infoin=0x7f050005;
         public static final int layout_create_main=0x7f050003;
-        public static final int maincontainer=0x7f050039;
-        public static final int show=0x7f05003e;
-        public static final int showButt=0x7f050043;
+        public static final int maincontainer=0x7f05003b;
+        public static final int show=0x7f050040;
+        public static final int showButt=0x7f050045;
     }
     public static final class layout {
         public static final int config_main=0x7f030000;
@@ -149,11 +151,12 @@ public final class R {
         public static final int info_our_category_age=0x7f030005;
         public static final int info_our_category_area=0x7f030006;
         public static final int info_our_category_kind=0x7f030007;
-        public static final int info_our_list=0x7f030008;
-        public static final int info_our_main=0x7f030009;
-        public static final int main=0x7f03000a;
-        public static final int show_main=0x7f03000b;
-        public static final int submain=0x7f03000c;
+        public static final int info_our_list_main=0x7f030008;
+        public static final int info_our_list_service=0x7f030009;
+        public static final int info_our_main=0x7f03000a;
+        public static final int main=0x7f03000b;
+        public static final int show_main=0x7f03000c;
+        public static final int submain=0x7f03000d;
     }
     public static final class string {
         public static final int age_baekje=0x7f040020;

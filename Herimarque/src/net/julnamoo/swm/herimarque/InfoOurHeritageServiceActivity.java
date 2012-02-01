@@ -123,9 +123,12 @@ public class InfoOurHeritageServiceActivity extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
 		{
-			Toast.makeText(InfoOurHeritageServiceActivity.this, arg1.getId() + "선택", Toast.LENGTH_SHORT).show();
+			Toast.makeText(InfoOurHeritageServiceActivity.this, arg2 + "선택", Toast.LENGTH_SHORT).show();
 			
 			//start the activity with the request code of selected index
+			Intent intent = new Intent(InfoOurHeritageServiceActivity.this, InfoOurHeritageListActivity.class);
+			intent.putExtra("select", arg2);
+			startActivity(intent);
 		}
 	};
 

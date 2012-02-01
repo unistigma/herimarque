@@ -129,4 +129,9 @@ public class Item {
 	public void setYCnts(String yCnts) {
 		YCnts = yCnts;
 	}
+	
+	@Override
+	public String toString() {
+		return crltsNm;
+	}
 }

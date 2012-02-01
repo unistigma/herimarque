@@ -2,6 +2,7 @@ package net.julnamoo.swm.herimarque.adapter;
 
 import net.julnamoo.swm.herimarque.Constants;
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 public class KindImageAdapter extends BaseAdapter {
 
+	final private String tag = KindImageAdapter.class.getSimpleName();
+	
 	private Context mContext;
 
 	public KindImageAdapter(Context c)

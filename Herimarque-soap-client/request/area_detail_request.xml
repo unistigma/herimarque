@@ -2,8 +2,8 @@
    <soapenv:Header>
       <head:ComMsgHeader>
          <RequestMsgID>netinamu42</RequestMsgID>
-         <!-- <ServiceKey>6i1zuQWddVTMFSqlHyhnbw8VL7uvfuHHt3Pth12H3VuFrUvdzFRcfYBZRfTE0Eidf/hV3otAz36MR1F/VDWUDw==</ServiceKey> -->
-         <ServiceKey>r4kz8tI1CNlZ/CnyNqeS/qjFaWpwFfjbj+DlBFL7t5/aYDO5N63Ec748ICA0FQJ2dAzgWtY49qqNrgNF+dvubw==</ServiceKey>
+         <ServiceKey>6i1zuQWddVTMFSqlHyhnbw8VL7uvfuHHt3Pth12H3VuFrUvdzFRcfYBZRfTE0Eidf/hV3otAz36MR1F/VDWUDw==</ServiceKey>
+         <!-- <ServiceKey>r4kz8tI1CNlZ/CnyNqeS/qjFaWpwFfjbj+DlBFL7t5/aYDO5N63Ec748ICA0FQJ2dAzgWtY49qqNrgNF+dvubw==</ServiceKey> -->
       </head:ComMsgHeader>
    </soapenv:Header>
    <soapenv:Body>
