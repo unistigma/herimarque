@@ -1,17 +1,26 @@
 package net.julnamoo.swm.herimarque;
 
 import net.julnamoo.R;
+import net.julnamoo.swm.herimarque.adapter.InfoOurListAdapter;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.TwoLineListItem;
 
 public class InfoOurHeritageListActivity extends Activity {
 
 	private String tag = InfoOurHeritageListActivity.class.getSimpleName();
+	Cursor cursor;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -19,35 +28,41 @@ public class InfoOurHeritageListActivity extends Activity {
 		setContentView(R.layout.info_our_list_service);
 
 		int select = getIntent().getIntExtra("select", 0);
+		TextView bar = (TextView) findViewById(R.id.info_our_list_bar);
+		bar.setText(Constants.kindImgsCD[select]);
 		
 		SQLiteDatabase db = new HeritageSQLiteHelper(InfoOurHeritageListActivity.this).getReadableDatabase();
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM ").append(Constants.TABLE_NAME);
 		sb.append(" WHERE ").append("itemCd").append("='").append(Constants.kindCode[select]).append("';");
 		String sql = sb.toString();
-		Cursor cursor = db.rawQuery(sql, null);
+		cursor = db.rawQuery(sql, null);
 		startManagingCursor(cursor);
 		
-		String[] cols = { Constants.itemFields[1], Constants.itemFields[4]}; //crltsNm, itemNm, crltsNoNm
+		String[] cols = { Constants.itemFields[1], Constants.itemFields[4]}; //crltsNm, crltsNoNm
 		int[] to = {android.R.id.text1, android.R.id.text2};
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(InfoOurHeritageListActivity.this, android.R.layout.simple_list_item_1, cursor, cols, to);
+		InfoOurListAdapter adapter = new InfoOurListAdapter(InfoOurHeritageListActivity.this, android.R.layout.simple_list_item_2, cursor, cols, to);
+		
 		ListView list = (ListView) findViewById(R.id.info_our_list_view);
 		list.setAdapter(adapter);
+		list.setOnItemClickListener(listListener);
 		
 		db.close();
-		
-//		HeritageDataSource db = new HeritageDataSource(InfoOurHeritageListActivity.this);
-//
-//		Log.i(tag, "List of " + Constants.kindCode[select]);
-//		List<Item> result = db.select("itemCd", Constants.kindCode[select]);
-//		List<String> nList = new ArrayList<String>();
-//		for(Item i : result)
-//		{
-//			nList.add(i.getCrltsNm());
-//		}
-//		
-//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(InfoOurHeritageListActivity.this, android.R.layout.simple_list_item_1, nList);
-//		
 	}
+	
+	OnItemClickListener listListener = new OnItemClickListener() 
+	{
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			cursor.moveToFirst();
+			cursor.move(arg2);
+			
+			
+			String temp = cursor.getString(cursor.getColumnIndex("crltsNm"));
+			TwoLineListItem tv = (TwoLineListItem)arg1;
+			Toast.makeText(InfoOurHeritageListActivity.this, tv.getText2().getText() + ", "+temp+" 항목 선택", Toast.LENGTH_SHORT).show();
+			
+		}
+	};
 	
 }
