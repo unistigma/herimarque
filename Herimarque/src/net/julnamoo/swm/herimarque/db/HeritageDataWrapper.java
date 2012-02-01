@@ -1,10 +1,14 @@
-package net.julnamoo.swm.herimarque;
+package net.julnamoo.swm.herimarque.db;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
+import net.julnamoo.swm.herimarque.Constants;
 import net.julnamoo.swm.herimarque.model.Item;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -49,7 +53,42 @@ public class HeritageDataWrapper extends SQLiteOpenHelper {
 		
 		return;
 	}
-	
+
+	/*
+	 * Return Heritage object from a sqlite satisfying param.
+	 * It retrieves all fields of the table for creating a instance.
+	 */
+	public List<Item> select(String key, String value)
+	{
+		List<Item> result = new ArrayList<Item>();
+		
+		//build select query
+		StringBuilder sb = new StringBuilder("SELECT * FROM ").append(DB_NAME);
+		sb.append(" WHERE ").append(key).append("= '").append(value).append("';");
+		String sql = sb.toString();
+		Log.d(tag, "exec run query, " + sql);
+		Cursor cursor = db.rawQuery(sql, null);
+		while(cursor.moveToNext())
+		{
+			Item item = new Item();
+			for(int i =0 ; i < Constants.itemFields.length; ++i)
+			{
+				String val = cursor.getString(i);
+				try 
+				{
+					//set value of the field with reflection API
+					Item.class.getField(Constants.itemFields[i]).set(item, value);
+				} catch (Exception e) {
+//					e.printStackTrace();
+					Log.e(tag, e.getMessage(), e.getCause());
+				}
+				
+				result.add(item);
+			}
+		}
+		
+		return result;
+	}
 	
 	@Override
 	public void onCreate(SQLiteDatabase db) {

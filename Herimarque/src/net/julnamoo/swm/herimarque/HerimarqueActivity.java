@@ -1,6 +1,7 @@
 package net.julnamoo.swm.herimarque;
 
 import net.julnamoo.R;
+import net.julnamoo.swm.herimarque.db.HeritageDataWrapper;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
