@@ -23,7 +23,6 @@ public class HerimarqueActivity extends Activity {
         findViewById(R.id.config).setOnClickListener(selector);
         
         /** set up db **/
-//        HeritageDataFromJSON insert = new HeritageDataFromJSON("ageList_ver_1.json", HerimarqueActivity.this);
         HeritageDataFromJSON insert;
 		try {
 			insert = new HeritageDataFromJSON(getAssets().open("ageList_ver_1.json"), HerimarqueActivity.this);

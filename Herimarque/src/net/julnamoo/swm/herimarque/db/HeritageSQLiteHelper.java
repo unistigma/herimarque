@@ -20,19 +20,9 @@ public class HeritageSQLiteHelper extends SQLiteOpenHelper{
 	@Override
 	public void onCreate(SQLiteDatabase db) 
 	{
-		Cursor cursor = db.rawQuery("SELECT tbl_name FROM sqlite_master WHERE tbl_name='"+Constants.TABLE_NAME+"';", null);
-		
-		if(cursor != null && cursor.getCount() > 0)
-		{
-			cursor.close();
-			db.close();
-			
-			return;
-		}
-		
-		Log.i(tag, "Initial DB");
+		Log.i(tag, "onCreate");
 		StringBuilder sb = new StringBuilder();
-		sb.append("CREATE TABLE ").append(Constants.TABLE_NAME);
+		sb.append("CREATE TABLE IF NOT EXISTS ").append(Constants.TABLE_NAME);
 		sb.append("( _id INTEGER PRIMARY KEY AUTOINCREMENT ");
 		int i = 0;
 		for(i = 0; i < Constants.itemFields.length; ++i)

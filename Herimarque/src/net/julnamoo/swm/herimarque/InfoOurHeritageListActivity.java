@@ -1,7 +1,6 @@
 package net.julnamoo.swm.herimarque;
 
 import net.julnamoo.R;
-import net.julnamoo.swm.herimarque.adapter.KindImageAdapter;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
 import android.app.Activity;
 import android.database.Cursor;

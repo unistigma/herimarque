@@ -41,6 +41,8 @@ public class HeritageDataFromJSON implements Runnable{
 	@Override
 	public void run()
 	{
+		if(isTableExist()) return;
+		
 		Log.i(tag, "Create the new table");
 		HeritageDataSource dataSource = new HeritageDataSource(mContext);
 		dataSource.open();
@@ -84,9 +86,16 @@ public class HeritageDataFromJSON implements Runnable{
 		boolean exist;
 		HeritageSQLiteHelper sqlHelper = new HeritageSQLiteHelper(mContext);
 		SQLiteDatabase db = sqlHelper.getReadableDatabase();
-		Cursor cursor = db.rawQuery("SELECT tbl_name FROM sqlite_master WHERE tbl_name='"+Constants.TABLE_NAME+"';", null);
 		
-		exist = cursor != null && cursor.getCount() > 0 ? true : false;
+		//this is always true because called after calling onCreate in HeritageSQLHelper
+//		Cursor cursor = db.rawQuery("SELECT COUNT() FROM sqlite_master WHERE name ='" + Constants.TABLE_NAME+"';", null);
+		
+		Cursor cursor = db.rawQuery("SELECT * FROM " + Constants.TABLE_NAME, null);
+		Log.d(tag, "current tuple size : " + cursor.getCount()); 
+		//It needs sufficient test logic whether data is there.
+		exist = cursor != null && cursor.getCount() > 10 ? true : false;
+		
+		Log.d(tag, "table exist test : " + exist);
 		cursor.close();
 		db.close();
 		sqlHelper.close();
