@@ -146,6 +146,7 @@ public final class R {
         public static final int layout_create_infoin=0x7f050005;
         public static final int layout_create_main=0x7f050003;
         public static final int maincontainer=0x7f050042;
+        public static final int menu_main=0x7f05004e;
         public static final int show=0x7f050047;
         public static final int showButt=0x7f05004b;
     }

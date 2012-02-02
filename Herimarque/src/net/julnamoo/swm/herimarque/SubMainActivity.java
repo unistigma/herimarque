@@ -48,12 +48,15 @@ public class SubMainActivity extends FragmentActivity {
 				changeView(0);
 				break;
 			case R.id.createButt:
+				Log.d(tag, "create pushed");
 				changeView(1);
 				break;
 			case R.id.showButt:
+				Log.d(tag, "show pushed"); 
 				changeView(2);
 				break;
-			case R.id.configButt: 
+			case R.id.configButt:
+				Log.d(tag, "config pushed");
 				changeView(3);
 				break;
 			default:
@@ -93,46 +96,4 @@ public class SubMainActivity extends FragmentActivity {
 		
 		transaction.commit();
 	}
-
-	/** Info **/
-//	public OnClickListener startOurHeritage = new OnClickListener() {
-//		
-//		@Override
-//		public void onClick(View v) {
-//			Intent intent = new Intent(SubMainActivity.this, InfoOurHeritageServiceActivity.class);
-//			startActivity(intent);
-//		}
-//	};
-//	
-//	public OnClickListener startNearHeritage = new OnClickListener() {
-//		
-//		@Override
-//		public void onClick(View v) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//	};
-//	
-//	/** Create **/
-//	public OnClickListener startCreateService = new OnClickListener() {
-//
-//		@Override
-//		public void onClick(View v) {
-//
-//			String name = findViewById(R.id.create_etxt_name).toString();
-//
-//			Intent intent = new Intent(SubMainActivity.this, CreateServiceStarterActivity.class);
-//			startActivity(intent);
-//		}
-//	};
-//	
-//	/** Config **/
-//	public OnClickListener fbLogin = new OnClickListener() {
-//		
-//		@Override
-//		public void onClick(View v) {
-//			Intent intent = new Intent(SubMainActivity.this, ConfigFacebookLoginActivity.class);
-//			startActivity(intent);
-//		}
-//	};
 }

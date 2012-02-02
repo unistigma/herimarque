@@ -12,6 +12,6 @@ public class ConfigMainFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.create_main, container, false);
+		return inflater.inflate(R.layout.config_main, container, false);
 	}
 }
