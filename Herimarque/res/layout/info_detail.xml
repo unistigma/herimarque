@@ -1,119 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/info_detail"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/info_back"
-    android:orientation="vertical" >
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="none" >
 
     <LinearLayout
+        android:id="@+id/info_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:background="#FFCC00"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="5dip" >
 
-        <Button
-            android:id="@+id/info_detail_location"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        <TextView
+            android:id="@+id/info_detail_name_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="3dip"
-            android:layout_weight="1"
-            android:background="#FFEB9E"
+            android:background="#FFCC00"
+            android:gravity="center"
             android:padding="5dip"
-            android:text="@string/info_detail_location"
-            android:textSize="20dip" />
-
-        <Button
-            android:id="@+id/info_detail_near"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="3dip"
-            android:layout_weight="1"
-            android:background="#FFEB9E"
-            android:padding="5dip"
-            android:text="@string/info_detail_near"
-            android:textSize="20dip" />
-
-        <Button
-            android:id="@+id/info_detail_sns"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="3dip"
-            android:layout_weight="1"
-            android:background="#FFEB9E"
-            android:padding="5dip"
-            android:text="@string/info_detail_sns"
-            android:textSize="20dip" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFBDB"
-        android:orientation="horizontal" >
+            android:text="@string/info_our_list"
+            android:textSize="25dip" />
 
         <ImageView
             android:id="@+id/info_detail_img"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="3dip"
-            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="250dip"
             android:background="#FFCE84"
             android:contentDescription="@string/hello"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_launcher" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical" >
+        <TextView
+            android:id="@+id/info_detail_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dip"
+            android:background="#FFF8EF"
+            android:gravity="center"
+            android:padding="5dip"
+            android:text="@string/info_our_list"
+            android:textSize="15dip" />
 
-            <TextView
-                android:id="@+id/info_detail_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dip"
-                android:layout_margin="3dip"
-                android:background="#FFCE84"
-                android:text="@string/info_detail_name" />
+        <TextView
+            android:id="@+id/info_detail_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dip"
+            android:background="#FFF8EF"
+            android:gravity="center"
+            android:padding="5dip"
+            android:text="@string/info_our_list"
+            android:textSize="15dip" />
 
-            <TextView
-                android:id="@+id/info_detail_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dip"
-                android:layout_margin="3dip"
-                android:background="#FFCE84"
-                android:text="@string/info_detail_code" />
+        <TextView
+            android:id="@+id/info_detail_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dip"
+            android:background="#FFF8EF"
+            android:gravity="center"
+            android:padding="5dip"
+            android:text="@string/info_our_list"
+            android:textSize="15dip" />
 
-            <TextView
-                android:id="@+id/info_detail_age"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dip"
-                android:layout_margin="3dip"
-                android:background="#FFCE84"
-                android:text="@string/info_detail_age" />
-
-            <TextView
-                android:id="@+id/info_detail_area"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dip"
-                android:layout_margin="3dip"
-                android:background="#FFCE84"
-                android:text="@string/info_detail_area" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/info_detail_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dip"
+            android:background="#FFF8EF"
+            android:padding="5dip" />
     </LinearLayout>
-    
-    <TextView 
-        android:id="@+id/info_detail_desc"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dip"
-        android:background="#FFF8EF" />
 
-</LinearLayout>
+</ScrollView>
