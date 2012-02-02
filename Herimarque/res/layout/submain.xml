@@ -43,85 +43,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <!-- Info activity -->
-        <!-- <include android:id="@+id/info" layout="@layout/info_main"/> -->
-
+        <!-- fragment -->
         <fragment
             android:id="@+id/info"
             android:name="net.julnamoo.swm.herimarque.fragment.InfoMainFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
-        <!-- Create Activity -->
-        <!-- <include android:id="@+id/create" layout="@layout/create_main"/> -->
-<!-- 
-        <fragment
-            android:id="@+id/create"
-            android:name="net.julnamoo.swm.herimarque.fragment.CreateMainFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" /> -->
-
-        <!-- Show Activity -->
-
-    <!--     <LinearLayout
-            android:id="@+id/show"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/showback"
-            android:orientation="vertical"
-            android:visibility="invisible" >
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="showTestButt" />
-        </LinearLayout>
- -->
-        <!-- Config Activity -->
-
-       <!--  <include
-            android:id="@+id/config"
-            layout="@layout/config_main" /> -->
     </FrameLayout>
-
-    <!--
-    <RadioGroup 
-        android:id="@+id/gmenu"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:gravity="center_vertical"
-        android:weightSum="1">
-        
-        <RadioButton 
-            android:id="@+id/infoButt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/info_short"/>
-        
-        <RadioButton 
-            android:id="@+id/createButt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/create_short"/>
-        
-        <RadioButton 
-            android:id="@+id/showButt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/show_short"/>
-        
-        <RadioButton 
-            android:id="@+id/configButt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/config_short"/>
-    </RadioGroup>
-    -->
 
 </LinearLayout>

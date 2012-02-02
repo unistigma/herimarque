@@ -1,8 +1,10 @@
 package net.julnamoo.swm.herimarque;
 
 import net.julnamoo.R;
+import net.julnamoo.swm.herimarque.fragment.ConfigMainFragment;
 import net.julnamoo.swm.herimarque.fragment.CreateMainFragment;
 import net.julnamoo.swm.herimarque.fragment.InfoMainFragment;
+import net.julnamoo.swm.herimarque.fragment.ShowMainFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -50,11 +52,9 @@ public class SubMainActivity extends FragmentActivity {
 				break;
 			case R.id.showButt:
 				changeView(2);
-				Toast.makeText(SubMainActivity.this, "show", Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.configButt: 
 				changeView(3);
-				Toast.makeText(SubMainActivity.this, "config", Toast.LENGTH_SHORT).show();
 				break;
 			default:
 				break;
@@ -78,8 +78,14 @@ public class SubMainActivity extends FragmentActivity {
 			transaction.replace(R.id.fragment_container, cmf);
 			break;
 		case 2:
+			ShowMainFragment smf = new ShowMainFragment();
+			transaction.setTransition(android.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.replace(R.id.fragment_container, smf);
 			break;
 		case 3:
+			ConfigMainFragment cfmf = new ConfigMainFragment();
+			transaction.setTransition(android.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.replace(R.id.fragment_container, cfmf);
 			break;
 		default:
 			break;
@@ -88,7 +94,7 @@ public class SubMainActivity extends FragmentActivity {
 		transaction.commit();
 	}
 
-//	/** Info **/
+	/** Info **/
 //	public OnClickListener startOurHeritage = new OnClickListener() {
 //		
 //		@Override
