@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.julnamoo.swm.herimarque.Constants;
 import net.julnamoo.swm.herimarque.model.Item;
+import net.julnamoo.swm.herimarque.util.CursorToItem;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -62,7 +63,7 @@ public class HeritageDataSource {
 		cursor.moveToFirst();
 		while(!cursor.isAfterLast())
 		{
-			result.add(cursor2Item(cursor));
+			result.add(CursorToItem.cursor2Item(cursor));
 			cursor.moveToNext();
 		}
 		
@@ -85,7 +86,7 @@ public class HeritageDataSource {
 		cursor.moveToFirst();
 		while(!cursor.isAfterLast())
 		{
-			result.add(cursor2Item(cursor));
+			result.add(CursorToItem.cursor2Item(cursor));
 			cursor.moveToNext();
 		}
 		
@@ -94,31 +95,4 @@ public class HeritageDataSource {
 		return result;
 	}
 	
-	private Item cursor2Item(Cursor cursor)
-	{
-		Item item = new Item();
-		Field[] fs = Item.class.getFields();
-
-		for(int i = 0; i < cursor.getColumnCount(); ++i)
-		{
-			for(Field f : fs)
-			{
-				if(f.getName().equals(cursor.getColumnName(i)))
-				{
-					try 
-					{
-						f.set(item, cursor.getString(i));
-					} catch (Exception e) 
-					{
-						Log.e(tag, "Cannot convert");
-						continue;
-					}
-					
-					continue;
-				}
-			}
-		}
-		
-		return item;
-	}
 }

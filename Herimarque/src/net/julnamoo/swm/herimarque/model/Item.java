@@ -1,12 +1,14 @@
 package net.julnamoo.swm.herimarque.model;
 
+import java.io.Serializable;
+
 /**
  * Pojo class for each heritage item
  * 
  * @author Julie_air
  *
  */
-public class Item {
+public class Item implements Serializable{
 
 	//17 fields
 	String crltsDc;
