@@ -46,7 +46,9 @@ public class InfoOurHeritageListActivity extends Activity {
 		SQLiteDatabase db = new HeritageSQLiteHelper(InfoOurHeritageListActivity.this).getReadableDatabase();
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM ").append(Constants.TABLE_NAME);
-		sb.append(" WHERE ").append("itemCd").append("='").append(Constants.kindCode[select]).append("';");
+		sb.append(" WHERE ").append("itemCd").append("='").append(Constants.kindCode[select]).append("' ");
+		sb.append("ORDER BY crltsNo ASC").append(";");
+		
 		String sql = sb.toString();
 		cursor = db.rawQuery(sql, null);
 		Log.i(tag, "Retrieve " + Constants.kindImgsCD[select] + " items, total " + cursor.getCount());
@@ -81,5 +83,5 @@ public class InfoOurHeritageListActivity extends Activity {
 		}
 		
 	};
-	
+
 }

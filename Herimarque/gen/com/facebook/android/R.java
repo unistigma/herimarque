@@ -100,17 +100,17 @@ public final class R {
         public static final int butt_info_ourheritage=0x7f050014;
         public static final int butt_mylocation=0x7f05000a;
         public static final int config=0x7f050048;
-        public static final int configButt=0x7f05004d;
+        public static final int configButt=0x7f05004c;
         public static final int container1=0x7f050043;
         public static final int container2=0x7f050046;
         public static final int create=0x7f050045;
-        public static final int createButt=0x7f05004b;
+        public static final int createButt=0x7f05004a;
         public static final int create_etxt_name=0x7f050006;
         public static final int create_map_mylocation=0x7f050009;
         public static final int create_txt_name=0x7f050008;
-        public static final int gmenu=0x7f050049;
+        public static final int fragment_container=0x7f05004d;
         public static final int info=0x7f050044;
-        public static final int infoButt=0x7f05004a;
+        public static final int infoButt=0x7f050049;
         public static final int info_detail=0x7f05000d;
         public static final int info_detail_age=0x7f050011;
         public static final int info_detail_area=0x7f050012;
@@ -147,7 +147,7 @@ public final class R {
         public static final int layout_create_main=0x7f050003;
         public static final int maincontainer=0x7f050042;
         public static final int show=0x7f050047;
-        public static final int showButt=0x7f05004c;
+        public static final int showButt=0x7f05004b;
     }
     public static final class layout {
         public static final int config_main=0x7f030000;

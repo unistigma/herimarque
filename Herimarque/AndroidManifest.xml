@@ -31,6 +31,16 @@
             android:screenOrientation="portrait" >
         </activity>
         
+        <!-- test -->
+        <activity 
+            android:name=".swm.herimarque.fragment.FragmentTestLayoutActivity"
+            android:screenOrientation="portrait">
+            
+        </activity>
+        <activity 
+            android:name=".swm.herimarque.fragment.DetailsActivity">
+            
+        </activity>
         <!-- Info -->
         <activity 
             android:name=".swm.herimarque.InfoOurHeritageServiceActivity" 
