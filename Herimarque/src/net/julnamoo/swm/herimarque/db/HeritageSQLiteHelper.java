@@ -1,6 +1,6 @@
 package net.julnamoo.swm.herimarque.db;
 
-import net.julnamoo.swm.herimarque.Constants;
+import net.julnamoo.swm.herimarque.util.Constants;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

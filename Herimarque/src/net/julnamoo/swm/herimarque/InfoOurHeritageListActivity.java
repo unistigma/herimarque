@@ -4,6 +4,7 @@ import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.adapter.InfoOurListAdapter;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
 import net.julnamoo.swm.herimarque.model.Item;
+import net.julnamoo.swm.herimarque.util.Constants;
 import net.julnamoo.swm.herimarque.util.CursorToItem;
 import android.app.Activity;
 import android.content.Intent;

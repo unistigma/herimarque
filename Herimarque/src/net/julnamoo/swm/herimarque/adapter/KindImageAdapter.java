@@ -1,6 +1,6 @@
 package net.julnamoo.swm.herimarque.adapter;
 
-import net.julnamoo.swm.herimarque.Constants;
+import net.julnamoo.swm.herimarque.util.Constants;
 import android.content.Context;
 import android.util.Log;
 import android.view.Gravity;

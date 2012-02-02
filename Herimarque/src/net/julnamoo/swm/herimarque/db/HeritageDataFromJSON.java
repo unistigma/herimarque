@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import net.julnamoo.swm.herimarque.Constants;
 import net.julnamoo.swm.herimarque.model.Item;
+import net.julnamoo.swm.herimarque.util.Constants;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

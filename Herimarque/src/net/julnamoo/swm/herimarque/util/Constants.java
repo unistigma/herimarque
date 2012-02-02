@@ -1,4 +1,4 @@
-package net.julnamoo.swm.herimarque;
+package net.julnamoo.swm.herimarque.util;
 
 import net.julnamoo.R;
 

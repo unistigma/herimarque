@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.julnamoo.swm.herimarque.Constants;
 import net.julnamoo.swm.herimarque.model.Item;
+import net.julnamoo.swm.herimarque.util.Constants;
 import net.julnamoo.swm.herimarque.util.CursorToItem;
 import android.content.ContentValues;
 import android.content.Context;
