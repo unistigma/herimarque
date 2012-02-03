@@ -22,33 +22,28 @@ public class InfoMainFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.info_main, container, false);
+		View v = inflater.inflate(R.layout.info_main, container, false);
+
+		v.findViewById(R.id.butt_info_ourheritage).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) 
+			{
+				Log.d(tag, "our heritage pushed. start activity");
+				Intent intent = new Intent(getActivity(), InfoOurHeritageServiceActivity.class);
+				startActivity(intent);
+			}
+		});
+
+		v.findViewById(R.id.butt_info_nearheritage).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) 
+			{
+				Log.d(tag, "near heritage pushed");
+			}
+		});
+		return v;
 	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-//		getActivity().findViewById(R.id.butt_info_ourheritage).setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View arg0) 
-//			{
-//				Log.d(tag, "our heritage pushed. start activity");
-//				Intent intent = new Intent(getActivity(), InfoOurHeritageServiceActivity.class);
-//				startActivity(intent);
-//			}
-//		});
-//
-//		getActivity().findViewById(R.id.butt_info_nearheritage).setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) 
-//			{
-//				Log.d(tag, "near heritage pushed");
-//			}
-//		});
-
-	} 
-
 
 }

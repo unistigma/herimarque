@@ -11,7 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestSimpleRequest {
+public class TestAgeImgListSimpleRequest {
 
 	String requestf;
 	String reqMsg;
@@ -21,15 +21,16 @@ public class TestSimpleRequest {
 	@Before
 	public void setup() throws IOException
 	{
-		requestf = "request/area_detail_request.xml";
-		requesturl = "http://openapi.cha.go.kr/openapi/soap/crlts/AreaCrltsService";
-		responsef = "test/area_detail_response.xml";
+		requestf = "request/age_img_list_request.xml";
+		requesturl = "http://openapi.cha.go.kr/openapi/soap/crlts/AgeCrltsService";
+		responsef = "test/age_img_list_response.xml";
 		
 		reqMsg = FileUtils.readFileToString(new File(requestf));
-		reqMsg = reqMsg.replace("code", "79");
-		reqMsg = reqMsg.replace("number", "04800000");
+		reqMsg = reqMsg.replace("pageNum", "1");
+		reqMsg = reqMsg.replace("size", "100000");
+		reqMsg = reqMsg.replace("code", "11");
+		reqMsg = reqMsg.replace("number", "02550100");
 		reqMsg = reqMsg.replace("locale", "11");
-		
 	}
 	
 	@Test
@@ -44,4 +45,5 @@ public class TestSimpleRequest {
 		
 		FileUtils.writeStringToFile(new File(responsef), rep, "UTF-8");
 	}
+	
 }

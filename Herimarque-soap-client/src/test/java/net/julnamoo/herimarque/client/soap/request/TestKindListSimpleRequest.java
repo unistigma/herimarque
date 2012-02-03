@@ -11,7 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestSimpleRequest {
+public class TestKindListSimpleRequest {
 
 	String requestf;
 	String reqMsg;
@@ -21,15 +21,14 @@ public class TestSimpleRequest {
 	@Before
 	public void setup() throws IOException
 	{
-		requestf = "request/area_detail_request.xml";
-		requesturl = "http://openapi.cha.go.kr/openapi/soap/crlts/AreaCrltsService";
-		responsef = "test/area_detail_response.xml";
+		requestf = "request/kind_list_request.xml";
+		requesturl = "http://openapi.cha.go.kr/openapi/soap/crlts/KndCrltsService";
+		responsef = "test/kind_list_response.xml";
 		
 		reqMsg = FileUtils.readFileToString(new File(requestf));
-		reqMsg = reqMsg.replace("code", "79");
-		reqMsg = reqMsg.replace("number", "04800000");
-		reqMsg = reqMsg.replace("locale", "11");
-		
+		reqMsg = reqMsg.replace("code", "01");
+		reqMsg = reqMsg.replace("size", "1000000");
+		reqMsg = reqMsg.replace("pagenum", "1");
 	}
 	
 	@Test
