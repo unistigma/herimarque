@@ -3,8 +3,6 @@ package net.julnamoo.herimarque.client.soap;
 import iros.gsb.constant.WebSvcType;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -62,35 +60,17 @@ public class AgeRequestSender extends RequestSender {
 				
 				if(requestMsg.contains("code"))
 				{
-					requestMsg = requestMsg.replace("code", cell.getContents());
+					requestMsg = requestMsg.replace("code", ageCd);
 				}else if(pastNum != null)
 				{
-					requestMsg = requestMsg.replace(pastNum, cell.getContents());
+					requestMsg = requestMsg.replace(pastNum, ageCd);
 				}
 				
 				pastNum = cell.getContents();
 				requestMsg = requestMsg.replace("pagenum", "1");
 				
 				logger.info("Sending request with code num {}", cell.getContents());
-				//consider the servicekey
-//				String  response = "";
-//				if(!checkNumber())
-//				{
-//					logger.info("Current request number is {}. Sleep this thread for a day.....", number);
-//					logger.info("Set the request number to zero");
-//					initNumber();
-//					Thread.currentThread().sleep(1000*60);
-//					logger.info("Awake the Thread! Continue to send the request");
-//					
-//					//for test
-//					return;
-//				}
 				String response = client.send(WebSvcType.SOAP, requestURI, requestMsg, null);
-//				++number;
-				
-				//save the naive response to string
-//				String respFile = "response/age_response_" + pastNum + ".txt";
-//				FileUtils.writeStringToFile(new File(respFile), response);
 				
 				/** response to Item **/
 				DocumentBuilder docbuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -104,8 +84,11 @@ public class AgeRequestSender extends RequestSender {
 					Node item = items.item(i_num);
 					NodeList subs = item.getChildNodes();
 
-					//set field value
+					/** set field value **/
 					Item instance = new Item();
+					//set ageCd
+					instance.setAgeCd(ageCd);
+					
 					for(int j = 0; j < subs.getLength(); ++j)
 					{
 						Node sub = subs.item(j);
@@ -122,6 +105,7 @@ public class AgeRequestSender extends RequestSender {
 						}
 					}
 					
+					//get others value
 					instance = getDetail(instance);
 					ageList.add(instance);
 					logger.info("Add new instance : {}, {}", instance.getCrltsNm(), instance.getCrltsNoNm());
@@ -136,7 +120,7 @@ public class AgeRequestSender extends RequestSender {
 		
 	}
 	
-	public Item getDetail(Item item) throws ParserConfigurationException, SAXException, IOException
+	private Item getDetail(Item item) throws ParserConfigurationException, SAXException, IOException
 	{
 		String requestMsg = dmsg.replace("code", item.getItemCd());
 		requestMsg = requestMsg.replace("number", item.getCrltsNo());
@@ -154,7 +138,6 @@ public class AgeRequestSender extends RequestSender {
 			Node desc = doc.getElementsByTagName("crltsDc").item(0);
 			item.setCrltsDc(desc.getTextContent());
 		}catch (Exception e){
-			
 			item.setCrltsDc("");
 		}
 		
@@ -174,8 +157,6 @@ public class AgeRequestSender extends RequestSender {
 			item.setSignguNm("");
 		}
 		
-<<<<<<< HEAD
-=======
 		try
 		{
 			Node imageYn = doc.getElementsByTagName("imageYn").item(0);
@@ -192,7 +173,6 @@ public class AgeRequestSender extends RequestSender {
 			item.setImageUrl("");
 		}
 		
->>>>>>> 1f92856f37eea6e0ead4c0023cd33d6a22e1fd66
 		return item;
 	}
 }

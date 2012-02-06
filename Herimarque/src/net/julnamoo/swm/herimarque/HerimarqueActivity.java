@@ -1,12 +1,14 @@
 package net.julnamoo.swm.herimarque;
 
+import java.io.IOException;
+
 import net.julnamoo.R;
+import net.julnamoo.swm.herimarque.db.HeritageDataFromJSON;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 
 public class HerimarqueActivity extends Activity {
     /** Called when the activity is first created. */
@@ -19,6 +21,19 @@ public class HerimarqueActivity extends Activity {
         findViewById(R.id.create).setOnClickListener(selector);
         findViewById(R.id.show).setOnClickListener(selector);
         findViewById(R.id.config).setOnClickListener(selector);
+        
+        /** set up db **/
+        HeritageDataFromJSON insert;
+		try {
+			insert = new HeritageDataFromJSON(getAssets().open("ageList_ver_1.json"), HerimarqueActivity.this);
+			Thread thread = new Thread(insert);
+	        thread.start();
+	        
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
     }
     
     OnClickListener selector = new OnClickListener() {

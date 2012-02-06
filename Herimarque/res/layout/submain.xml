@@ -4,72 +4,51 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        android:orientation="horizontal" >
 
-        <!-- Info activity -->
-       <include android:id="@+id/info" layout="@layout/info_main"/>
-        
-        <!-- Create Activity -->
-        <include android:id="@+id/create" layout="@layout/create_main"/>
-        
-        <!-- Show Activity -->
-        <LinearLayout 
-            android:id="@+id/show"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/infoButt"
+            android:layout_width="0dip"
             android:layout_height="match_parent"
-            android:visibility="invisible"
-            android:background="@drawable/showback">
-            
-            <Button 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="showTestButt"/>
-        </LinearLayout>
-        
-        <!-- Config Activity -->
-        <include android:id="@+id/config" layout="@layout/config_main"/>
-  
+            android:layout_weight="1"
+            android:text="@string/info_short" />
+
+        <Button
+            android:id="@+id/createButt"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/create_short" />
+
+        <Button
+            android:id="@+id/showButt"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/show_short" />
+
+        <Button
+            android:id="@+id/configButt"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/config_short" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <!-- fragment -->
+        <fragment
+            android:id="@+id/menu_main"
+            android:name="net.julnamoo.swm.herimarque.fragment.InfoMainFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
 
-    <RadioGroup 
-        android:id="@+id/gmenu"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:gravity="center_vertical"
-        android:weightSum="1">
-        
-        <RadioButton 
-            android:id="@+id/infoButt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/info_short"/>
-        
-        <RadioButton 
-            android:id="@+id/createButt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/create_short"/>
-        
-        <RadioButton 
-            android:id="@+id/showButt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/show_short"/>
-        
-        <RadioButton 
-            android:id="@+id/configButt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/config_short"/>
-    </RadioGroup>
 </LinearLayout>

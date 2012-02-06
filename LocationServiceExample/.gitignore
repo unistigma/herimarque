@@ -1,3 +1,4 @@
-/.project
+/project.properties
+/proguard.cfg
 /.classpath
-project.properties
+/.project

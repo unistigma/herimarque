@@ -101,6 +101,26 @@ public class CreateServiceActivity extends MapActivity {
 		txtname.setText(name);
 
 	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		locationManager.removeUpdates(locationListener);
+		Log.d(tag, "Remove all listener");
+		super.onPause();
+	}
+	
+	protected void onResume() {
+		
+		Log.i(tag, "Resume location listener");
+		List<String> providers = locationManager.getAllProviders();
+		for(String provider : providers)
+		{
+			Log.d(tag, "Enroll the provider " + provider);
+			locationManager.requestLocationUpdates(provider, 5, 15, locationListener);
+		}
+		super.onResume();
+	};
 
 	private MyLocation getCurrentLocation()
 	{
@@ -142,6 +162,11 @@ public class CreateServiceActivity extends MapActivity {
 		map.invalidate();
 	}
 
+	@Override
+	public void onBackPressed() {
+		finish();
+	}
+	
 	@Override
 	protected boolean isRouteDisplayed() {
 		// TODO Auto-generated method stub

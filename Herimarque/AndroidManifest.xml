@@ -11,13 +11,14 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
+        android:theme="@android:style/Theme.Light.NoTitleBar" >
         
         <uses-library android:name="com.google.android.maps"/>
         
         <activity
             android:name=".swm.herimarque.HerimarqueActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,17 +27,67 @@
         </activity>
         
         <activity 
-            android:name=".swm.herimarque.SubMainActivity">
+            android:name=".swm.herimarque.SubMainActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        
+        <!-- test -->
+        <activity 
+            android:name=".swm.herimarque.fragment.FragmentTestLayoutActivity"
+            android:screenOrientation="portrait">
+            
+        </activity>
+        <activity 
+            android:name=".swm.herimarque.fragment.DetailsActivity">
+            
+        </activity>
+        <!-- Info -->
+        <activity 
+            android:name=".swm.herimarque.InfoOurHeritageServiceActivity" 
+            android:screenOrientation="portrait">
+            
         </activity>
         
         <activity 
-            android:name=".swm.herimarque.CreateServiceStarterActivity">
+            android:name=".swm.herimarque.InfoOurHeritageListActivity"
+            android:screenOrientation="portrait">
+            
+        </activity>
+        <activity 
+            android:name=".swm.herimarque.InfoOurHeritageKindActivity"
+            android:screenOrientation="portrait">
+            
+        </activity>
+        
+        <activity 
+            android:name=".swm.herimarque.InfoDetailHeritage"
+            android:screenOrientation="portrait">
+            
+        </activity>
+        
+        <!-- config -->
+        <activity 
+            android:name=".swm.herimarque.ConfigFacebookLoginActivity"
+            android:screenOrientation="portrait" >
+            
+        </activity>
+        
+        <!-- create -->
+        <activity 
+            android:name=".swm.herimarque.CreateServiceStarterActivity"
+            android:screenOrientation="portrait" >
         </activity>
         
         <activity 
             android:name=".swm.herimarque.CreateServiceActivity">
         </activity>
         
+        <!-- show -->
+        <activity 
+            android:name=".swm.herimarque.ShowServiceActivity"
+            android:screenOrientation="portrait">
+            
+        </activity>
     </application>
 
 </manifest>

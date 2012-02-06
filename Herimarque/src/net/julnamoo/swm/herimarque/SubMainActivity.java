@@ -1,31 +1,27 @@
 package net.julnamoo.swm.herimarque;
 
 import net.julnamoo.R;
-import android.app.Activity;
+import net.julnamoo.swm.herimarque.fragment.ConfigMainFragment;
+import net.julnamoo.swm.herimarque.fragment.CreateMainFragment;
+import net.julnamoo.swm.herimarque.fragment.InfoMainFragment;
+import net.julnamoo.swm.herimarque.fragment.ShowMainFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.Toast;
 
-public class SubMainActivity extends Activity {
+public class SubMainActivity extends FragmentActivity {
 
-	View info, create, show, config;
-	RadioGroup menuG;
-
+	private String tag = SubMainActivity.class.getSimpleName();
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.submain);
-
-		info = (View) findViewById(R.id.info);
-		create = (View) findViewById(R.id.create);
-		show = (View) findViewById(R.id.show);
-		config = (View) findViewById(R.id.config);
-
-		menuG = (RadioGroup) findViewById(R.id.gmenu);
 
 		findViewById(R.id.infoButt).setOnClickListener(flipper);
 		findViewById(R.id.createButt).setOnClickListener(flipper);
@@ -36,9 +32,7 @@ public class SubMainActivity extends Activity {
 		int menu = intent.getIntExtra("menu", 0);
 
 		changeView(menu);
-
-		//for create service
-		findViewById(R.id.butt_create_start).setOnClickListener(startCreateService);
+		
 	}
 
 	OnClickListener flipper = new OnClickListener() {
@@ -46,17 +40,23 @@ public class SubMainActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			
 			switch (v.getId()) {
 			case R.id.infoButt:
+				Log.d(tag, "info pushed");
 				changeView(0);
 				break;
 			case R.id.createButt:
+				Log.d(tag, "create pushed");
 				changeView(1);
 				break;
-			case R.id.showButt: 
+			case R.id.showButt:
+				Log.d(tag, "show pushed"); 
 				changeView(2);
 				break;
-			case R.id.configButt: 
+			case R.id.configButt:
+				Log.d(tag, "config pushed");
 				changeView(3);
 				break;
 			default:
@@ -67,42 +67,33 @@ public class SubMainActivity extends Activity {
 
 	private void changeView(int id)
 	{
-		info.setVisibility(View.INVISIBLE);
-		create.setVisibility(View.INVISIBLE);
-		show.setVisibility(View.INVISIBLE);
-		config.setVisibility(View.INVISIBLE);
-
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		
 		switch (id) {
 		case 0:
-			info.setVisibility(View.VISIBLE);
-			menuG.check(R.id.infoButt);
+			InfoMainFragment imf = new InfoMainFragment();
+			transaction.setTransition(android.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.replace(R.id.fragment_container, imf);
 			break;
 		case 1:
-			create.setVisibility(View.VISIBLE);
-			menuG.check(R.id.createButt);
+			CreateMainFragment cmf = new CreateMainFragment();
+			transaction.setTransition(android.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.replace(R.id.fragment_container, cmf);
 			break;
 		case 2:
-			show.setVisibility(View.VISIBLE);
-			menuG.check(R.id.showButt);
+			ShowMainFragment smf = new ShowMainFragment();
+			transaction.setTransition(android.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.replace(R.id.fragment_container, smf);
 			break;
 		case 3:
-			config.setVisibility(View.VISIBLE);
-			menuG.check(R.id.configButt);
+			ConfigMainFragment cfmf = new ConfigMainFragment();
+			transaction.setTransition(android.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.replace(R.id.fragment_container, cfmf);
 			break;
 		default:
 			break;
 		}
+		
+		transaction.commit();
 	}
-
-	public OnClickListener startCreateService = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-
-			String name = findViewById(R.id.create_etxt_name).toString();
-
-			Intent intent = new Intent(SubMainActivity.this, CreateServiceStarterActivity.class);
-			startActivity(intent);
-		}
-	};
 }

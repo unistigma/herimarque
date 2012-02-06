@@ -7,21 +7,21 @@
     android:background="@drawable/configback" >
 
     <Button
-        android:id="@+id/loginbutt"
+        android:id="@+id/butt_config_fblogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="로그인" />
+        android:text="@string/config_fblogin" />
 
     <Button
-        android:id="@+id/companybutt"
+        android:id="@+id/butt_config_company"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Herimarque" />
+        android:text="@string/company" />
     
     <Button 
-        android:id="@+id/terms"
+        android:id="@+id/butt_config_terms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="이용약관"/>
+        android:text="@string/config_terms"/>
 
 </LinearLayout>

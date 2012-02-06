@@ -1,8 +1,5 @@
 package net.julnamoo.swm.herimarque;
 
-import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
-
 import net.julnamoo.R;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,6 +33,7 @@ public class CreateServiceStarterActivity extends SubMainActivity {
 
 		findViewById(R.id.butt_create_ok).setOnClickListener(startService);
 		
+		//remove new line
 	}
 
 	public OnClickListener startService = new OnClickListener() {

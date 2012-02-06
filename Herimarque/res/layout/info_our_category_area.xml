@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/info_back"
+    android:paddingTop="20dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/info_our_category_area_seoul"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_seoul" />
+        
+       <Button
+            android:id="@+id/info_our_category_area_bs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_bs" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_dg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_dg" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_ich"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_ich" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_gj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_gj" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_dj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_dj" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_ulsan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_ulsan" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_gg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_gg" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_gw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_gw" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_chb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_chb" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_chn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_chn" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_jb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_jb" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_jn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_jn" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_kb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_kb" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_kn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_kn" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_jj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_jj" />
+       
+       <Button
+            android:id="@+id/info_our_category_area_etc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/area_etc" />
+    </LinearLayout>
+
+</ScrollView>

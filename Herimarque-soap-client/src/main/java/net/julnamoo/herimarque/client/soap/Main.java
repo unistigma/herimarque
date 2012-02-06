@@ -15,10 +15,6 @@ public class Main {
 	static Logger logger = LoggerFactory.getLogger(Main.class.getSimpleName());
 
 	public static void main( String[] args ) throws Exception {
-<<<<<<< HEAD
-		new AreaRequestSender("http://openapi.cha.go.kr/openapi/soap/crlts/AreaCrltsService").run();
-		new AgeRequestSender("http://openapi.cha.go.kr/openapi/soap/crlts/AgeCrltsService").run();
-=======
 		System.out.println("Select the request category.");
 		System.out.println("1. Area\t2.Age\t3.Kind");
 		
@@ -43,6 +39,5 @@ public class Main {
 		default:
 			break;
 		}
->>>>>>> 1f92856f37eea6e0ead4c0023cd33d6a22e1fd66
 	}
 }
