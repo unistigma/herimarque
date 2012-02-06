@@ -125,6 +125,13 @@
 			<artifactId>gson</artifactId>
 			<version>2.1</version>
 		</dependency>
+		
+		<!-- Mongo-Java Driver -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>2.7.3</version>
+		</dependency>
 	</dependencies>
 
 	<build>
