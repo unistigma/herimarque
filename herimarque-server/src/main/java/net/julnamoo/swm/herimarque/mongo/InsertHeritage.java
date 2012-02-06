@@ -51,7 +51,7 @@ public class InsertHeritage {
 		if(mongo != null && db != null && collection != null)
 		{
 			JsonParser jsonParser = new JsonParser();
-			JsonArray jsonArray = jsonParser.parse(new FileReader(new File(jsonF))).getAsJsonArray();
+			JsonArray jsonArray = jsonParser.parse(new FileReader(new File(ClassLoader.getSystemResource(jsonF).getFile()))).getAsJsonArray();
 			
 			for(JsonElement element : jsonArray)
 			{
@@ -59,6 +59,8 @@ public class InsertHeritage {
 				collection.insert(object);
 				logger.debug("Insert {}", element.toString());
 			}
+			
+			logger.info("Complete to insert all heritage from {}, total size is {}", jsonF, jsonArray.size());
 		}
 	}
 }
