@@ -164,6 +164,21 @@ public class AreaRequestSender extends RequestSender{
 			item.setSignguNm("");
 		}
 
+		try
+		{
+			Node imageYn = doc.getElementsByTagName("imageYn").item(0);
+			item.setImageYn(imageYn.getTextContent());
+		}catch (Exception e) {
+			item.setImageYn("");
+		}
+		
+		try
+		{
+			Node imageUrl = doc.getElementsByTagName("imageUrl").item(0);
+			item.setImageUrl(imageUrl.getTextContent());
+		}catch (Exception e) {
+			item.setImageUrl("");
+		}
 		return item;
 
 	}

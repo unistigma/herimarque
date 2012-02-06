@@ -58,6 +58,8 @@ public class AgeRequestSender extends RequestSender {
 			//get the code number
 			if(cell.getType() == CellType.LABEL || cell.getType() == CellType.NUMBER)
 			{
+				String ageCd = cell.getContents();
+				
 				if(requestMsg.contains("code"))
 				{
 					requestMsg = requestMsg.replace("code", cell.getContents());
@@ -172,6 +174,25 @@ public class AgeRequestSender extends RequestSender {
 			item.setSignguNm("");
 		}
 		
+<<<<<<< HEAD
+=======
+		try
+		{
+			Node imageYn = doc.getElementsByTagName("imageYn").item(0);
+			item.setImageYn(imageYn.getTextContent());
+		}catch (Exception e) {
+			item.setImageYn("");
+		}
+		
+		try
+		{
+			Node imageUrl = doc.getElementsByTagName("imageUrl").item(0);
+			item.setImageUrl(imageUrl.getTextContent());
+		}catch (Exception e) {
+			item.setImageUrl("");
+		}
+		
+>>>>>>> 1f92856f37eea6e0ead4c0023cd33d6a22e1fd66
 		return item;
 	}
 }
