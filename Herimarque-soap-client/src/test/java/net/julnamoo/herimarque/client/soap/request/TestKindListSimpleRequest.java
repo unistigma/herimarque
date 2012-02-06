@@ -26,7 +26,7 @@ public class TestKindListSimpleRequest {
 		responsef = "test/kind_list_response.xml";
 		
 		reqMsg = FileUtils.readFileToString(new File(requestf));
-		reqMsg = reqMsg.replace("code", "01");
+		reqMsg = reqMsg.replace("code", "11");
 		reqMsg = reqMsg.replace("size", "1000000");
 		reqMsg = reqMsg.replace("pagenum", "1");
 	}

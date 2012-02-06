@@ -53,11 +53,11 @@ public class AgeRequestSender extends RequestSender {
 		{
 			Cell cell = codeSheet.getCell(0, i);
 
-			String ageCd = cell.getContents();
-			
 			//get the code number
 			if(cell.getType() == CellType.LABEL || cell.getType() == CellType.NUMBER)
 			{
+				String ageCd = cell.getContents();
+				
 				if(requestMsg.contains("code"))
 				{
 					requestMsg = requestMsg.replace("code", ageCd);
@@ -107,8 +107,6 @@ public class AgeRequestSender extends RequestSender {
 					
 					//get others value
 					instance = getDetail(instance);
-					
-					//needs to get imgearr
 					ageList.add(instance);
 					logger.info("Add new instance : {}, {}", instance.getCrltsNm(), instance.getCrltsNoNm());
 				}
@@ -170,7 +168,7 @@ public class AgeRequestSender extends RequestSender {
 		try
 		{
 			Node imageUrl = doc.getElementsByTagName("imageUrl").item(0);
-			item.setImageYn(imageUrl.getTextContent());
+			item.setImageUrl(imageUrl.getTextContent());
 		}catch (Exception e) {
 			item.setImageUrl("");
 		}
