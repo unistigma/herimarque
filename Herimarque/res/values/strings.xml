@@ -4,73 +4,10 @@
     <!-- Commong String -->
     <string name="hello">Hello World, HerimarqueActivity!</string>
     <string name="app_name">Herimarque</string>
-    <string name="company">Incredieble</string>
-    
-    <!-- For Test -->
-    <string name="info_detail_name">name</string>
-    <string name="info_detail_code">code</string>
-    <string name="info_detail_age">age</string>
-    <string name="info_detail_area">area</string>
     
     <!-- For info service -->
     <string name="information">우리의 문화유산</string>
     <string name="info_short">정보</string>
-    <string name="info_ourheritage">우리의 문화유산 보기</string>
-    <string name="info_nearheritage">내 주변 문화유산 보기</string>
-    <string name="info_our_list">List</string>
-    <string name="info_our_category">상세검색</string>
-    <string name="info_kind">종목</string>
-    <string name="info_age">시대</string>
-    <string name="info_area">지역</string>
-    <string name="kind_national_treasure">국보</string>
-    <string name="kind_treasure">보물</string>
-    <string name="kind_historical_site">사적</string>
-    <string name="kind_spot_place">명승</string>
-    <string name="kind_natural_monument">천연기념물</string>
-    <string name="kind_intangible_cultural_asset">무형문화재</string>
-    <string name="kind_folklore_asset">민속문화재</string>
-    <string name="kind_registered_asset">등록문화재</string>
-    <string name="kind_local_tangible_cultural_asset">시도 유형문화재</string>
-    <string name="kind_local_intangible_cultural_asset">시도 무형문화재</string>
-    <string name="kind_local_monument">시도 기념물</string>
-    <string name="kind_local_folklore_asset">시도 민속문화재</string>
-    <string name="kind_cultural_asset">문화재자료</string>
-    <string name="age_prehistoric_age">선사시대</string>
-    <string name="age_stone_age">석기시대</string>
-    <string name="age_bronze_age">청동기시대</string>
-    <string name="age_iron_age">철기시대</string>
-    <string name="age_three_hans">삼한시대</string>
-    <string name="age_three_countries">삼국시대</string>
-    <string name="age_goguryeo">고구려</string>
-    <string name="age_baekje">백제</string>
-    <string name="age_silla">신라</string>
-    <string name="age_gaya">가야</string>
-    <string name="age_balhae">발해</string>
-    <string name="age_unified_silla">통일 신라</string>
-    <string name="age_goryeo">고려</string>
-    <string name="age_chosun">조선</string>
-    <string name="age_daehan">대한제국</string>
-    <string name="age_japanese_colonial">일제강점기</string>
-    <string name="area_seoul">서울</string>
-    <string name="area_bs">부산</string>
-    <string name="area_dg">대구</string>
-    <string name="area_ich">인천</string>
-    <string name="area_gj">광주</string>
-    <string name="area_dj">대전</string>
-    <string name="area_ulsan">울산</string>
-    <string name="area_gg">경기</string>
-    <string name="area_gw">강원</string>
-    <string name="area_chb">충북</string>
-    <string name="area_chn">충남</string>
-    <string name="area_jb">전북</string>
-    <string name="area_jn">전남</string>
-    <string name="area_kb">경북</string>
-    <string name="area_kn">경남</string>
-    <string name="area_jj">제주</string>
-    <string name="area_etc">기타</string>
-    <string name="info_detail_location">문화재 위치 보기</string>
-    <string name="info_detail_near">주변 문화재</string>
-    <string name="info_detail_sns">공유하기</string>
     
     <!-- For create Service -->
     <string name="create">나만의 문화유산 만들기</string>
@@ -89,6 +26,4 @@
     <!-- For configure Service -->
     <string name="config">설정</string>
     <string name="config_short">설정</string>
-    <string name="config_fblogin">Facebook Login</string>
-    <string name="config_terms">이용약관</string>
 </resources>

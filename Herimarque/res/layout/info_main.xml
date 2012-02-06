@@ -2,34 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/info_main" >
-
-    <Button
-        android:id="@+id/butt_info_ourheritage"
-        android:layout_width="227dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_weight="1"
-        android:background="@drawable/bc_info_main_our"
-        android:text="@string/info_ourheritage" />
-
-    <Button
-        android:id="@+id/butt_info_nearheritage"
-        android:layout_width="227dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_weight="1"
-        android:background="@drawable/bc_info_main_near"
-        android:text="@string/info_nearheritage" />
-
-</LinearLayout>
-
-<!--
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/info_main"
+    android:background="@drawable/infoback"
     android:gravity="center"
     android:orientation="vertical" >
 
@@ -37,15 +10,12 @@
         android:id="@+id/all"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bc_info_main_our"
-        android:text="@string/info_ourheritage" />
+        android:text="문화유산보기" />
 
     <Button
         android:id="@+id/location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bc_info_main_near"
-        android:text="@string/info_nearheritage" />
+        android:text="내 주변 문화유산 보기" />
 
 </LinearLayout>
--->
