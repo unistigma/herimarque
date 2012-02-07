@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:rootContext.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>Jersey Spring Web Application</servlet-name>
+		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet
+		</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>com.sun.jersey.samples.springannotations.resources.jerseymanaged</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Jersey Spring Web Application</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Set the encoding filter -->
+	<filter>
+		<filter-name>Character Encoding Setter</filter-name>
+		<filter-class>com.soma.soseek.julie.server.service.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>Character Encoding Setter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- set the request header for solving cross domain issue -->
+	<filter>
+		<filter-name>CORS</filter-name>
+		<filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
+		
+		<!-- 
+			<filter-class>org.eclipse.jetty.servlets.CrossOriginFilter</filter-class> -->
+		<init-param>
+			<param-name>cors.supportedMethods</param-name>
+			<param-value>GET, POST, HEAD, PUT, DELETE, OPTIONS</param-value>
+		</init-param>
+		<init-param>
+			<param-name>cors.supportedHeaders</param-name>
+			<param-value>Origin, Content-Type, Accept</param-value>
+		</init-param>
+		<init-param>
+			<param-name>cors.allowOrigin</param-name>
+			<param-value>*</param-value>
+		</init-param>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>CORS</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+</web-app>
