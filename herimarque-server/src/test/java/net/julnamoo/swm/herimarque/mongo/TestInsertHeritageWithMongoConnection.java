@@ -1,27 +1,14 @@
 package net.julnamoo.swm.herimarque.mongo;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.UnknownHostException;
-import java.util.Properties;
 
-import junit.framework.Assert;
-
-import net.julnamoo.swm.herimarque.model.Item;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.log4j.chainsaw.Main;
-import org.bson.BSON;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.internal.runners.ClassRoadie;
-import org.junit.runners.model.TestClass;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
