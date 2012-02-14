@@ -16,17 +16,14 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
 		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
 
-
-	<!-- default mongo bean -->
-	<mongo:mongo host="localhost" port="27017" />
 	
-	<bean id="mongoTemplate" class="org.springframework.data.document.mongodb.MongoTemplate">
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg ref="mongo" />
 		<constructor-arg name="databaseName" value="herimarque"/>
-		<constructor-arg name="defaultCollectionName" value="heritage" />
+		<!-- <constructor-arg name="defaultCollectionName" value="heritage" /> -->
 	</bean>
 	
 	<context:annotation-config></context:annotation-config>
-	<context:component-scan base-package="net.julnamoo.swm.herimarque."></context:component-scan>
+	<context:component-scan base-package="net.julnamoo.swm.herimarque"></context:component-scan>
 </beans>
 
