@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -26,7 +27,7 @@ public class ContentResourceImpl implements ContentResource {
 	@POST
 	@Path("/upload")
 	@Override
-	public Response uploadMap(String key) 
+	public Response uploadMap(@HeaderParam("key") String key) 
 	{
 		//service for get the map and store it.
 		Response response = Response.ok(key).build();
