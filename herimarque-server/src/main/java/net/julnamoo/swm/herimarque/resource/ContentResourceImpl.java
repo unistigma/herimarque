@@ -1,5 +1,6 @@
 package net.julnamoo.swm.herimarque.resource;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -8,12 +9,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import net.julnamoo.swm.herimarque.util.ConstantsBean;
+
 import org.springframework.stereotype.Component;
 
 @Path("/c")
 @Component
 public class ContentResourceImpl implements ContentResource {
 
+	@Resource
+	private ConstantsBean constants;
+	
 	@POST
 	@Path("/upload")
 	@Override
