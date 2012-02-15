@@ -26,8 +26,8 @@ public class ContentResourceImpl implements ContentResource {
 	@POST
 	@Path("/upload")
 	@Override
-	public Response uploadMap(String key) {
-
+	public Response uploadMap(String key) 
+	{
 		//service for get the map and store it.
 		Response response = Response.ok(key).build();
 		return response;
@@ -37,8 +37,8 @@ public class ContentResourceImpl implements ContentResource {
 	@Path("/upload/test")
 	@Produces("text/plain")
 	@Override
-	public Response uploadMap(@Context HttpServletRequest request) {
-
+	public Response uploadMap(@Context HttpServletRequest request) 
+	{
 		String status = "fail";
 		Response response = Response.status(Status.OK).build();
 		return response;
@@ -47,8 +47,8 @@ public class ContentResourceImpl implements ContentResource {
 	@GET
 	@Path("/d/my")
 	@Override
-	public Response getMyMapList(String key) {
-
+	public Response getMyMapList(String key) 
+	{
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
 		imgs.add("url1");
@@ -62,7 +62,8 @@ public class ContentResourceImpl implements ContentResource {
 	@GET
 	@Path("/d/other")
 	@Override
-	public Response getTheOtehrMapList(String email) {
+	public Response getTheOtehrMapList(String email) 
+	{
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
 		imgs.add("url1");
@@ -76,7 +77,8 @@ public class ContentResourceImpl implements ContentResource {
 	@GET
 	@Path("/d/loc")
 	@Override
-	public Response getLocationMapList(String ctrdCd) {
+	public Response getLocationMapList(String ctrdCd) 
+	{
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
 		imgs.add("url1");
@@ -90,7 +92,8 @@ public class ContentResourceImpl implements ContentResource {
 	@GET
 	@Path("/d/kind")
 	@Override
-	public Response getKindMapList(String itemCd) {
+	public Response getKindMapList(String itemCd) 
+	{
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
 		imgs.add("url1");
@@ -104,7 +107,8 @@ public class ContentResourceImpl implements ContentResource {
 	@GET
 	@Path("/u/comment")
 	@Override
-	public Response addComment(String mapKey, String comment) {
+	public Response addComment(String mapKey, String comment) 
+	{
 		// TODO Auto-generated method stub
 		return Response.ok().build();
 	}

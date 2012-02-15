@@ -23,8 +23,8 @@ public class HeritageResourceImpl implements HeritageResource {
 	@GET
 	@Path("/g")
 	@Override
-	public Response getHeritage(String itemCd, String crltsNo, String ctrdCd) {
-		
+	public Response getHeritage(String itemCd, String crltsNo, String ctrdCd) 
+	{
 		Response response= Response.ok(new Item()).build();
 		return response;
 	}
@@ -32,8 +32,8 @@ public class HeritageResourceImpl implements HeritageResource {
 	@GET
 	@Path("/kind")
 	@Override
-	public Response getKindHeritageList(String itemCd) {
-		
+	public Response getKindHeritageList(String itemCd) 
+	{
 		List<Item> list = new ArrayList<Item>();
 		list.add(new Item());
 		list.add(new Item());
@@ -45,8 +45,8 @@ public class HeritageResourceImpl implements HeritageResource {
 	@GET
 	@Path("/age")
 	@Override
-	public Response getAgeHeritageList(String ageCd) {
-		
+	public Response getAgeHeritageList(String ageCd) 
+	{
 		List<Item> list = new ArrayList<Item>();
 		list.add(new Item());
 		list.add(new Item());
@@ -58,8 +58,8 @@ public class HeritageResourceImpl implements HeritageResource {
 	@GET
 	@Path("/area")
 	@Override
-	public Response getAreaHeritageList(String ctrdCd) {
-		
+	public Response getAreaHeritageList(String ctrdCd) 
+	{
 		List<Item> list = new ArrayList<Item>();
 		list.add(new Item());
 		list.add(new Item());
@@ -71,8 +71,8 @@ public class HeritageResourceImpl implements HeritageResource {
 	@GET
 	@Path("/near")
 	@Override
-	public Response getNearHeritageList(String latitude, String longitude) {
-		
+	public Response getNearHeritageList(String latitude, String longitude) 
+	{
 		List<Item> list = new ArrayList<Item>();
 		list.add(new Item());
 		list.add(new Item());
