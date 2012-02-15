@@ -1,5 +1,7 @@
 package net.julnamoo.swm.herimarque.resource;
 
+import java.util.ArrayList;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -8,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import net.julnamoo.swm.herimarque.util.ConstantsBean;
 
@@ -19,12 +22,12 @@ public class ContentResourceImpl implements ContentResource {
 
 	@Resource
 	private ConstantsBean constants;
-	
+
 	@POST
 	@Path("/upload")
 	@Override
 	public Response uploadMap(String key) {
-		
+
 		//service for get the map and store it.
 		Response response = Response.ok(key).build();
 		return response;
@@ -35,51 +38,75 @@ public class ContentResourceImpl implements ContentResource {
 	@Produces("text/plain")
 	@Override
 	public Response uploadMap(@Context HttpServletRequest request) {
-		
+
 		String status = "fail";
-		
-		return null;
+		Response response = Response.status(Status.OK).build();
+		return response;
 	}
-	
+
 	@GET
 	@Path("/d/my")
 	@Override
 	public Response getMyMapList(String key) {
-		
-		
-		return null;
+
+		//new Object will be changed with Image url list
+		ArrayList<String> imgs = new ArrayList<String>();
+		imgs.add("url1");
+		imgs.add("url2");
+
+		Response response = Response.ok().entity(imgs).build();
+
+		return response;
 	}
 
 	@GET
 	@Path("/d/other")
 	@Override
 	public Response getTheOtehrMapList(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		//new Object will be changed with Image url list
+		ArrayList<String> imgs = new ArrayList<String>();
+		imgs.add("url1");
+		imgs.add("url2");
+
+		Response response = Response.ok().entity(imgs).build();
+
+		return response;
 	}
 
 	@GET
 	@Path("/d/loc")
 	@Override
 	public Response getLocationMapList(String ctrdCd) {
-		// TODO Auto-generated method stub
-		return null;
+		//new Object will be changed with Image url list
+		ArrayList<String> imgs = new ArrayList<String>();
+		imgs.add("url1");
+		imgs.add("url2");
+
+		Response response = Response.ok().entity(imgs).build();
+
+		return response;
 	}
-	
+
 	@GET
 	@Path("/d/kind")
 	@Override
 	public Response getKindMapList(String itemCd) {
-		// TODO Auto-generated method stub
-		return null;
+		//new Object will be changed with Image url list
+		ArrayList<String> imgs = new ArrayList<String>();
+		imgs.add("url1");
+		imgs.add("url2");
+
+		Response response = Response.ok().entity(imgs).build();
+
+		return response;
 	}
-	
+
 	@GET
 	@Path("/u/comment")
 	@Override
 	public Response addComment(String mapKey, String comment) {
 		// TODO Auto-generated method stub
-		return null;
+		return Response.ok().build();
 	}
 
 }
