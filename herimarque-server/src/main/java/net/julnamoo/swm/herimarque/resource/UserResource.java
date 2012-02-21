@@ -6,6 +6,5 @@ public interface UserResource {
 
 	public Response addUser(String key);
 	public Response oauthUser(String key);
-//	public Response changeInfo(Map params);
 	public Response changeKey(String key); // for change e-mail or password
 }
