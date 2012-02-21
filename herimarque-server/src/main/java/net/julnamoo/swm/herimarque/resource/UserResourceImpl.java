@@ -1,6 +1,7 @@
 package net.julnamoo.swm.herimarque.resource;
 
 import javax.annotation.Resource;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -20,16 +21,31 @@ public class UserResourceImpl implements UserResource {
 	private ConstantsBean constants;
 	
 	@POST
-	@Path("/add")
 	@Override
-	public Response addUser(String key) 
+	public Response addUser(String email, String pwd) 
 	{
 		Response response = Response.ok().build();
 		return response;
 	}
 
+	@DELETE
+	@Override
+	public Response delUser(String key, String email) 
+	{
+		boolean isDeleted = true;
+		Response response = null;
+		
+		if(isDeleted)
+		{
+			response = Response.ok().build();
+		}else
+		{
+			response = Response.status(Status.SERVICE_UNAVAILABLE).build();
+		}
+		return response;
+	}
+	
 	@GET
-	@Path("/oauth")
 	@Override
 	public Response oauthUser(String key) 
 	{
@@ -48,7 +64,6 @@ public class UserResourceImpl implements UserResource {
 	}
 
 	@PUT
-	@Path("/change")
 	@Override
 	public Response changeKey(String key) 
 	{
