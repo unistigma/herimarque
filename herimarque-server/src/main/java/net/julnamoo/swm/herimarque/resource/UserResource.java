@@ -7,5 +7,5 @@ public interface UserResource {
 	public Response addUser(String email, String pwd);
 	public Response delUser(String key, String email);
 	public Response oauthUser(String key);
-	public Response changeKey(String key); // for change e-mail or password
+	public Response changeKey(String key, String pwd); // for change e-mail or password
 }

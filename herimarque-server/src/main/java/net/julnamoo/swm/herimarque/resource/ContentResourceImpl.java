@@ -48,7 +48,7 @@ public class ContentResourceImpl implements ContentResource {
 	@GET
 	@Path("/d/my")
 	@Override
-	public Response getMyMapList(String key) 
+	public Response getMyMapList(@HeaderParam("key") String key) 
 	{
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
@@ -63,7 +63,7 @@ public class ContentResourceImpl implements ContentResource {
 	@GET
 	@Path("/d/other")
 	@Override
-	public Response getTheOtehrMapList(String email) 
+	public Response getTheOtehrMapList(@HeaderParam("email") String email) 
 	{
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
@@ -105,7 +105,7 @@ public class ContentResourceImpl implements ContentResource {
 		return response;
 	}
 
-	@GET
+	@POST
 	@Path("/u/comment")
 	@Override
 	public Response addComment(String mapKey, String comment) 

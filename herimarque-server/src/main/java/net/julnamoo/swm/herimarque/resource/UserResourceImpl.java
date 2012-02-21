@@ -24,7 +24,8 @@ public class UserResourceImpl implements UserResource {
 	@Override
 	public Response addUser(String email, String pwd) 
 	{
-		Response response = Response.ok().build();
+		String key = "tempKey";
+		Response response = Response.status(Status.CREATED).entity(key).build();
 		return response;
 	}
 
@@ -65,14 +66,14 @@ public class UserResourceImpl implements UserResource {
 
 	@PUT
 	@Override
-	public Response changeKey(String key) 
+	public Response changeKey(String key, String pwd) 
 	{
 		Response response = null;
 		boolean changed = true;
 		
 		if(changed)
 		{
-			response = Response.status(Status.OK).build();
+			response = Response.status(Status.OK).entity(new String("newkey")).build();
 		}else
 		{
 			response = Response.status(Status.NOT_ACCEPTABLE).build();

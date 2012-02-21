@@ -1,5 +1,8 @@
 package net.julnamoo.swm.herimarque.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -19,7 +22,7 @@ public class NoticeResourceImpl implements NoticeResource {
 	private ConstantsBean constants;
 	
 	@GET
-	@Path("/new")
+	@Path("/hasnew")
 	@Override
 	public Response isExist(String lastupdate) 
 	{
@@ -29,7 +32,7 @@ public class NoticeResourceImpl implements NoticeResource {
 		
 		if(isExist)
 		{
-			response = Response.ok().build();
+			response = Response.status(Status.OK).build();
 		}else
 		{
 			response = Response.status(Status.NO_CONTENT).build();
@@ -38,12 +41,16 @@ public class NoticeResourceImpl implements NoticeResource {
 	}
 
 	@GET
-	@Path("/itsnew")
+	@Path("/new")
 	@Override
-	public Response getNewNotice() 
+	public Response getNewNotice(String lastupdate) 
 	{
+		List<Notice> list = new ArrayList<Notice>();
 		Notice itsNew = new Notice("testTitle", "testContent");
-		Response response = Response.ok().entity(itsNew).build();
+		list.add(itsNew);
+		
+		Response response = Response.ok().entity(list).build();
+		
 		return response;
 	}
 
