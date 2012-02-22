@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -50,11 +52,16 @@ public class NoticeResourceImpl implements NoticeResource {
 
 	@GET
 	@Path("/new/{lastupdated}")
+	@Produces( {MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON} )
 	@Override
 	public Response getNewNotice(@PathParam("lastupdated") String lastupdate) 
 	{
 		List<Notice> list = new ArrayList<Notice>();
-		Notice itsNew = new Notice("testTitle", "testContent");
+		Notice itsNew = new Notice();
+		itsNew.setDate("20120222");
+		itsNew.setTitle("title");
+		itsNew.setContent("content");
+		
 		list.add(itsNew);
 		
 		logger.debug("send the notice after {}", lastupdate);
