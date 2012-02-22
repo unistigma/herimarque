@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Comment {
 
 	String mapKey;
-	String comment;
+	String content;
 	String userKey;
 	
 	public Comment() {}
@@ -18,10 +18,10 @@ public class Comment {
 		this.mapKey = mapKey;
 	}
 	public String getComment() {
-		return comment;
+		return content;
 	}
 	public void setComment(String comment) {
-		this.comment = comment;
+		this.content = comment;
 	}
 	public String getUserKey() {
 		return userKey;
