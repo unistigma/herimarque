@@ -2,12 +2,16 @@ package net.julnamoo.swm.herimarque.model;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Pojo class for each heritage item
  * 
  * @author Julie_air
  *
  */
+
+@XmlRootElement
 public class Item implements Serializable{
 
 	//17 fields

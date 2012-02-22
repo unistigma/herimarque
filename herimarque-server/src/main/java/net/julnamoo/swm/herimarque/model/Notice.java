@@ -1,5 +1,8 @@
 package net.julnamoo.swm.herimarque.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Notice {
 
 	String title;
@@ -24,5 +27,9 @@ public class Notice {
 		this.content = content;
 	}
 	
-	
+	@Override
+	public String toString() 
+	{
+		return this.title;
+	}
 }
