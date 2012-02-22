@@ -33,6 +33,8 @@ public class Item implements Serializable{
 	String XCnts;
 	String YCnts;
 	
+	public Item() {	}
+	
 	public String getCrltsDc() {
 		return crltsDc;
 	}

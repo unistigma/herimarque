@@ -8,6 +8,8 @@ public class Notice {
 	String title;
 	String content;
 	
+	public Notice() {}
+	
 	public Notice(String title, String content)
 	{
 		this.title = title;

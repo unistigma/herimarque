@@ -9,6 +9,8 @@ public class Comment {
 	String comment;
 	String userKey;
 	
+	public Comment() {}
+	
 	public String getMapKey() {
 		return mapKey;
 	}
