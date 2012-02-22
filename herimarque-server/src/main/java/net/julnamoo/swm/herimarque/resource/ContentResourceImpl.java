@@ -1,21 +1,24 @@
 package net.julnamoo.swm.herimarque.resource;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import net.julnamoo.swm.herimarque.service.ContentService;
 import net.julnamoo.swm.herimarque.util.ConstantsBean;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.sun.jersey.core.header.FormDataContentDisposition;
 
 @Path("/c")
 @Component
@@ -23,32 +26,28 @@ public class ContentResourceImpl implements ContentResource {
 
 	@Resource
 	private ConstantsBean constants;
+	
+	@Autowired
+	private ContentService contentService;
 
 	@POST
 	@Path("/upload")
-	@Override
-	public Response uploadMap(@HeaderParam("key") String key) 
+	public Response uploadMap(@FormParam("file") InputStream uploadedInputStream,
+			@FormParam("file") FormDataContentDisposition fileDeatil) 
 	{
-		//service for get the map and store it.
-		Response response = Response.ok(key).build();
-		return response;
+		String fpath = constants.getMapsRepo() + fileDeatil.getFileName();
+		contentService.uploadMap(uploadedInputStream, fpath);
+		//add the file path to the mongo and get the id. It will be returned with response
+		String mapKey = "tempkey";
+		
+		return Response.status(Status.OK).entity(mapKey).build();
 	}
-
-	@POST
-	@Path("/upload/test")
-	@Produces("text/plain")
-	@Override
-	public Response uploadMap(@Context HttpServletRequest request) 
-	{
-		String status = "fail";
-		Response response = Response.status(Status.OK).build();
-		return response;
-	}
-
+	
+	
 	@GET
 	@Path("/d/my")
 	@Override
-	public Response getMyMapList(String key) 
+	public Response getMyMapList(@HeaderParam("key") String key) 
 	{
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
@@ -63,7 +62,7 @@ public class ContentResourceImpl implements ContentResource {
 	@GET
 	@Path("/d/other")
 	@Override
-	public Response getTheOtehrMapList(String email) 
+	public Response getTheOtehrMapList(@HeaderParam("email") String email) 
 	{
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
@@ -105,7 +104,7 @@ public class ContentResourceImpl implements ContentResource {
 		return response;
 	}
 
-	@GET
+	@POST
 	@Path("/u/comment")
 	@Override
 	public Response addComment(String mapKey, String comment) 

@@ -6,6 +6,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.Response.Status;
 
 import org.springframework.stereotype.Component;
 
@@ -14,17 +15,26 @@ import org.springframework.stereotype.Component;
 public class SQLiteResourceImpl implements SQLiteResource {
 
 	@GET
-	@Path("/new")
+	@Path("/itsnew")
 	@Override
 	public Response isNewData(String dbVersion) 
 	{
-		boolean isExist = true;
-		Response response = Response.ok().header("exist", isExist).build();
+		boolean isUpdated = false;
+		Response response = null;
+		
+		if(isUpdated)
+		{
+			response = Response.status(Status.ACCEPTED).build();
+		}else
+		{
+			response = Response.status(Status.NO_CONTENT).build();
+		}
+		
 		return response;
 	}
 
 	@GET
-	@Path("/itsnew")
+	@Path("/new")
 	@Override
 	public Response getNewData(String dbVersion) 
 	{

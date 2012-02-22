@@ -1,6 +1,5 @@
 package net.julnamoo.swm.herimarque.resource;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 
 public interface ContentResource {
@@ -12,9 +11,9 @@ public interface ContentResource {
 	 * @return
 	 */
 	// For Up/Download maps
-	public Response uploadMap(String key); // upload
-	Response uploadMap(HttpServletRequest request);
-	
+//	public Response uploadMap();
+//	public Response uploadMap(String key); // upload
+//	public Response uploadMap(InputStream uploadedInputStream, FormDataContentDisposition fileDetail);
 	
 	public Response getMyMapList(String key); // retrieve my maps with comments of it
 	public Response getTheOtehrMapList(String email); // retrieve someone's maps with comments of it
