@@ -4,14 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import net.julnamoo.swm.herimarque.model.Item;
 import net.julnamoo.swm.herimarque.util.ConstantsBean;
 
 import org.springframework.stereotype.Component;
+
+/**
+ * 
+ * @author Julie_air
+ *
+ */
 
 @Path("/h")
 @Component
@@ -22,8 +30,9 @@ public class HeritageResourceImpl implements HeritageResource {
 	
 	@GET
 	@Path("/g")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Response getHeritage(String itemCd, String crltsNo, String ctrdCd) 
+	public Response getHeritage(Item item) 
 	{
 		Response response= Response.ok(new Item()).build();
 		return response;
