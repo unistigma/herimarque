@@ -1,6 +1,12 @@
 package net.julnamoo.swm.herimarque.resource;
 
+import java.io.InputStream;
+
 import javax.ws.rs.core.Response;
+
+import net.julnamoo.swm.herimarque.model.Comment;
+
+import com.sun.jersey.core.header.FormDataContentDisposition;
 
 public interface ContentResource {
 
@@ -13,7 +19,7 @@ public interface ContentResource {
 	// For Up/Download maps
 //	public Response uploadMap();
 //	public Response uploadMap(String key); // upload
-//	public Response uploadMap(InputStream uploadedInputStream, FormDataContentDisposition fileDetail);
+	public Response uploadMap(InputStream uploadedInputStream, FormDataContentDisposition fileDetail);
 	
 	public Response getMyMapList(String key); // retrieve my maps with comments of it
 	public Response getTheOtehrMapList(String email); // retrieve someone's maps with comments of it
@@ -21,6 +27,6 @@ public interface ContentResource {
 	public Response getKindMapList(String itemCd); //retrieve maps of the kind with comments of it
 	
 	// For manage comments
-	public Response addComment(String mapKey, String comment);
+	public Response addComment(Comment comment);
 	
 }

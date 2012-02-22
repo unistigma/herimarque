@@ -4,14 +4,19 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import net.julnamoo.swm.herimarque.model.Comment;
 import net.julnamoo.swm.herimarque.service.ContentService;
 import net.julnamoo.swm.herimarque.util.ConstantsBean;
 
@@ -43,9 +48,9 @@ public class ContentResourceImpl implements ContentResource {
 		return Response.status(Status.OK).entity(mapKey).build();
 	}
 	
-	
 	@GET
 	@Path("/d/my")
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
 	public Response getMyMapList(@HeaderParam("key") String key) 
 	{
@@ -61,6 +66,7 @@ public class ContentResourceImpl implements ContentResource {
 
 	@GET
 	@Path("/d/other")
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
 	public Response getTheOtehrMapList(@HeaderParam("email") String email) 
 	{
@@ -75,9 +81,10 @@ public class ContentResourceImpl implements ContentResource {
 	}
 
 	@GET
-	@Path("/d/loc")
+	@Path("/d/loc/{ctrdCd}")
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Response getLocationMapList(String ctrdCd) 
+	public Response getLocationMapList(@PathParam("ctrdCd") String ctrdCd) 
 	{
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
@@ -90,9 +97,10 @@ public class ContentResourceImpl implements ContentResource {
 	}
 
 	@GET
-	@Path("/d/kind")
+	@Path("/d/kind/{itemCd}")
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Response getKindMapList(String itemCd) 
+	public Response getKindMapList(@PathParam("itemCd") String itemCd) 
 	{
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
@@ -106,10 +114,11 @@ public class ContentResourceImpl implements ContentResource {
 
 	@POST
 	@Path("/u/comment")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Response addComment(String mapKey, String comment) 
+	public Response addComment(Comment comment) 
 	{
-		// TODO Auto-generated method stub
+		//add the comment
 		return Response.ok().build();
 	}
 
