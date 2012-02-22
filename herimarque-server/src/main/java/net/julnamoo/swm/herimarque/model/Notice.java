@@ -7,16 +7,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Notice implements Serializable{
 
+	String date;
 	String title;
 	String content;
 	
 	public Notice() {}
-	
-	public Notice(String title, String content)
-	{
-		this.title = title;
-		this.content = content;
-	}
 	
 	public String getTitle() {
 		return title;
@@ -29,6 +24,13 @@ public class Notice implements Serializable{
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 	
 	@Override
