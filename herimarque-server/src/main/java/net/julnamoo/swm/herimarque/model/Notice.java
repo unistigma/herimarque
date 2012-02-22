@@ -1,9 +1,11 @@
 package net.julnamoo.swm.herimarque.model;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Notice {
+public class Notice implements Serializable{
 
 	String title;
 	String content;
