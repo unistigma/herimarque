@@ -3,9 +3,6 @@ package net.julnamoo.swm.herimarque.resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.crypto.spec.PSource;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -16,11 +13,9 @@ import javax.ws.rs.core.Response;
 
 import net.julnamoo.swm.herimarque.model.Item;
 import net.julnamoo.swm.herimarque.model.Position;
-import net.julnamoo.swm.herimarque.util.ConstantsBean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;

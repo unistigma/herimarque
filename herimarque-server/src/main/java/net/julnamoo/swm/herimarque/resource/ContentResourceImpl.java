@@ -17,7 +17,6 @@ import javax.ws.rs.core.Response.Status;
 
 import net.julnamoo.swm.herimarque.model.Comment;
 import net.julnamoo.swm.herimarque.service.ContentService;
-import net.julnamoo.swm.herimarque.util.ConstantsBean;
 import net.julnamoo.swm.herimarque.util.PropertiesUtil;
 
 import org.slf4j.Logger;
