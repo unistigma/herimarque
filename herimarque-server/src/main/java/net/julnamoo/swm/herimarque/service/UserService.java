@@ -1,12 +1,16 @@
 package net.julnamoo.swm.herimarque.service;
 
+/**
+ * 
+ * @author Julie_air
+ *
+ */
 public interface UserService {
 
 	/**
 	 * Enroll user service
 	 * Generate encryption key with email and pwd
-	 * Insert the user info to the Mongo
-	 * return the mongo _id, the key for each user
+	 * Return the _id received from DAO, the key for each user
 	 * 
 	 * Send a mail containing the key and user email in the url request
 	 * The key and the email address will be passed by HeaderParam.
