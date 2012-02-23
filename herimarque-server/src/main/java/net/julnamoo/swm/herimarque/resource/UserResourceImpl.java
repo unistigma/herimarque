@@ -1,6 +1,5 @@
 package net.julnamoo.swm.herimarque.resource;
 
-import javax.annotation.Resource;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -17,18 +16,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Path("/api/u")
+@Path("/u")
 @Component
 public class UserResourceImpl implements UserResource {
 
 	Logger logger = LoggerFactory.getLogger(UserResourceImpl.class.getSimpleName());
 	
-//	@Resource
 	@Autowired
 	private ConstantsBean constants;
 	
 	@POST
-	
 	@Override
 	public Response addUser(@HeaderParam("email") String email, @HeaderParam("pwd") String pwd) 
 	{
@@ -37,7 +34,7 @@ public class UserResourceImpl implements UserResource {
 		String key = "tempKey";
 		Response response = Response.status(Status.CREATED).header("key",key).build();
 		
-		logger.debug("return 200");
+		logger.debug("addUser, return 200");
 		return response;
 	}
 
@@ -53,11 +50,11 @@ public class UserResourceImpl implements UserResource {
 		if(isDeleted)
 		{
 			response = Response.ok().build();
-			logger.debug("return 200");
+			logger.debug("delUser, return 200");
 		}else
 		{
 			response = Response.status(Status.SERVICE_UNAVAILABLE).build();
-			logger.debug("return 503");
+			logger.debug("delUser, return 503");
 		}
 		return response;
 	}
