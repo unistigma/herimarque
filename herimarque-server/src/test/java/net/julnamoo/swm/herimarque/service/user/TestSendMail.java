@@ -2,11 +2,13 @@ package net.julnamoo.swm.herimarque.service.user;
 
 import java.util.Properties;
 
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 
 import org.junit.Test;
@@ -38,7 +40,15 @@ public class TestSendMail {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toAddress));  
   
             message.setSubject("Email from our JAMES Herimarque Server");  
-            message.setText("Hello, Herimarque!");  
+
+            /** build mail content **/
+            String html = "<h1>Hello herimarque</h1> <h2>Test for sending html mail</h2>";
+//			BodyPart messageBodyPart = new MimeBodyPart();
+			//build html containg user key
+//			messageBodyPart.setContent(html, "text/html");
+			
+			message.setContent(html, "text/html");
+			
             Transport.send(message);  
   
             System.out.println("Email sent successfully");  
