@@ -22,9 +22,6 @@ public class UserResourceImpl implements UserResource {
 
 	Logger logger = LoggerFactory.getLogger(UserResourceImpl.class.getSimpleName());
 	
-	@Autowired
-	private ConstantsBean constants;
-	
 	/**
 	 * Enrolling the user
 	 */

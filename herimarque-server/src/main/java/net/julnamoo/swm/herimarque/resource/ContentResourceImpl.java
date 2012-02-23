@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response.Status;
 import net.julnamoo.swm.herimarque.model.Comment;
 import net.julnamoo.swm.herimarque.service.ContentService;
 import net.julnamoo.swm.herimarque.util.ConstantsBean;
+import net.julnamoo.swm.herimarque.util.PropertiesUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +42,6 @@ public class ContentResourceImpl implements ContentResource {
 	Logger logger = LoggerFactory.getLogger(ContentResourceImpl.class.getSimpleName());
 	
 	@Autowired
-	private ConstantsBean constants;
-	
-	@Autowired
 	private ContentService contentService;
 
 	@POST
@@ -53,7 +51,7 @@ public class ContentResourceImpl implements ContentResource {
 			@FormDataParam("file") FormDataContentDisposition fileDeatil) 
 	{
 		logger.debug("Start upload");
-		String fpath = constants.getMapsRepo() + File.pathSeparatorChar + fileDeatil.getFileName();
+		String fpath = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo") + File.pathSeparatorChar + fileDeatil.getFileName();
 		logger.debug("start handling uploadmap with {} file path", fpath);
 		
 		contentService.uploadMap(uploadedInputStream, fpath);
