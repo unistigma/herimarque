@@ -25,6 +25,9 @@ public class UserResourceImpl implements UserResource {
 	@Autowired
 	private ConstantsBean constants;
 	
+	/**
+	 * Enrolling the user
+	 */
 	@POST
 	@Override
 	public Response addUser(@HeaderParam("email") String email, @HeaderParam("pwd") String pwd) 
@@ -38,6 +41,9 @@ public class UserResourceImpl implements UserResource {
 		return response;
 	}
 
+	/**
+	 * Delete the user
+	 */
 	@DELETE
 	@Override
 	public Response delUser(@HeaderParam("key") String key, @HeaderParam("email") String email) 
@@ -59,9 +65,12 @@ public class UserResourceImpl implements UserResource {
 		return response;
 	}
 	
+	/**
+	 * Authenticate the user from email link
+	 */
 	@GET
 	@Override
-	public Response oauthUser(@HeaderParam("key") String key) 
+	public Response oauthUser(@HeaderParam("key") String key, @HeaderParam("email") String email) 
 	{
 		logger.debug("start handling oauthUser");
 		
@@ -81,9 +90,12 @@ public class UserResourceImpl implements UserResource {
 		return response;
 	}
 
+	/**
+	 * Change the user info
+	 */
 	@PUT
 	@Override
-	public Response changeKey(@HeaderParam("key") String key, @HeaderParam("pwd") String pwd) 
+	public Response changeUserInfo(@HeaderParam("email") String email, @HeaderParam("pwd") String pwd) 
 	{
 		logger.debug("start handling changeKey");
 		
