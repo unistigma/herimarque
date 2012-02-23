@@ -3,7 +3,6 @@ package net.julnamoo.swm.herimarque.resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -13,14 +12,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import net.julnamoo.swm.herimarque.model.Notice;
-import net.julnamoo.swm.herimarque.util.ConstantsBean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Path("/api/n")
+import com.google.gson.Gson;
+
+@Path("/n")
 @Component
 public class NoticeResourceImpl implements NoticeResource {
 
@@ -53,7 +52,7 @@ public class NoticeResourceImpl implements NoticeResource {
 
 	@GET
 	@Path("/new/{lastupdated}")
-	@Produces( {MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON} )
+	@Produces( {MediaType.APPLICATION_JSON} )
 	@Override
 	public Response getNewNotice(@PathParam("lastupdated") String lastupdate) 
 	{
@@ -65,8 +64,9 @@ public class NoticeResourceImpl implements NoticeResource {
 		
 		list.add(itsNew);
 		
+		String msg = new Gson().toJson(list);
 		logger.debug("send the notice after {}", lastupdate);
-		Response response = Response.ok().entity(list).build();
+		Response response = Response.ok().entity(msg).build();
 		
 		return response;
 	}
