@@ -24,10 +24,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
 import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.multipart.FormDataParam;
-import com.sun.jersey.multipart.MultiPart;
 
 /**
  * 
@@ -68,7 +67,7 @@ public class ContentResourceImpl implements ContentResource {
 	
 	@GET
 	@Path("/d/my")
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML })
 	@Override
 	public Response getMyMapList(@HeaderParam("key") String key) 
 	{
@@ -78,8 +77,10 @@ public class ContentResourceImpl implements ContentResource {
 		imgs.add("url1");
 		imgs.add("url2");
 		
+		String msg = new Gson().toJson(imgs);
 		logger.debug("total {} map list size is {}", key, imgs.size());
-		Response response = Response.ok().entity(imgs).build();
+//		Response response = Response.ok().entity(imgs).build();
+		Response response = Response.ok().entity(msg).build();
 		logger.info("user map retrieve, return 200");
 		
 		return response;
@@ -98,7 +99,8 @@ public class ContentResourceImpl implements ContentResource {
 		imgs.add("url2");
 		logger.debug("total {} map list size is {}", email, imgs.size());
 		
-		Response response = Response.ok().entity(imgs).build();
+		String msg = new Gson().toJson(imgs);
+		Response response = Response.ok().entity(msg).build();
 		logger.info("other user map retrieve, return 200");
 		
 		return response;
@@ -114,11 +116,12 @@ public class ContentResourceImpl implements ContentResource {
 		
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
-		imgs.add("url1");
-		imgs.add("url2");
+		imgs.add("loc url1");
+		imgs.add("loc url2");
 		logger.debug("total {} map list size is {}", ctrdCd, imgs.size());
 		
-		Response response = Response.ok().entity(imgs).build();
+		String msg = new Gson().toJson(imgs);
+		Response response = Response.ok().entity(msg).build();
 		logger.info("location map retrieve, return 200");
 
 		return response;
@@ -134,11 +137,12 @@ public class ContentResourceImpl implements ContentResource {
 		
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
-		imgs.add("url1");
-		imgs.add("url2");
+		imgs.add("kind url1");
+		imgs.add("kind url2");
 		logger.debug("total {} map list size is {}", itemCd, imgs.size());
 
-		Response response = Response.ok().entity(imgs).build();
+		String msg = new Gson().toJson(imgs);
+		Response response = Response.ok().entity(msg).build();
 		logger.info("kind map retrieve, return 200");
 		
 		return response;
@@ -150,7 +154,7 @@ public class ContentResourceImpl implements ContentResource {
 	@Override
 	public Response addComment(Comment comment) 
 	{
-		logger.debug("adding comment from {} to {}, {}", comment.getUserKey(), comment.getMapKey());
+		logger.debug("adding comment from {} to {}", comment.getUserKey(), comment.getMapKey());
 		//add the comment
 		
 		logger.info("adding new comment to {}, return 200", comment.getMapKey());
