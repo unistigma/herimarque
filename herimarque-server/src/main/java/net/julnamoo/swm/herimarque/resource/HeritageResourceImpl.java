@@ -23,13 +23,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
+
 /**
  * 
  * @author Julie_air
  *
  */
 
-@Path("/api/h")
+@Path("/h")
 @Component
 public class HeritageResourceImpl implements HeritageResource {
 
@@ -51,7 +53,7 @@ public class HeritageResourceImpl implements HeritageResource {
 
 	@GET
 	@Path("/kind/{itemCd}")
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	@Override
 	public Response getKindHeritageList(@PathParam("itemCd") String itemCd) 
 	{
@@ -60,13 +62,14 @@ public class HeritageResourceImpl implements HeritageResource {
 		list.add(new Item());
 		list.add(new Item());
 		
-		Response response = Response.ok(list).build();
+		String msg = new Gson().toJson(list);
+		Response response = Response.ok(msg).build();
 		return response;
 	}
 
 	@GET
 	@Path("/age/{ageCd}")
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	@Override
 	public Response getAgeHeritageList(@PathParam("ageCd") String ageCd) 
 	{
@@ -76,13 +79,14 @@ public class HeritageResourceImpl implements HeritageResource {
 		list.add(new Item());
 		list.add(new Item());
 		
-		Response response = Response.ok(list).build();
+		String msg = new Gson().toJson(list);
+		Response response = Response.ok(msg).build();
 		return response;
 	}
 
 	@GET
 	@Path("/area/{ctrdCd}")
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	@Override
 	public Response getAreaHeritageList(@PathParam("ctrdCd") String ctrdCd) 
 	{
@@ -92,7 +96,8 @@ public class HeritageResourceImpl implements HeritageResource {
 		list.add(new Item());
 		list.add(new Item());
 		
-		Response response = Response.ok(list).build();
+		String msg = new Gson().toJson(list);
+		Response response = Response.ok(msg).build();
 		return response;
 	}
 
@@ -112,7 +117,8 @@ public class HeritageResourceImpl implements HeritageResource {
 		list.add(new Item());
 		list.add(new Item());
 		
-		Response response = Response.ok(list).build();
+		String msg = new Gson().toJson(list);
+		Response response = Response.ok(msg).build();
 		return response;
 	}
 
