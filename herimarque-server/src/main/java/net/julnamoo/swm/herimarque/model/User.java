@@ -13,6 +13,8 @@ public class User implements Serializable{
 	String finalKey;
 	boolean auth;
 
+	public User(){}
+	
 	public String getEmail() {
 		return email;
 	}
