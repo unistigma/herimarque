@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-@Path("/api/db")
+@Path("/db")
 @Component
 public class SQLiteResourceImpl implements SQLiteResource {
 
@@ -32,11 +32,11 @@ public class SQLiteResourceImpl implements SQLiteResource {
 		if(isUpdated)
 		{
 			response = Response.status(Status.OK).build();
-			logger.debug("return 200");
+			logger.debug("isNewData, return 200");
 		}else
 		{
 			response = Response.status(Status.NO_CONTENT).build();
-			logger.debug("return 204");
+			logger.debug("isNewData, return 204");
 		}
 		
 		return response;
@@ -48,8 +48,10 @@ public class SQLiteResourceImpl implements SQLiteResource {
 	@Override
 	public Response getNewData(@PathParam("version") String dbVersion) 
 	{
+		//need to find the file from the resource
 		File file = new File("herimarque_dummy_db.db");
-		logger.debug("pass {}", file.getName());
+		
+		logger.debug("getNewData, pass {}", file.getName());
 		
 		ResponseBuilder response = Response.ok((Object) file);
 		response.header("Content-Disposition",
