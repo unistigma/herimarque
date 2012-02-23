@@ -6,12 +6,12 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>herimarque-server</name>
-	
+
 	<dependencies>
 		<!-- jersey -->
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
+			<artifactId>jersey-servlet</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
@@ -24,6 +24,11 @@
 					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
@@ -55,17 +60,30 @@
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
+
 			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
 			<version>${spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
@@ -156,6 +174,12 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>1.0.0.RELEASE</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 
@@ -193,38 +217,22 @@
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.10</version>
-				<!-- <configuration>
+				<configuration>
 					<scanIntervalSeconds>10</scanIntervalSeconds>
-					<stopKey>foo</stopKey>
-					<stopPort>9999</stopPort>
-				</configuration> -->
-				<executions>
-					<execution>
-						<id>start-jetty</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<scanIntervalSeconds>0</scanIntervalSeconds>
-							<daemon>true</daemon>
-						</configuration>
-					</execution>
-					<execution>
-						<id>stop-jetty</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>stop</goal>
-						</goals>
-					</execution>
-				</executions>
+					<contextPath>/herimarque</contextPath>
+				</configuration>
 			</plugin>
 
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.2</version>
+			</plugin>
 		</plugins>
 	</build>
 
 	<properties>
-		<jersey.version>1.10-b04</jersey.version>
+		<!-- <jersey.version>1.10-b04</jersey.version> -->
+		<jersey.version>1.11</jersey.version>
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<org.slf4j.version>1.6.3</org.slf4j.version>
 		<junit.version>4.10</junit.version>

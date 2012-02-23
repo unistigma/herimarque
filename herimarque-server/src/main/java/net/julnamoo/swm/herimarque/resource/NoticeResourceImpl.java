@@ -17,16 +17,17 @@ import net.julnamoo.swm.herimarque.util.ConstantsBean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Path("/n")
+@Path("/api/n")
 @Component
 public class NoticeResourceImpl implements NoticeResource {
 
 	Logger logger = LoggerFactory.getLogger(NoticeResourceImpl.class.getSimpleName());
 	
-	@Resource
-	private ConstantsBean constants;
+//	@Resource
+//	private ConstantsBean constants;
 	
 	@GET
 	@Path("/hasnew/{lastupdated}")

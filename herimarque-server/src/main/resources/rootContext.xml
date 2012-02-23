@@ -17,11 +17,6 @@
 		<constructor-arg name="databaseName" value="herimarque" />
 	</bean>
 	
-	 <bean id="simpleBean1" class="SimpleBean" init-method="init">
-        <property name="mapsRepo">
-            <value>C:\\herimarque/maps</value>
-        </property>
-    </bean>
 	<context:annotation-config />
 	<context:component-scan base-package="net.julnamoo.swm.herimarque."></context:component-scan>
 </beans>

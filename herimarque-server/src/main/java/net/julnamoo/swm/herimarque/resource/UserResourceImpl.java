@@ -14,15 +14,17 @@ import net.julnamoo.swm.herimarque.util.ConstantsBean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Path("/u")
+@Path("/api/u")
 @Component
 public class UserResourceImpl implements UserResource {
 
 	Logger logger = LoggerFactory.getLogger(UserResourceImpl.class.getSimpleName());
 	
-	@Resource
+//	@Resource
+	@Autowired
 	private ConstantsBean constants;
 	
 	@POST

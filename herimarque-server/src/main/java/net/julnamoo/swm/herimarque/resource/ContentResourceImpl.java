@@ -1,11 +1,10 @@
 package net.julnamoo.swm.herimarque.resource;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -26,6 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataMultiPart;
+import com.sun.jersey.multipart.FormDataParam;
+import com.sun.jersey.multipart.MultiPart;
 
 /**
  * 
@@ -39,18 +41,20 @@ public class ContentResourceImpl implements ContentResource {
 
 	Logger logger = LoggerFactory.getLogger(ContentResourceImpl.class.getSimpleName());
 	
-	@Resource
+	@Autowired
 	private ConstantsBean constants;
 	
 	@Autowired
 	private ContentService contentService;
 
 	@POST
-	@Path("/upload")
-	public Response uploadMap(@FormParam("file") InputStream uploadedInputStream,
-			@FormParam("file") FormDataContentDisposition fileDeatil) 
+	@Path("upload")
+	@Consumes("multipart/form-data")
+	public Response uploadMap(@FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileDeatil) 
 	{
-		String fpath = constants.getMapsRepo() + fileDeatil.getFileName();
+		logger.debug("Start upload");
+		String fpath = constants.getMapsRepo() + File.pathSeparatorChar + fileDeatil.getFileName();
 		logger.debug("start handling uploadmap with {} file path", fpath);
 		
 		contentService.uploadMap(uploadedInputStream, fpath);

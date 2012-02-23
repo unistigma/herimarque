@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.crypto.spec.PSource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -18,6 +20,7 @@ import net.julnamoo.swm.herimarque.util.ConstantsBean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,23 +29,22 @@ import org.springframework.stereotype.Component;
  *
  */
 
-@Path("/h")
+@Path("/api/h")
 @Component
 public class HeritageResourceImpl implements HeritageResource {
 
 	Logger logger = LoggerFactory.getLogger(HeritageResourceImpl.class.getSimpleName());
 	
-	@Resource
-	private ConstantsBean constants;
+//	@Resource
+//	private ConstantsBean constants;
 	
 	@GET
-	@Path("/g")
-	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Path("/g/{itemCd}/{ctrdCd}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Response getHeritage(Item item) 
+	public Response getHeritage(@PathParam("itemCd") String itemCd, @QueryParam("crltsNo") String crltsNo, @PathParam("ctrdCd") String ctrdCd) 
 	{
-		logger.debug("start handling getHeriage, itemCd:{}, crltsNo:{}", item.getItemCd(), item.getCrltsNo());
+		logger.debug("start handling getHeriage, itemCd:{}, crltsNo:{}", itemCd, crltsNo);
 		Response response= Response.ok(new Item()).build();
 		return response;
 	}
@@ -95,12 +97,15 @@ public class HeritageResourceImpl implements HeritageResource {
 	}
 
 	@GET
-	@Path("/near")
-	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Path("/near/{latitude}/{longitude}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Response getNearHeritageList(Position position) 
+	public Response getNearHeritageList(@PathParam("latitude") String latitude, @PathParam("longitude") String longitude) 
 	{
+		Position position = new Position();
+		position.setLatitude(latitude);
+		position.setLongitude(longitude);
+		
 		logger.debug("start handling getNerHeritageList, with ({}, {})", position.getLatitude(), position.getLongitude());
 		
 		List<Item> list = new ArrayList<Item>();
