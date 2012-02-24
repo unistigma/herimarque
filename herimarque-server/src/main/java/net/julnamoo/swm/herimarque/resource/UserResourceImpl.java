@@ -18,14 +18,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
+
 @Path("/u")
 @Component
 public class UserResourceImpl implements UserResource {
 
 	Logger logger = LoggerFactory.getLogger(UserResourceImpl.class);
 	
-	@Autowired
-	UserServiceImpl userService;
+	@Autowired(required=false)
+	UserServiceImpl userServiceImpl;
 	
 	/**
 	 * Enrolling the user
@@ -34,12 +36,12 @@ public class UserResourceImpl implements UserResource {
 	@Override
 	public Response addUser(@HeaderParam("email") String email, @HeaderParam("pwd") String pwd) 
 	{
-		logger.debug("start handling addUser, {}", email);
+		logger.info("start handling addUser, {}:{}", email, pwd);
 		
-		String key = userService.addUser(email, pwd);
+		String key = userServiceImpl.addUser(email, pwd);
 		Response response = Response.status(Status.CREATED).header("key",key).build();
 		
-		logger.debug("addUser, return 200");
+		logger.debug("addUser, return 201");
 		return response;
 	}
 
@@ -48,11 +50,11 @@ public class UserResourceImpl implements UserResource {
 	 */
 	@DELETE
 	@Override
-	public Response delUser(@HeaderParam("email") String email) 
+	public Response delUser(@QueryParam("email") String email) 
 	{
-		logger.debug("start hanndling delUser");
+		logger.info("start hanndling delUser");
 		
-		userService.delUser(email);
+		userServiceImpl.delUser(email);
 		Response response = null;
 		
 		response = Response.ok().build();
@@ -64,13 +66,14 @@ public class UserResourceImpl implements UserResource {
 	 * Authenticate the user from email link
 	 */
 	@GET
+	@Path("{key}")
 	@Override
 	public Response oauthUser(@PathParam("key") String key, @QueryParam("email") String email) 
 	{
-		logger.debug("start handling oauthUser");
+		logger.info("start handling oauthUser");
 		
 		Response response = null;
-		boolean Authentication = userService.authUser(email, key);
+		boolean Authentication = userServiceImpl.authUser(email, key);
 		
 		if(Authentication)
 		{
@@ -92,10 +95,10 @@ public class UserResourceImpl implements UserResource {
 	@Override
 	public Response changeUserInfo(@HeaderParam("email") String email, @HeaderParam("pwd") String pwd) 
 	{
-		logger.debug("start handling changeKey");
+		logger.info("start handling changeKey");
 		
 		Response response = null;
-		boolean changed = userService.changeUserInfo(email, pwd);
+		boolean changed = userServiceImpl.changeUserInfo(email, pwd);
 		
 		if(changed)
 		{
@@ -109,4 +112,14 @@ public class UserResourceImpl implements UserResource {
 		return response;
 	}
 
+	@GET
+	@Path("admin/all")
+	public Response allUsers()
+	{
+		logger.info("request information of all users");
+		
+		Response response = null;
+		String msg = new Gson().toJson(userServiceImpl.allUsers()).toString();
+		return response.ok().entity(msg).build();
+	}
 }
