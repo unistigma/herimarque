@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Path("/u")
 @Component
@@ -49,22 +48,15 @@ public class UserResourceImpl implements UserResource {
 	 */
 	@DELETE
 	@Override
-	public Response delUser(@HeaderParam("key") String key, @HeaderParam("email") String email) 
+	public Response delUser(@HeaderParam("email") String email) 
 	{
 		logger.debug("start hanndling delUser");
 		
-		boolean isDeleted = true;
+		userService.delUser(email);
 		Response response = null;
 		
-		if(isDeleted)
-		{
-			response = Response.ok().build();
-			logger.debug("delUser, return 200");
-		}else
-		{
-			response = Response.status(Status.SERVICE_UNAVAILABLE).build();
-			logger.debug("delUser, return 503");
-		}
+		response = Response.ok().build();
+		logger.debug("delUser, return 200");
 		return response;
 	}
 	
@@ -84,11 +76,11 @@ public class UserResourceImpl implements UserResource {
 		{
 			response = Response.status(Status.ACCEPTED).build();
 			logger.debug("return 202");
-		}else
+		}/*else
 		{
 			response = Response.status(Status.UNAUTHORIZED).build();
 			logger.debug("return 401");
-		}
+		}*/
 		
 		return response;
 	}
@@ -103,7 +95,7 @@ public class UserResourceImpl implements UserResource {
 		logger.debug("start handling changeKey");
 		
 		Response response = null;
-		boolean changed = true;
+		boolean changed = userService.changeUserInfo(email, pwd);
 		
 		if(changed)
 		{
