@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.google.gson.Gson;
 import com.sun.jersey.core.header.FormDataContentDisposition;
@@ -50,7 +51,7 @@ public class ContentResourceImpl implements ContentResource {
 			@FormDataParam("file") FormDataContentDisposition fileDeatil) 
 	{
 		logger.debug("Start upload");
-		String fpath = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo") + File.pathSeparatorChar + fileDeatil.getFileName();
+		String fpath = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo") + File.separatorChar + fileDeatil.getFileName();
 		logger.debug("start handling uploadmap with {} file path", fpath);
 		
 		contentService.uploadMap(uploadedInputStream, fpath);

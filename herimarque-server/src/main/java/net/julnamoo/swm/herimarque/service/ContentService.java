@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ContentService {
 
-	Logger logger = LoggerFactory.getLogger(ContentService.class.getSimpleName());
+	Logger logger = LoggerFactory.getLogger(ContentService.class);
 	
 	public void uploadMap(InputStream uploadedInputStream, String uploadedFileLocation)
 	{
