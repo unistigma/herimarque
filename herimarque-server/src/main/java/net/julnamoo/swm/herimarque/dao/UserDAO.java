@@ -8,7 +8,8 @@ package net.julnamoo.swm.herimarque.dao;
 public interface UserDAO {
 	
 	/**
-	 * Insert the user info to the Mongo
+	 * Insert the user info to the Mongo.
+	 * If there is a user with the email then overwrite the object to new
 	 * @param email
 	 * @param key
 	 * @return _id from Mongo
