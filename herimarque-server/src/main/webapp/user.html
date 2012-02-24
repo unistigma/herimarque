@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.7.1.js"></script>
+<title>Herimarque User Test Page</title>
+</head>
+<body>
+	<h1>회원 가입/정보수정/탈퇴</h1>
+	<div class="addUser">
+		<h2>회원 가입</h2>
+		<div>이메일</div><input type="text" style="width: 60;" id="add_email">
+		<div>비밀번호</div><input type="password" style="width: 60;" id="add_pwd">
+		<button onclick="addajax()">가입하기</button>
+		<div class="addResult"></div>
+	</div>
+	<h2>회원 정보 수정</h2>
+	<div class="modifyUser">
+		<div>이메일</div><input type="text" style="width: 60;" id="mod_email">
+		<div>비밀번호</div><input type="password" style="width: 60;" id="mod_pwd">
+		<button onclick="modajax()">수정하기</button>
+		<div class="modResult"></div>
+	</div>
+	<h2>회원 탈퇴</h2>
+	<div class="delUser">
+		<div>이메일</div><input type="text" style="width: 60;" id="del_email">
+		<button onclick="delajax()">탈퇴하기</button>
+		<div class="delResult"></div>
+	</div>
+	<br>
+	<button id="allUsers" onclick="allajax()"><h2>전체 회원 보기</h2></button>
+	<div class="allResult"></div>
+</body>
+
+<script type="text/javascript">
+function addajax(){
+	$.ajax({
+		url:'api/u',
+		type:'POST',
+		beforeSend: function(xhr){
+			xhr.setRequestHeader('email', $("#add_email").val());
+			xhr.setRequestHeader('pwd', $("#add_pwd").val());
+		},
+		statusCode:{
+			201: function(){
+				$(".addResult").html("success to add the user");
+			}
+		}
+	});
+}
+
+function modajax(){
+	$.ajax({
+		url:'api/u',
+		type:'PUT',
+		beforeSend: function(xhr){
+			xhr.setRequestHeader('email', $("#mod_email").val());
+			xhr.setRequestHeader('pwd', $("#mod_pwd").val());
+		},
+		statusCode:{
+			200: function(){
+				$(".modResult").html("success to change the passwod");
+			},
+			406: function(){
+				$(".modResult").html("FAIL to change the passwod");
+			}
+		}
+	});
+}
+
+function delajax(){
+	$.ajax({
+		url:'api/u?email='+$("#del_email").val(),
+		type:'DELETE',
+		statusCode:{
+			200: function(){
+				$(".delResult").html("Success to remove the user");
+			}
+		}
+});
+}
+
+function allajax(){
+	$.ajax({
+		url:'api/u/admin/all',
+		type:'GET',
+		statusCode:{
+			200: function(data){
+				$(".allResult").html(data);
+			}
+		}
+});
+}
+</script>
+</html>
