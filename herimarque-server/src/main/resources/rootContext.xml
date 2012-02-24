@@ -18,6 +18,6 @@
 	</bean>
 	
 	<context:annotation-config />
-	<context:component-scan base-package="net.julnamoo.swm.herimarque."></context:component-scan>
+	<context:component-scan base-package="net.julnamoo.swm.herimarque"></context:component-scan>
 </beans>
 
