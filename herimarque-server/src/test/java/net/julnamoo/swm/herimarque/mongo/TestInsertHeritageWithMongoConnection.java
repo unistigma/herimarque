@@ -3,6 +3,7 @@ package net.julnamoo.swm.herimarque.mongo;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.UnknownHostException;
 
 import org.junit.After;
@@ -58,15 +59,15 @@ public class TestInsertHeritageWithMongoConnection {
 		JsonElement jsonElement = jsonarray.get(0);
 		System.out.println(jsonElement.toString());
 		*/
-		
 		System.out.println("Using jsonparser with file reader");
-		JsonArray jsonarray = jsonparser.parse(new FileReader(new File(ClassLoader.getSystemResource("kindList.json").getFile()))).getAsJsonArray();
+//		JsonArray jsonarray = jsonparser.parse(new InputStreamReader(getClass().getResourceAsStream("kindList.json"))).getAsJsonArray();
+		JsonArray jsonarray = jsonparser.parse(new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream("kindList.json"))).getAsJsonArray();
 		JsonElement jsonElement = jsonarray.get(0);
-		System.out.println(jsonElement.toString());
 		
 		DBObject object = (DBObject) JSON.parse(jsonElement.toString());
+		System.out.println("insert the json " + object);
 		collection.insert(object);
-		System.out.println("insert the json");
+		System.out.println("_id is " + object.get("_id"));
 		
 		BasicDBObject queryDoc = new BasicDBObject();
 		queryDoc.put("crltsNm", "서울 숭례문");
