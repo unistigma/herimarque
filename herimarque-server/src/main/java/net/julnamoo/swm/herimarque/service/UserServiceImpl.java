@@ -45,21 +45,27 @@ public class UserServiceImpl implements UserService {
 		//generate the final key
 		logger.debug("Generate final key for new user {}", email);
 		String finalKey = UserInfoEncryptor.encryption(email, key);
-		String _id = userDAO.addUser(email, key, true);
+		userDAO.addUser(email, key, true);
 		
 		return true;
 	}
 
 	@Override
-	public void delUser(String email) {
-		// TODO Auto-generated method stub
-		
+	public void delUser(String email) 
+	{
+		logger.debug("request delete user with {}", email);
+		userDAO.delUser(email);
 	}
 
 	@Override
-	public boolean changeUserInfo(String email, String pwd) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean changeUserInfo(String email, String pwd) 
+	{
+		logger.debug("generate new final key with new information for {}", email);
+		String newKey = UserInfoEncryptor.encryption(email, "0000");
+		String finalKey = UserInfoEncryptor.encryption(email, newKey);
+		String result = userDAO.changeInfo(email, finalKey);
+		
+		return result == null ? false : true;
 	}
 	
 }
