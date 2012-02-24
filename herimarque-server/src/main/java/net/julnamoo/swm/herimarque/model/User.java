@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.hamcrest.core.IsInstanceOf;
-
 @XmlRootElement
 public class User implements Serializable{
 

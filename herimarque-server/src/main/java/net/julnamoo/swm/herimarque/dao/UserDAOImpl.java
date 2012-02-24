@@ -1,8 +1,12 @@
 package net.julnamoo.swm.herimarque.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -16,6 +20,7 @@ import com.mongodb.Mongo;
  * @author Julie_air
  *
  */
+@Repository(value="userDAO")
 public class UserDAOImpl implements UserDAO
 {
 	Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
@@ -26,6 +31,8 @@ public class UserDAOImpl implements UserDAO
 	private DB db = null;
 	private DBCollection collection = null;
 
+	public UserDAOImpl(){}
+	
 	@Override
 	public String addUser(String email, String key, boolean auth) 
 	{
@@ -38,10 +45,20 @@ public class UserDAOImpl implements UserDAO
 		doc.put("auth", auth);
 
 		//insert or update
-		collection.save(doc); 
-
+		String _id = null;
+		if(auth)
+		{
+			DBObject qdoc = new BasicDBObject();
+			qdoc.put("email", email);
+			collection.update(qdoc, doc);
+			_id = null;
+		}else
+		{
+			collection.save(doc);
+			_id = doc.get("_id").toString();
+		}
 		logger.debug("exec save with a object, {}", doc);
-		return (String) doc.get("_id");
+		return _id;//doc.get("_id").toString();
 	}
 
 	@Override
@@ -53,7 +70,7 @@ public class UserDAOImpl implements UserDAO
 		doc.put("email", email);
 
 		logger.info("Retrive key of {}", email);
-		return (String) collection.findOne(doc).get("_id");
+		return collection.findOne(doc).get("_id").toString();
 	}
 
 	@Override
@@ -61,19 +78,16 @@ public class UserDAOImpl implements UserDAO
 	{
 		setMongo();
 
-		//build target object
+		//find the target object
 		DBObject doc = new BasicDBObject();
 		doc.put("email", email);
+		doc = collection.findOne(doc);
+		//set the new key
 		doc.put("finalKey", newKey);
-		doc.put("auth", true);
-		
-		//build query object
-		DBObject qdoc = new BasicDBObject();
-		qdoc.put("email", email);
-		
-		collection.update(qdoc, doc);
+		collection.save(doc);
+
 		logger.debug("change Info of {} with {}", email, newKey);
-		return (String) doc.get("_id");
+		return doc.get("_id").toString();
 	}
 
 	@Override
@@ -95,6 +109,20 @@ public class UserDAOImpl implements UserDAO
 		}
 	}
 
+	public List<String> allUsers()
+	{
+		setMongo();
+		DBCursor results = collection.find();
+		
+		List<String> userList = new ArrayList<String>();
+		while(results.hasNext())
+		{
+			userList.add(results.next().get("email").toString());
+		}
+		
+		logger.debug("total user count is {}. return the list", userList.size());
+		return userList;
+	}
 	private void setMongo()
 	{
 		logger.debug("set mongo connection");

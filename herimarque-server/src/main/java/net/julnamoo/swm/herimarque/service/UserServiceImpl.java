@@ -1,12 +1,15 @@
 package net.julnamoo.swm.herimarque.service;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import net.julnamoo.swm.herimarque.dao.UserDAOImpl;
 import net.julnamoo.swm.herimarque.util.MailSender;
 import net.julnamoo.swm.herimarque.util.UserInfoEncryptor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,8 +22,10 @@ public class UserServiceImpl implements UserService {
 	
 	Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-	@Autowired
+	@Resource(name="userDAO")
 	UserDAOImpl userDAO;
+	
+	public UserServiceImpl(){}
 	
 	@Override
 	public String addUser(String email, String pwd) 
@@ -62,10 +67,15 @@ public class UserServiceImpl implements UserService {
 	{
 		logger.debug("generate new final key with new information for {}", email);
 		String newKey = UserInfoEncryptor.encryption(email, "0000");
-		String finalKey = UserInfoEncryptor.encryption(email, newKey);
+		String finalKey = UserInfoEncryptor.encryption(pwd, newKey);
 		String result = userDAO.changeInfo(email, finalKey);
 		
 		return result == null ? false : true;
 	}
 	
+	public List<String> allUsers()
+	{
+		logger.debug("retrive all users");
+		return userDAO.allUsers();
+	}
 }
