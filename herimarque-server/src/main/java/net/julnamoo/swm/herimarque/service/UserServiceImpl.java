@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 		// generate the temporal key and insert to Mongo
 		logger.debug("Generate temp key for respected user {}", email);
 		String key = UserInfoEncryptor.encryption(email, pwd);
-		String _id = userDAO.addUser(email, key);
+		String _id = userDAO.addUser(email, key, false);
 		
 		/** Send the email **/
 		new MailSender().sendMail(email, key);
@@ -40,14 +40,14 @@ public class UserServiceImpl implements UserService {
 	 * Generate the real key with email and the key
 	 */
 	@Override
-	public boolean oauthUser(String email, String key) 
+	public boolean authUser(String email, String key) 
 	{
 		//generate the final key
 		logger.debug("Generate final key for new user {}", email);
 		String finalKey = UserInfoEncryptor.encryption(email, key);
+		String _id = userDAO.addUser(email, key, true);
 		
-		
-		return false;
+		return true;
 	}
 
 	@Override

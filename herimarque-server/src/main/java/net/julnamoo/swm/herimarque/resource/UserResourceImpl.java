@@ -11,15 +11,22 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import net.julnamoo.swm.herimarque.service.UserServiceImpl;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @Path("/u")
 @Component
 public class UserResourceImpl implements UserResource {
 
 	Logger logger = LoggerFactory.getLogger(UserResourceImpl.class);
+	
+	@Autowired
+	UserServiceImpl userService;
 	
 	/**
 	 * Enrolling the user
@@ -30,7 +37,7 @@ public class UserResourceImpl implements UserResource {
 	{
 		logger.debug("start handling addUser, {}", email);
 		
-		String key = "tempKey";
+		String key = userService.addUser(email, pwd);
 		Response response = Response.status(Status.CREATED).header("key",key).build();
 		
 		logger.debug("addUser, return 200");
@@ -71,7 +78,7 @@ public class UserResourceImpl implements UserResource {
 		logger.debug("start handling oauthUser");
 		
 		Response response = null;
-		boolean Authentication = true;
+		boolean Authentication = userService.authUser(email, key);
 		
 		if(Authentication)
 		{

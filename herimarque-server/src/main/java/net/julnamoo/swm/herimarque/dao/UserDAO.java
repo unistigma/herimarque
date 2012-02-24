@@ -14,7 +14,7 @@ public interface UserDAO {
 	 * @param key
 	 * @return _id from Mongo
 	 */
-	public String addUser(String email, String key);
+	public String addUser(String email, String key, boolean auth);
 	
 	/**
 	 * Return the _id search result with email.

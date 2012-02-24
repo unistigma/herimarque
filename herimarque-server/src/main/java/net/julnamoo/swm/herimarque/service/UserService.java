@@ -27,7 +27,7 @@ public interface UserService {
 	  * @param key
 	  * @return boolean value of authenticated or not
 	  */
-	 public boolean oauthUser(String email, String key);
+	 public boolean authUser(String email, String key);
 	 
 	 /**
 	  * Delete the object from the Mongo having the passed email address
