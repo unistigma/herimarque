@@ -1,13 +1,19 @@
 package net.julnamoo.swm.herimarque.util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Properties;
 
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
@@ -26,9 +32,9 @@ public class MailSender
 	
 	private static String subject = "[Herimarque] 헤리마크 가입 인증 메일입니다.";
 	
-	protected MailSender(){}
+	public MailSender(){}
 	
-	public void sendMail(String toAddress)
+	public void sendMail(String toAddress, String key)
 	{
 		logger.debug("prepare sending email to {}", toAddress);
 		
@@ -46,11 +52,14 @@ public class MailSender
         {
 			message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
-			
 			message.setSubject(subject);
-			message.setText("Hello, Herimarque! It's sample contents");
-//			message.setContent(new Object(), "");
+
+			//get mail contents
+			String html = getContents(toAddress, key);
+			message.setText(html);
+			//send the mail
 			Transport.send(message);
+
 			logger.info("Send authentication email to {}", toAddress);
 			
 		} catch (AddressException e) 
@@ -59,6 +68,43 @@ public class MailSender
 		} catch (MessagingException e) 
 		{
 			e.printStackTrace();
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Build html string to send.
+	 * It contains email address and temp key of the user
+	 * @param toAddress
+	 * @param code
+	 * @return html
+	 * @throws IOException 
+	 */
+	private String getContents(String toAddress, String code) throws IOException
+	{
+		StringBuilder sb = new StringBuilder();
+		InputStream is = this.getClass().getResourceAsStream("/AuthUser.html");
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		String line = br.readLine();
+		while(line != null)
+		{
+			sb.append(line);
+			line = br.readLine();
+		}
+		
+		is.close();
+		br.close();
+
+		String html = sb.toString();
+		//build html containg user key
+		String key = UserInfoEncryptor.encryption("test@test.com", "testpwd");
+		String targetURL = new StringBuilder().append("http://localhost:8080/herimarque/api/u/").append(key).append("?email=").append(toAddress).toString();
+		logger.debug("building authentication request url:{}", targetURL);
+		html = html.replaceAll("url", targetURL);
+		logger.debug("HTML contents send to {} : {}", toAddress, html);
+		
+		return html;
 	}
 }
