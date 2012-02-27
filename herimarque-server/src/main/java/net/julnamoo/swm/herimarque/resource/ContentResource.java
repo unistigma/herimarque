@@ -20,7 +20,7 @@ public interface ContentResource {
 	// For Up/Download maps
 //	public Response uploadMap();
 //	public Response uploadMap(String key); // upload
-	public Response uploadMap(InputStream uploadedInputStream, FormDataContentDisposition fileDetail);
+	public Response uploadMap(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String user, String area, String age, String kind);
 	
 	public Response getMyMapList(String key); // retrieve my maps with comments of it
 	public Response getTheOtehrMapList(String email); // retrieve someone's maps with comments of it

@@ -11,6 +11,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -23,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.google.gson.Gson;
 import com.sun.jersey.core.header.FormDataContentDisposition;
@@ -39,7 +39,7 @@ import com.sun.jersey.multipart.FormDataParam;
 @Component
 public class ContentResourceImpl implements ContentResource {
 
-	Logger logger = LoggerFactory.getLogger(ContentResourceImpl.class.getSimpleName());
+	Logger logger = LoggerFactory.getLogger(ContentResourceImpl.class);
 	
 	@Autowired
 	private ContentService contentService;
@@ -48,17 +48,25 @@ public class ContentResourceImpl implements ContentResource {
 	@Path("upload")
 	@Consumes("multipart/form-data")
 	public Response uploadMap(@FormDataParam("file") InputStream uploadedInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileDeatil) 
+			@FormDataParam("file") FormDataContentDisposition fileDeatil, @HeaderParam("key") String user,
+			@QueryParam("area") String area, @QueryParam("age")String age, @QueryParam("kind")String kind) 
 	{
-		logger.debug("Start upload");
-		String fpath = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo") + File.separatorChar + fileDeatil.getFileName();
-		logger.debug("start handling uploadmap with {} file path", fpath);
+		logger.debug("Start upload with {}",user);
+		if(uploadedInputStream == null)
+		{
+			logger.debug("uploaded file is null, return");
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+		logger.debug("query params are area:{}, age:{}, kind:" + kind, area, age);
+		String dirPath = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo") + File.separatorChar + user;
+		String fname = fileDeatil.getFileName();
+		logger.debug("start handling uploadmap at {}/{}", dirPath, fname);
 		
-		contentService.uploadMap(uploadedInputStream, fpath);
+		contentService.uploadMap(uploadedInputStream, dirPath, fname);
 		
 		//add the file path to the mongo and get the id. It will be returned with response
 		String mapKey = "tempkey";
-		logger.info("{} map key : {}, return 200", fpath, mapKey);
+		logger.info("{} map key : {}, return 200", fname, mapKey);
 		
 		return Response.status(Status.OK).entity(mapKey).build();
 	}
