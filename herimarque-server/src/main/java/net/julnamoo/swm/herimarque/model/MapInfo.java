@@ -1,6 +1,7 @@
 package net.julnamoo.swm.herimarque.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class MapInfo implements Serializable{
 
@@ -9,7 +10,7 @@ public class MapInfo implements Serializable{
 	String area;
 	String age;
 	String kind;
-	String uploadTime;
+	Date uploadTime;
 	
 	public MapInfo() {
 	}
@@ -54,11 +55,11 @@ public class MapInfo implements Serializable{
 		this.kind = kind;
 	}
 
-	public String getUploadTime() {
+	public Date getUploadTime() {
 		return uploadTime;
 	}
 
-	public void setUploadTime(String uploadTime) {
+	public void setUploadTime(Date uploadTime) {
 		this.uploadTime = uploadTime;
 	}
 	
