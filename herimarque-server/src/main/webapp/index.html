@@ -1,16 +1,18 @@
 <!DOCTYPE>
 <html>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.7.1.js"></script>
 <body>
-	<h1>File Upload with Jersey</h1>
- 
-	<form action="api/c/upload" method="post" enctype="multipart/form-data">
- 
-	   <p>
-		Select a file : <input type="file" name="file" size="45" />
-	   </p>
- 
-	   <input type="submit" value="Upload It" />
-	</form>
- 
+
+<button id="contents">지도 관리</button>
+<button id="users">사용자 관리</button>
 </body>
+<script type="text/javascript">
+$("#contents").click(function(){
+	location.href="contents.html";
+});
+$("#users").click(function(){
+	location.href="users.html";
+});
+</script>
 </html>
