@@ -1,0 +1,93 @@
+<!DOCTYPE>
+<html>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.7.1.js"></script>
+<body>
+	<h1>File Upload with Jersey</h1>
+	<form name="uploadForm" method="post" enctype="multipart/form-data" onsubmit="return setAction()">
+		Select a file : <input type="file" name="file" size="45" />
+		<div>
+			<div>
+			지역 		
+			<select id="area">
+			<option value="11">서울</option>
+			<option value="21">부산</option>
+			<option value="22">대구</option>
+			<option value="23">인천</option>
+			<option value="24">광주</option>
+			<option value="25">대전</option>
+			<option value="26">울산</option>
+			<option value="31">경기</option>
+			<option value="32">강원</option>
+			<option value="33">충북</option>
+			<option value="34">충남</option>
+			<option value="35">전북</option>
+			<option value="36">전남</option>
+			<option value="37">경북</option>
+			<option value="38">경남</option>
+			<option value="39">제주</option>
+			<option value="ZZ">기타</option>
+			</select>
+			</div>
+			<div>
+			시대		
+			<select id="age">
+			<option value="01">선사시대</option>
+			<option value="03">석기시대</option>
+			<option value="05">청동기시대</option>
+			<option value="07">철기시대</option>
+			<option value="09">삼한시대</option>
+			<option value="10">삼국시대</option>
+			<option value="11">고구려시대</option>
+			<option value="12">백제시대</option>
+			<option value="13">신라시대</option>
+			<option value="14">가야시대</option>
+			<option value="15">발해시대</option>
+			<option value="20">통일신라시대</option>
+			<option value="30">고려시대</option>
+			<option value="40">조선시대</option>
+			<option value="45">대한제국시대</option>
+			<option value="50">일제강점기시대</option>
+			<option value="90">미상</option>
+			</select>
+			</div>
+			<div>
+			종목	
+			<select id="kind">
+			<option value="11">국보</option>
+			<option value="12">보물</option>
+			<option value="13">사적</option>
+			<option value="14">사적 및 명승</option>
+			<option value="15">명승</option>
+			<option value="16">천연기념물</option>
+			<option value="17">중요무형문화재</option>
+			<option value="18">중요민속자료</option>
+			<option value="21">시도유형문화재</option>
+			<option value="22">시도무형문화재</option>
+			<option value="23">시도기념물</option>
+			<option value="24">시도민속자료</option>
+			<option value="31">문화재자료</option>
+			<option value="79">등록문화재</option>
+			</select>
+			</div>
+		</div>
+		<button onclick="return setAction()">check it</button>
+		<input type="submit" value="Upload It" />
+	</form>
+
+</body>
+<script type="text/javascript">
+	function setAction() {
+
+		var actionURL = "api/c/upload?";
+		actionURL += "age=" + $("#age").val() + "&";
+		actionURL += "area="+ $("#area").val() + "&";
+		actionURL += "kind=" + $("#kind").val();
+		/* alert($("#age").val());
+		alert($("#area").val());
+		alert($("#kind").val()); */
+		alert(actionURL);
+		document.uploadForm.action=actionURL;
+	}
+</script>
+</html>
