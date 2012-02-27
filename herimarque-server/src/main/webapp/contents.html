@@ -71,7 +71,6 @@
 			</select>
 			</div>
 		</div>
-		<button onclick="return setAction()">check it</button>
 		<input type="submit" value="Upload It" />
 	</form>
 
@@ -79,15 +78,10 @@
 <script type="text/javascript">
 	function setAction() {
 
-		var actionURL = "api/c/upload?";
-		actionURL += "age=" + $("#age").val() + "&";
-		actionURL += "area="+ $("#area").val() + "&";
-		actionURL += "kind=" + $("#kind").val();
-		/* alert($("#age").val());
-		alert($("#area").val());
-		alert($("#kind").val()); */
-		alert(actionURL);
+		var actionURL = "api/c/upload/"+ $("#area").val() + "/" + $("#age").val() + "/" + $("#kind").val();;
+		/* alert(actionURL); */
 		document.uploadForm.action=actionURL;
+		return true;
 	}
 </script>
 </html>

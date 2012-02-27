@@ -45,11 +45,11 @@ public class ContentResourceImpl implements ContentResource {
 	private ContentService contentService;
 
 	@POST
-	@Path("upload")
+	@Path("upload/{age}/{area}/{kind}")
 	@Consumes("multipart/form-data")
 	public Response uploadMap(@FormDataParam("file") InputStream uploadedInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileDeatil, @HeaderParam("key") String user,
-			@QueryParam("area") String area, @QueryParam("age")String age, @QueryParam("kind")String kind) 
+			@PathParam("area") String area, @PathParam("age")String age, @PathParam("kind")String kind) 
 	{
 		logger.debug("Start upload with {}",user);
 		if(uploadedInputStream == null)
