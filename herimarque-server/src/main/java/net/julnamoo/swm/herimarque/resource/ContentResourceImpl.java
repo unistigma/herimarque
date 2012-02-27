@@ -2,6 +2,8 @@ package net.julnamoo.swm.herimarque.resource;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
@@ -17,6 +19,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import net.julnamoo.swm.herimarque.model.Comment;
+import net.julnamoo.swm.herimarque.model.MapInfo;
 import net.julnamoo.swm.herimarque.service.ContentService;
 import net.julnamoo.swm.herimarque.util.PropertiesUtil;
 
@@ -52,17 +55,38 @@ public class ContentResourceImpl implements ContentResource {
 			@PathParam("area") String area, @PathParam("age")String age, @PathParam("kind")String kind) 
 	{
 		logger.debug("Start upload with {}",user);
+		
+		//If there is no file, then return the BAD_REQUEST
 		if(uploadedInputStream == null)
 		{
 			logger.debug("uploaded file is null, return");
 			return Response.status(Status.BAD_REQUEST).build();
 		}
-		logger.debug("query params are area:{}, age:{}, kind:" + kind, area, age);
-		String dirPath = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo") + File.separatorChar + user;
-		String fname = fileDeatil.getFileName();
-		logger.debug("start handling uploadmap at {}/{}", dirPath, fname);
 		
-		contentService.uploadMap(uploadedInputStream, dirPath, fname);
+		StringBuilder sb = new StringBuilder();
+		String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapRepo");
+		sb.append(repo).append(File.separatorChar);
+		sb.append(user).append(File.separatorChar);
+		String fname;
+		try 
+		{
+			fname = URLEncoder.encode(fileDeatil.getFileName(), "UTF-8");
+		} catch (UnsupportedEncodingException e) 
+		{
+			fname = fileDeatil.getFileName();
+		}
+		sb.append(fname);
+		
+		String filePath = sb.toString();
+		
+		MapInfo mapInfo = new MapInfo();
+		mapInfo.setFilePath(filePath);
+		mapInfo.setUser(user);
+		mapInfo.setAge(age);
+		mapInfo.setArea(area);
+		mapInfo.setKind(kind);
+		
+		contentService.uploadMap(uploadedInputStream, mapInfo);
 		
 		//add the file path to the mongo and get the id. It will be returned with response
 		String mapKey = "tempkey";
