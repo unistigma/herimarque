@@ -21,15 +21,9 @@ import com.mongodb.Mongo;
  *
  */
 @Repository(value="userDAO")
-public class UserDAOImpl implements UserDAO
+public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 {
 	Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
-
-	@Autowired
-	Mongo mongo;
-
-	private DB db = null;
-	private DBCollection collection = null;
 
 	public UserDAOImpl(){}
 	
@@ -122,11 +116,5 @@ public class UserDAOImpl implements UserDAO
 		
 		logger.debug("total user count is {}. return the list", userList.size());
 		return userList;
-	}
-	private void setMongo()
-	{
-		logger.debug("set mongo connection");
-		db = mongo.getDB("herimarque");
-		collection = db.getCollection("users");
 	}
 }
