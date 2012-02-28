@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 		String _id = userDAO.addUser(id, key, false);
 		
 		/** Send the email **/
-		new MailSender().sendMail(email, key);
+		new MailSender().sendMail(email, id, key);
 		return _id;
 	}
 
@@ -74,14 +74,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean changeUserInfo(String id, String pwd) 
+	public String changeUserInfo(String id, String pwd) 
 	{
 		logger.debug("generate new final key with new information for {}", id);
-		String newKey = UserInfoEncryptor.encryption(id, "0000");
+		String newKey = UserInfoEncryptor.encryption(id, Double.toString(Math.random()));
 		String finalKey = UserInfoEncryptor.encryption(pwd, newKey);
 		String result = userDAO.changeInfo(id, finalKey);
 		
-		return result == null ? false : true;
+		return result;
 	}
 	
 	public List<String> allUsers()

@@ -40,7 +40,7 @@ public interface UserService {
 	  * Password can be modified ONLY
 	  * @param id
 	  * @param pwd
-	  * @return
+	  * @return _id from the mongo
 	  */
-	 public boolean changeUserInfo(String id, String pwd);
+	 public String changeUserInfo(String id, String pwd);
 }

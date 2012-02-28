@@ -7,17 +7,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class User implements Serializable{
 
-	String email;
+	String id;
 	String finalKey;
 	boolean auth;
 
 	public User(){}
 	
 	public String getEmail() {
-		return email;
+		return id;
 	}
 	public void setEmail(String email) {
-		this.email = email;
+		this.id = email;
 	}
 	public String getFinalKey() {
 		return finalKey;

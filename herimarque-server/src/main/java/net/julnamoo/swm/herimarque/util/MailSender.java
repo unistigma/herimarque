@@ -34,7 +34,7 @@ public class MailSender
 	
 	public MailSender(){}
 	
-	public void sendMail(String toAddress, String key)
+	public void sendMail(String toAddress, String id, String key)
 	{
 		logger.debug("prepare sending email to {}", toAddress);
 		
@@ -55,7 +55,7 @@ public class MailSender
 			message.setSubject(subject);
 
 			//get mail contents
-			String html = getContents(toAddress, key);
+			String html = getContents(id, key);
 			message.setText(html);
 			//send the mail
 			Transport.send(message);
@@ -77,12 +77,12 @@ public class MailSender
 	/**
 	 * Build html string to send.
 	 * It contains email address and temp key of the user
-	 * @param toAddress
+	 * @param id
 	 * @param code
 	 * @return html
 	 * @throws IOException 
 	 */
-	private String getContents(String toAddress, String code) throws IOException
+	private String getContents(String id, String code) throws IOException
 	{
 		StringBuilder sb = new StringBuilder();
 		InputStream is = this.getClass().getResourceAsStream("/AuthUser.html");
@@ -99,11 +99,11 @@ public class MailSender
 
 		String html = sb.toString();
 		//build html containg user key
-		String key = UserInfoEncryptor.encryption("test@test.com", "testpwd");
-		String targetURL = new StringBuilder().append("http://localhost:8080/herimarque/api/u/").append(key).append("?email=").append(toAddress).toString();
+		String targetURL = new StringBuilder().append("http://localhost:8080/herimarque/api/u/").append(code).append("?id=").append(id).toString();
 		logger.debug("building authentication request url:{}", targetURL);
+		
 		html = html.replaceAll("url", targetURL);
-		logger.debug("HTML contents send to {} : {}", toAddress, html);
+		logger.debug("HTML contents send to {} : {}", id, html);
 		
 		return html;
 	}

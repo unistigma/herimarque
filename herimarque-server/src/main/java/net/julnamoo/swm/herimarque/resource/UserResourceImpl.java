@@ -34,14 +34,25 @@ public class UserResourceImpl implements UserResource {
 	 */
 	@POST
 	@Override
-	public Response addUser(@HeaderParam("email") String email, @HeaderParam("pwd") String pwd) 
+	public Response addUser(@HeaderParam("email") String email, @HeaderParam("pwd") String pwd, @QueryParam("id") String id) 
 	{
-		logger.info("start handling addUser, {}:{}", email, pwd);
+		logger.info("start handling addUser, {}:{}", email, id);
+		logger.debug("Try to add user with {}", pwd);
 		
-		String key = userServiceImpl.addUser(email, pwd);
-		Response response = Response.status(Status.CREATED).header("key",key).build();
+		String key = userServiceImpl.addUser(id, email, pwd);
 		
-		logger.debug("addUser, return 201");
+		Response response = null;
+		
+		if(key == null)
+		{
+			response = Response.status(Status.BAD_REQUEST).build();
+			logger.debug("addUser, return 400");
+		}else
+		{
+			response = Response.status(Status.CREATED).header("key",key).build();
+			logger.debug("addUser, return 201");
+		}
+		
 		return response;
 	}
 
@@ -50,11 +61,11 @@ public class UserResourceImpl implements UserResource {
 	 */
 	@DELETE
 	@Override
-	public Response delUser(@QueryParam("email") String email) 
+	public Response delUser(@QueryParam("id") String id) 
 	{
 		logger.info("start hanndling delUser");
 		
-		userServiceImpl.delUser(email);
+		userServiceImpl.delUser(id);
 		Response response = null;
 		
 		response = Response.ok().build();
@@ -68,22 +79,22 @@ public class UserResourceImpl implements UserResource {
 	@GET
 	@Path("{key}")
 	@Override
-	public Response oauthUser(@PathParam("key") String key, @QueryParam("email") String email) 
+	public Response oauthUser(@PathParam("key") String key, @QueryParam("id") String id) 
 	{
 		logger.info("start handling oauthUser");
 		
 		Response response = null;
-		boolean Authentication = userServiceImpl.authUser(email, key);
+		boolean Authentication = userServiceImpl.authUser(id, key);
 		
 		if(Authentication)
 		{
 			response = Response.status(Status.ACCEPTED).build();
 			logger.debug("return 202");
-		}/*else
+		}else
 		{
 			response = Response.status(Status.UNAUTHORIZED).build();
 			logger.debug("return 401");
-		}*/
+		}
 		
 		return response;
 	}
@@ -98,16 +109,16 @@ public class UserResourceImpl implements UserResource {
 		logger.info("start handling changeKey");
 		
 		Response response = null;
-		boolean changed = userServiceImpl.changeUserInfo(email, pwd);
+		String changed = userServiceImpl.changeUserInfo(email, pwd);
 		
-		if(changed)
+		if(changed != null)
 		{
-			response = Response.status(Status.OK).header("key", new String("newkey")).build();
-			logger.debug("return 200");
+			response = Response.status(Status.OK).header("key", changed).build();
+			logger.debug("change user info, return 200");
 		}else
 		{
 			response = Response.status(Status.NOT_ACCEPTABLE).build();
-			logger.debug("return 406");
+			logger.debug("change user info, return 406");
 		}
 		return response;
 	}

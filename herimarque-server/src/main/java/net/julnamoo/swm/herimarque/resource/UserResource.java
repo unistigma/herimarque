@@ -4,8 +4,8 @@ import javax.ws.rs.core.Response;
 
 public interface UserResource {
 
-	public Response addUser(String email, String pwd);
-	public Response delUser(String email);
-	public Response oauthUser(String key, String email);
-	public Response changeUserInfo(String email, String pwd); // for change e-mail or password
+	public Response addUser(String email, String pwd, String id);
+	public Response delUser(String id);
+	public Response oauthUser(String key, String id);
+	public Response changeUserInfo(String id, String pwd); // for change e-mail or password
 }
