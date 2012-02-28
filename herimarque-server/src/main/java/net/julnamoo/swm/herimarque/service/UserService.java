@@ -18,29 +18,29 @@ public interface UserService {
 	 * @param pwd
 	 * @return userKey
 	 */
-	 public String addUser(String email, String pwd);
+	 public String addUser(String id, String email, String pwd);
 	 
 	 /**
 	  * Authenticate the user from the typical link sent to the user in enrolling
 	  * Check the key from the request and determine registering of the user.
-	  * @param email 
+	  * @param id 
 	  * @param key
 	  * @return boolean value of authenticated or not
 	  */
-	 public boolean authUser(String email, String key);
+	 public boolean authUser(String id, String key);
 	 
 	 /**
 	  * Delete the object from the Mongo having the passed email address
-	  * @param email
+	  * @param id
 	  */
-	 public void delUser(String email);
+	 public void delUser(String id);
 	 
 	 /**
 	  * Change the info of the user with the email.
 	  * Password can be modified ONLY
-	  * @param email
+	  * @param id
 	  * @param pwd
 	  * @return
 	  */
-	 public boolean changeUserInfo(String email, String pwd);
+	 public boolean changeUserInfo(String id, String pwd);
 }
