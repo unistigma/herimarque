@@ -10,34 +10,36 @@ public interface UserDAO {
 	/**
 	 * Insert the user info to the Mongo.
 	 * If there is a user with the email then overwrite the object to new
-	 * @param email
+	 * 
+	 * @param id
 	 * @param key
-	 * @return _id from Mongo
+	 * @param auth
+	 * @return _id from mongo or null at the first
 	 */
-	public String addUser(String email, String key, boolean auth);
+	public String addUser(String id, String key, boolean auth);
 	
 	/**
-	 * Return the _id search result with email.
-	 * If there are multiple object with the mail,
+	 * Return the _id search result with id.
+	 * If there are multiple object with the id,
 	 * then remain the first object only and others are removed.
 	 * The key of the first object will be returned
-	 * @param email
+	 * @param id
 	 * @return _id from Mongo
 	 */
-	public String getUserKey(String email);
+	public String getUserKey(String id);
 	
 	/**
-	 * Search the object with the email and insert the new object with the email and newKey.
+	 * Search the object with the id and insert the new object with the email and newKey.
 	 * Previous value is removed automatically.
-	 * @param email
+	 * @param id
 	 * @param newKey
 	 * @return _id from Mongo
 	 */
-	public String changeInfo(String email, String newKey);
+	public String changeInfo(String id, String newKey);
 	
 	/**
-	 * Delete a object or objects with the email from Mongo
+	 * Delete a object or objects with the id from Mongo
 	 * @param email
 	 */
-	public void delUser(String email);
+	public void delUser(String id);
 }

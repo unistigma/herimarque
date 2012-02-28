@@ -28,13 +28,13 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 	public UserDAOImpl(){}
 	
 	@Override
-	public String addUser(String email, String key, boolean auth) 
+	public String addUser(String id, String key, boolean auth) 
 	{
 		setMongo();
 
 		//Set authorization value to verify on going or done.
 		DBObject doc = new BasicDBObject();
-		doc.put("email", email);
+		doc.put("id", id);
 		doc.put("finalKey", key);
 		doc.put("auth", auth);
 
@@ -43,7 +43,7 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 		if(auth)
 		{
 			DBObject qdoc = new BasicDBObject();
-			qdoc.put("email", email);
+			qdoc.put("id", id);
 			collection.update(qdoc, doc);
 			_id = null;
 		}else
@@ -56,45 +56,52 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 	}
 
 	@Override
-	public String getUserKey(String email) 
+	public String getUserKey(String id) 
 	{
 		setMongo();
 
 		DBObject doc = new BasicDBObject();
-		doc.put("email", email);
+		doc.put("id", id);
 
-		logger.info("Retrive key of {}", email);
-		return collection.findOne(doc).get("_id").toString();
+		logger.info("Retrive key of {}", id);
+		DBCursor cursor = collection.find(doc);
+		if(cursor.size() > 0)
+		{
+			return null;
+		}else
+		{
+			return cursor.next().get("finalKey").toString();
+		}
 	}
 
 	@Override
-	public String changeInfo(String email, String newKey) 
+	public String changeInfo(String id, String newKey) 
 	{
 		setMongo();
 
 		//find the target object
 		DBObject doc = new BasicDBObject();
-		doc.put("email", email);
+		doc.put("id", id);
 		doc = collection.findOne(doc);
 		//set the new key
 		doc.put("finalKey", newKey);
 		collection.save(doc);
 
-		logger.debug("change Info of {} with {}", email, newKey);
+		logger.debug("change Info of {} with {}", id, newKey);
 		return doc.get("_id").toString();
 	}
 
 	@Override
-	public void delUser(String email) 
+	public void delUser(String id) 
 	{
 		setMongo();
 		
 		//build query object
 		DBObject qdoc = new BasicDBObject();
-		qdoc.put("email", email);
+		qdoc.put("id", id);
 		
 		DBCursor results = collection.find(qdoc);
-		logger.info("Find {} users with {}, all of them are removed", results.size(), email);
+		logger.info("Find {} users with {}, all of them are removed", results.size(), id);
 		while(results.hasNext())
 		{
 			DBObject target = results.next();
