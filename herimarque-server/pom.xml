@@ -197,15 +197,10 @@
 			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- James SMTP server -->
-		<!-- <dependency>
-			<groupId>org.apache.james</groupId>
-			<artifactId>james-server-smtpserver</artifactId>
-			<version>3.0-M2</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.apache.james</groupId> <artifactId>james-server-smtpserver</artifactId> 
+			<version>3.0-M2</version> <type>jar</type> <scope>compile</scope> </dependency> -->
 		<dependency>
 			<groupId>com.sun.mail</groupId>
 			<artifactId>javax.mail</artifactId>
@@ -219,6 +214,13 @@
 			<version>3.5.0</version>
 			<type>jar</type>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<version>8.1.1.v20120215</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
@@ -243,6 +245,7 @@
 				<configuration>
 					<scanIntervalSeconds>10</scanIntervalSeconds>
 					<contextPath>/herimarque</contextPath>
+					<!-- <jettyConfig>src/main/resources/jetty.xml</jettyConfig> -->
 				</configuration>
 			</plugin>
 
