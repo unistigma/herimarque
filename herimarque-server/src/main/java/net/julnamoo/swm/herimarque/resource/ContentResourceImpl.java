@@ -99,7 +99,7 @@ public class ContentResourceImpl implements ContentResource {
 	{
 		logger.debug("start handling getMyMapList with user {}", key);
 
-		//get path of images
+		//get path list of images
 		String msg = contentService.getMyMapList(key);
 		
 		Response response = Response.ok().entity(msg).build();
@@ -115,11 +115,9 @@ public class ContentResourceImpl implements ContentResource {
 	public Response getTheOtehrMapList(@HeaderParam("user") String id) 
 	{
 		logger.debug("start handling getTheOtehrMapList of {} user", id);
-		//get path of images
-		List<String> imgs = contentService.getOtherMapList(id);
 
-		String msg = new Gson().toJson(imgs);
-		logger.debug("total map of {} list size is {}", id, imgs.size());
+		//get path list of images
+		String msg = contentService.getOtherMapList(id);
 		Response response = Response.ok().entity(msg).build();
 		logger.info("other user map retrieve, return 200");
 
@@ -134,13 +132,8 @@ public class ContentResourceImpl implements ContentResource {
 	{
 		logger.debug("start handling getLocationMapList of {} ", ctrdCd);
 
-		//new Object will be changed with Image url list
-		ArrayList<String> imgs = new ArrayList<String>();
-		imgs.add("loc url1");
-		imgs.add("loc url2");
-		logger.debug("total {} map list size is {}", ctrdCd, imgs.size());
-
-		String msg = new Gson().toJson(imgs);
+		//get path list of images
+		String msg = contentService.getLocationMapList(ctrdCd);
 		Response response = Response.ok().entity(msg).build();
 		logger.info("location map retrieve, return 200");
 

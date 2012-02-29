@@ -71,14 +71,7 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 				DBObject doc = results.next();
 				
 				//set mapInfo instances for adding to the list
-				MapInfo mi = new MapInfo();
-				mi.setUser(doc.get("user").toString());
-				mi.setFilePath(doc.get("filePath").toString());
-				mi.setAge(doc.get("age").toString());
-				mi.setArea(doc.get("area").toString());
-				mi.setKind(doc.get("kind").toString());
-				mi.setUploadTime(doc.get("uploadTime").toString());
-
+				MapInfo mi = doc2MapInfo(doc);
 				logger.debug("add {} to the UserMapList", mi.toString());
 				resultList.add(mi);
 			}
@@ -86,6 +79,27 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		
 		logger.debug("return the {} map list, size is {}", id, resultList.size());
 		return resultList;
+	}
+	
+	public List<MapInfo> getLocationMapList(String ctrdCd)
+	{
+		List<MapInfo> mapList = new ArrayList<MapInfo>();
+		
+		setMongo();
+		DBObject qdoc = new BasicDBObject();
+		qdoc.put("area", ctrdCd);
+		
+		DBCursor results = collection.find(qdoc);
+		while(results.hasNext())
+		{
+			//set mapInfo instances for adding to the list
+			MapInfo mi = doc2MapInfo(results.next());
+			logger.debug("add {} tp tje locationMapList", mi.toString());
+			mapList.add(mi);
+		}
+		
+		logger.debug("return the area:{} map list, size is {}", ctrdCd, mapList.size());
+		return mapList;
 	}
 	
 	private boolean isAuthedUser(String id)
@@ -110,5 +124,18 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		
 		logger.debug("return the autentication of the {}, {}", id, result);
 		return result;
+	}
+	
+	private MapInfo doc2MapInfo(DBObject doc)
+	{
+		MapInfo mi = new MapInfo();
+		mi.setUser(doc.get("user").toString());
+		mi.setFilePath(doc.get("filePath").toString());
+		mi.setAge(doc.get("age").toString());
+		mi.setArea(doc.get("area").toString());
+		mi.setKind(doc.get("kind").toString());
+		mi.setUploadTime(doc.get("uploadTime").toString());
+		
+		return mi;
 	}
 }

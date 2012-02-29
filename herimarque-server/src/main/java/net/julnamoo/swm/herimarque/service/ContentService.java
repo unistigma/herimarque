@@ -95,20 +95,24 @@ public class ContentService {
 		return msg;
 	}
 	
-	public List<String> getOtherMapList(String id)
+	public String getOtherMapList(String id)
 	{
 		logger.debug("request user {} map list from another user", id);
-		List<String> otherMapList = new ArrayList<String>(); //contentsDAO.getUsersMapList(id);
-		return otherMapList;
+		List<MapInfo> otherMapList = contentsDAO.getUsersMapList(id);
+		
+		String msg = new Gson().toJson(otherMapList);
+		logger.debug("getOtherMapList, return json format {}", msg);
+		return msg;
 	}
 	
-	public List<String> getLocationMapList(String ctrdCd)
+	public String getLocationMapList(String ctrdCd)
 	{
 		logger.debug("request maps of the location:{}", ctrdCd);
 		
-		List<String> mapList = new ArrayList<String>();
+		List<MapInfo> mapList = contentsDAO.getLocationMapList(ctrdCd);
 		
-		
-		return mapList;
+		String msg = new Gson().toJson(mapList);
+		logger.debug("getLocationMapList, return json format {}", msg);
+		return msg;
 	}
 }
