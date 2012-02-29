@@ -12,6 +12,9 @@ public class SimpleHerimarqueDAO {
 
 	Logger logger = LoggerFactory.getLogger(SimpleHerimarqueDAO.class);
 	
+	private String dbName = "herimarque";
+	protected String collectionName = null;
+	
 	@Autowired
 	Mongo mongo;
 
@@ -25,7 +28,10 @@ public class SimpleHerimarqueDAO {
 	protected void setMongo()
 	{
 		logger.debug("set mongo connection");
-		db = mongo.getDB("herimarque");
-		collection = db.getCollection("users");
+		db = mongo.getDB(dbName);
+		if(collectionName != null)
+		{
+			collection = db.getCollection(collectionName);
+		}else throw new IllegalStateException("Please set the collectionName");
 	}
 }
