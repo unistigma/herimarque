@@ -2,9 +2,8 @@ package net.julnamoo.swm.herimarque.resource;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -13,7 +12,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -63,18 +61,14 @@ public class ContentResourceImpl implements ContentResource {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 		
+		//build file path
 		StringBuilder sb = new StringBuilder();
-		String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapRepo");
+		String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo");
+//		String repo = "maps";
 		sb.append(repo).append(File.separatorChar);
 		sb.append(user).append(File.separatorChar);
 		String fname;
-		try 
-		{
-			fname = URLEncoder.encode(fileDeatil.getFileName(), "UTF-8");
-		} catch (UnsupportedEncodingException e) 
-		{
-			fname = fileDeatil.getFileName();
-		}
+		fname = fileDeatil.getFileName();
 		sb.append(fname);
 		
 		String filePath = sb.toString();
@@ -102,14 +96,12 @@ public class ContentResourceImpl implements ContentResource {
 	public Response getMyMapList(@HeaderParam("key") String key) 
 	{
 		logger.debug("start handling getMyMapList with user {}", key);
-		//new Object will be changed with Image url list
-		ArrayList<String> imgs = new ArrayList<String>();
-		imgs.add("url1");
-		imgs.add("url2");
+		
+		//get path of images
+		List<String> imgs = contentService.getMyMapList(key);
 		
 		String msg = new Gson().toJson(imgs);
 		logger.debug("total {} map list size is {}", key, imgs.size());
-//		Response response = Response.ok().entity(imgs).build();
 		Response response = Response.ok().entity(msg).build();
 		logger.info("user map retrieve, return 200");
 		
@@ -191,4 +183,10 @@ public class ContentResourceImpl implements ContentResource {
 		return Response.ok().build();
 	}
 
+//	@GET
+//	@Path("/resources/{category}/{user}/{fname}")
+//	public Response getMaps()
+//	{
+//		
+//	}
 }
