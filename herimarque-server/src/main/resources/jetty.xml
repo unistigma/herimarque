@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+<Configure id="Server" class="org.mortbay.jetty.Server">
+	<!-- class="org.eclipse.jetty.server.Server" -->
+	<Set name="handlers">
+		<Array type="org.mortbay.jetty.Handler">
+			<Item>
+				<New class="org.mortbay.jetty.handler.ContextHandler">
+					<Set name="contextPath">/aa</Set>
+					<Set name="resourceBase">/data/temp/herimarqueRepo</Set>
+				</New>
+			</Item>
+
+		</Array>
+	</Set>
+</Configure>
+
+
+
+<!-- <Configure class="org.eclipse.jetty.server.handler.ContextHandler"> 
+	<Set name="contextPath">/resources</Set> <Set name="resourceBase">/Volumes/Disk 
+	2/herimarqueRepo/</Set> <Call name="addHandler"> <Arg> <New class="org.eclipse.jetty.server.handler.ResourceHandler"/> 
+	</Arg> </Call> </Configure> -->
+<!-- <Set name="handler"> <New id="Handlers" class="org.eclipse.jetty.server.handler.HandlerCollection"> 
+	<Set name="handlers"> <Array type="org.eclipse.jetty.server.Handler"> <Item> 
+	<New class="org.eclipse.jetty.server.handler.ContextHandler"> <Set name="contextPath">/herimarque</Set> 
+	<Set name="handler"> <New class="org.eclipse.jetty.server.handler.ResourceHandler"> 
+	<Set name="directoriesListed">false</Set> <Set name="resourceBase">/Volumes/Disk 
+	2/herimarqueRepo/maps</Set> <Set name="resourceBase">/</Set> </New> </Set> 
+	</New> </Item> </Array> </Set> </New> </Set> -->
