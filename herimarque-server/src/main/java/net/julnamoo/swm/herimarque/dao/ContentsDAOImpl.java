@@ -52,9 +52,9 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		}
 	}
 
-	public List<String> getUsersMapList(String id)
+	public List<MapInfo> getUsersMapList(String id)
 	{
-		List<String> resultList = new ArrayList<String>();
+		List<MapInfo> resultList = new ArrayList<MapInfo>();
 		
 		// add the list if the user is authenticated
 		if(isAuthedUser(id))
@@ -79,9 +79,8 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 				mi.setKind(doc.get("kind").toString());
 				mi.setUploadTime(doc.get("uploadTime").toString());
 
-				String val = new Gson().toJson(mi);
-				logger.debug("add {} to the UserMapList", val);
-				resultList.add(val);
+				logger.debug("add {} to the UserMapList", mi.toString());
+				resultList.add(mi);
 			}
 		}
 		

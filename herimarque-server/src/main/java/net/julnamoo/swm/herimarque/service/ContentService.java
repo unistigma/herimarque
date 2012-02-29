@@ -22,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
+
 @Service
 public class ContentService {
 
@@ -83,18 +85,30 @@ public class ContentService {
 		contentsDAO.addMapInfo(mapInfo);
 	}
 	
-	public List<String> getMyMapList(String id)
+	public String getMyMapList(String id)
 	{
 		logger.debug("request user map list to contents dao");
-		List<String> myMapList = contentsDAO.getUsersMapList(id);
+		List<MapInfo> myMapList = contentsDAO.getUsersMapList(id);
 		
-		return myMapList;
+		String msg = new Gson().toJson(myMapList);
+		logger.debug("getMyMapList, return json format {}", msg);
+		return msg;
 	}
 	
 	public List<String> getOtherMapList(String id)
 	{
 		logger.debug("request user {} map list from another user", id);
-		List<String> otherMapList = contentsDAO.getUsersMapList(id);
+		List<String> otherMapList = new ArrayList<String>(); //contentsDAO.getUsersMapList(id);
 		return otherMapList;
+	}
+	
+	public List<String> getLocationMapList(String ctrdCd)
+	{
+		logger.debug("request maps of the location:{}", ctrdCd);
+		
+		List<String> mapList = new ArrayList<String>();
+		
+		
+		return mapList;
 	}
 }

@@ -100,10 +100,8 @@ public class ContentResourceImpl implements ContentResource {
 		logger.debug("start handling getMyMapList with user {}", key);
 
 		//get path of images
-		List<String> imgs = contentService.getMyMapList(key);
-
-		String msg = new Gson().toJson(imgs);
-		logger.debug("total {} map list size is {}", key, imgs.size());
+		String msg = contentService.getMyMapList(key);
+		
 		Response response = Response.ok().entity(msg).build();
 		logger.info("user map retrieve, return 200");
 
