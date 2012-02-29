@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -41,7 +43,7 @@ import com.sun.jersey.multipart.FormDataParam;
 public class ContentResourceImpl implements ContentResource {
 
 	Logger logger = LoggerFactory.getLogger(ContentResourceImpl.class);
-	
+
 	@Autowired
 	private ContentService contentService;
 
@@ -49,46 +51,46 @@ public class ContentResourceImpl implements ContentResource {
 	@Path("upload/{age}/{area}/{kind}")
 	@Consumes("multipart/form-data")
 	public Response uploadMap(@FormDataParam("file") InputStream uploadedInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileDeatil, @HeaderParam("key") String user,
+			@FormDataParam("file") FormDataContentDisposition fileDeatil, @QueryParam("id") String user,
 			@PathParam("area") String area, @PathParam("age")String age, @PathParam("kind")String kind) 
 	{
 		logger.debug("Start upload with {}",user);
-		
+
 		//If there is no file, then return the BAD_REQUEST
 		if(uploadedInputStream == null)
 		{
 			logger.debug("uploaded file is null, return");
 			return Response.status(Status.BAD_REQUEST).build();
 		}
-		
+
 		//build file path
 		StringBuilder sb = new StringBuilder();
 		String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo");
-//		String repo = "maps";
+		//		String repo = "maps";
 		sb.append(repo).append(File.separatorChar);
 		sb.append(user).append(File.separatorChar);
 		String fname;
 		fname = fileDeatil.getFileName();
 		sb.append(fname);
-		
+
 		String filePath = sb.toString();
-		
+
 		MapInfo mapInfo = new MapInfo();
 		mapInfo.setFilePath(filePath);
 		mapInfo.setUser(user);
 		mapInfo.setAge(age);
 		mapInfo.setArea(area);
 		mapInfo.setKind(kind);
-		
+
 		contentService.uploadMap(uploadedInputStream, mapInfo);
-		
+
 		//add the file path to the mongo and get the id. It will be returned with response
 		String mapKey = "tempkey";
 		logger.info("{} map key : {}, return 200", fname, mapKey);
-		
+
 		return Response.status(Status.OK).entity(mapKey).build();
 	}
-	
+
 	@GET
 	@Path("/d/my")
 	@Produces({ MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML })
@@ -96,15 +98,15 @@ public class ContentResourceImpl implements ContentResource {
 	public Response getMyMapList(@HeaderParam("key") String key) 
 	{
 		logger.debug("start handling getMyMapList with user {}", key);
-		
+
 		//get path of images
 		List<String> imgs = contentService.getMyMapList(key);
-		
+
 		String msg = new Gson().toJson(imgs);
 		logger.debug("total {} map list size is {}", key, imgs.size());
 		Response response = Response.ok().entity(msg).build();
 		logger.info("user map retrieve, return 200");
-		
+
 		return response;
 	}
 
@@ -112,19 +114,17 @@ public class ContentResourceImpl implements ContentResource {
 	@Path("/d/other")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Response getTheOtehrMapList(@HeaderParam("email") String email) 
+	public Response getTheOtehrMapList(@HeaderParam("user") String id) 
 	{
-		logger.debug("start handling getTheOtehrMapList of {} user", email);
-		//new Object will be changed with Image url list
-		ArrayList<String> imgs = new ArrayList<String>();
-		imgs.add("url1");
-		imgs.add("url2");
-		logger.debug("total {} map list size is {}", email, imgs.size());
-		
+		logger.debug("start handling getTheOtehrMapList of {} user", id);
+		//get path of images
+		List<String> imgs = contentService.getOtherMapList(id);
+
 		String msg = new Gson().toJson(imgs);
+		logger.debug("total map of {} list size is {}", id, imgs.size());
 		Response response = Response.ok().entity(msg).build();
 		logger.info("other user map retrieve, return 200");
-		
+
 		return response;
 	}
 
@@ -135,13 +135,13 @@ public class ContentResourceImpl implements ContentResource {
 	public Response getLocationMapList(@PathParam("ctrdCd") String ctrdCd) 
 	{
 		logger.debug("start handling getLocationMapList of {} ", ctrdCd);
-		
+
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
 		imgs.add("loc url1");
 		imgs.add("loc url2");
 		logger.debug("total {} map list size is {}", ctrdCd, imgs.size());
-		
+
 		String msg = new Gson().toJson(imgs);
 		Response response = Response.ok().entity(msg).build();
 		logger.info("location map retrieve, return 200");
@@ -156,7 +156,7 @@ public class ContentResourceImpl implements ContentResource {
 	public Response getKindMapList(@PathParam("itemCd") String itemCd) 
 	{
 		logger.debug("start handling getKindMapList of {} ", itemCd);
-		
+
 		//new Object will be changed with Image url list
 		ArrayList<String> imgs = new ArrayList<String>();
 		imgs.add("kind url1");
@@ -166,7 +166,7 @@ public class ContentResourceImpl implements ContentResource {
 		String msg = new Gson().toJson(imgs);
 		Response response = Response.ok().entity(msg).build();
 		logger.info("kind map retrieve, return 200");
-		
+
 		return response;
 	}
 
@@ -178,15 +178,15 @@ public class ContentResourceImpl implements ContentResource {
 	{
 		logger.debug("adding comment from {} to {}", comment.getUserKey(), comment.getMapKey());
 		//add the comment
-		
+
 		logger.info("adding new comment to {}, return 200", comment.getMapKey());
 		return Response.ok().build();
 	}
 
-//	@GET
-//	@Path("/resources/{category}/{user}/{fname}")
-//	public Response getMaps()
-//	{
-//		
-//	}
+	//	@GET
+	//	@Path("/resources/{category}/{user}/{fname}")
+	//	public Response getMaps()
+	//	{
+	//		
+	//	}
 }

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,9 +36,6 @@ public class ContentService {
 	public void uploadMap(InputStream uploadedInputStream, MapInfo mapInfo)
 	{
 		logger.debug("Start to write {}", mapInfo.getFilePath());
-		
-		String user = mapInfo.getUser();
-		userDAO.getUserKey(user);
 		
 		StringBuilder sb = new StringBuilder();
 		String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo");
@@ -78,17 +77,24 @@ public class ContentService {
 			e.printStackTrace();
 		}
 		
-		Date now = new Date();
-		mapInfo.setUploadTime(now);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
+		mapInfo.setUploadTime(sdf.format(new Date()));
 		//save other information of the map to the mongo
 		contentsDAO.addMapInfo(mapInfo);
 	}
 	
 	public List<String> getMyMapList(String id)
 	{
-		List<String> myMapList = new ArrayList<String>();
-		
+		logger.debug("request user map list to contents dao");
+		List<String> myMapList = contentsDAO.getUsersMapList(id);
 		
 		return myMapList;
+	}
+	
+	public List<String> getOtherMapList(String id)
+	{
+		logger.debug("request user {} map list from another user", id);
+		List<String> otherMapList = contentsDAO.getUsersMapList(id);
+		return otherMapList;
 	}
 }
