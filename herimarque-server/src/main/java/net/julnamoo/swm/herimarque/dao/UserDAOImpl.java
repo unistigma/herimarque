@@ -3,17 +3,15 @@ package net.julnamoo.swm.herimarque.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.Mongo;
 
 /**
  * 
@@ -26,6 +24,12 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 	Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
 
 	public UserDAOImpl(){}
+	
+	@PostConstruct
+	public void setup()
+	{
+		collectionName = "users";
+	}
 	
 	@Override
 	public String addUser(String id, String key, boolean auth) 
