@@ -63,5 +63,10 @@ public class MapInfo implements Serializable{
 		this.uploadTime = uploadTime;
 	}
 	
+	@Override
+	public String toString() 
+	{
+		return this.filePath;
+	}
 	
 }
