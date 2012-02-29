@@ -74,6 +74,7 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 			return null;
 		}else
 		{
+			DBObject resultDoc = cursor.next();
 			return cursor.next().get("finalKey").toString();
 		}
 	}

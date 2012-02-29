@@ -1,5 +1,8 @@
 package net.julnamoo.swm.herimarque.dao;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,11 +41,12 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 
 	public void addMapInfo(MapInfo mapInfo)
 	{
-		setMongo();
 
 		//check authentication of the user
 		if(isAuthedUser(mapInfo.getUser()))
 		{
+			setMongo();
+			logger.info("upload map info into mongo of {}", mapInfo.getFilePath());
 			DBObject doc = (DBObject) JSON.parse(new Gson().toJson(mapInfo));
 			collection.insert(doc);
 		}
@@ -50,17 +54,47 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 
 	public List<String> getUsersMapList(String id)
 	{
-		setMongo();
-
 		List<String> resultList = new ArrayList<String>();
 		
+		// add the list if the user is authenticated
+		if(isAuthedUser(id))
+		{
+			setMongo();
+			logger.debug("find all maps paths of {}", id);
+			DBObject qdoc = new BasicDBObject();
+			qdoc.put("user", id);
+			
+			DBCursor results = collection.find(qdoc);
+			
+			while(results.hasNext())
+			{
+				DBObject doc = results.next();
+				
+				//set mapInfo instances for adding to the list
+				MapInfo mi = new MapInfo();
+				mi.setUser(doc.get("user").toString());
+				mi.setFilePath(doc.get("filePath").toString());
+				mi.setAge(doc.get("age").toString());
+				mi.setArea(doc.get("area").toString());
+				mi.setKind(doc.get("kind").toString());
+				mi.setUploadTime(doc.get("uploadTime").toString());
+
+				String val = new Gson().toJson(mi);
+				logger.debug("add {} to the UserMapList", val);
+				resultList.add(val);
+			}
+		}
+		
+		logger.debug("return the {} map list, size is {}", id, resultList.size());
 		return resultList;
 	}
 	
 	private boolean isAuthedUser(String id)
 	{
 		logger.debug("check authentication of the {}", id);
+		
 		setMongo();
+		collection = db.getCollection("users");
 		
 		boolean result = false;
 		
@@ -70,11 +104,12 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		DBCursor checkUserResults = collection.find(checkUser);
 		if(checkUserResults.count() > 0)
 		{
+			logger.debug("There is the user {}", id);
 			DBObject user = checkUserResults.next();
-			result = user.get("auth").equals("true");
+			result = (Boolean) user.get("auth");
 		}else result = false;
 		
-		logger.debug("return the autentication of the user, {}", result);
+		logger.debug("return the autentication of the {}, {}", id, result);
 		return result;
 	}
 }

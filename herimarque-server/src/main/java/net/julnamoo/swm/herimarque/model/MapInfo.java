@@ -10,7 +10,7 @@ public class MapInfo implements Serializable{
 	String area;
 	String age;
 	String kind;
-	Date uploadTime;
+	String uploadTime;
 	
 	public MapInfo() {
 	}
@@ -55,11 +55,11 @@ public class MapInfo implements Serializable{
 		this.kind = kind;
 	}
 
-	public Date getUploadTime() {
+	public String getUploadTime() {
 		return uploadTime;
 	}
 
-	public void setUploadTime(Date uploadTime) {
+	public void setUploadTime(String uploadTime) {
 		this.uploadTime = uploadTime;
 	}
 	
