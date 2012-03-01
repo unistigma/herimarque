@@ -2,6 +2,8 @@ package net.julnamoo.swm.herimarque.mongo;
 
 import javax.annotation.Resource;
 
+import net.julnamoo.swm.herimarque.model.Comment;
+
 import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,7 +59,17 @@ public class TestAddArrayList {
 		cursor = collections.find(origin);
 		if(cursor.hasNext())
 		{
-			System.out.println(JSON.toString(cursor.next()));
+			System.out.println("get comment list test");
+			BasicDBObject o = (BasicDBObject) cursor.next();
+			BasicDBList l = (BasicDBList) o.get("comments");
+			for(int i =0; i <l.size(); ++i)
+			{
+				BasicDBObject c = (BasicDBObject) l.get(i);
+				System.out.println(c.getString("f1"));
+			}
+			System.out.println();
 		}
+		
+		
 	}
 }
