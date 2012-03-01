@@ -82,10 +82,8 @@ public class ContentResourceImpl implements ContentResource {
 		mapInfo.setArea(area);
 		mapInfo.setKind(kind);
 
-		contentService.uploadMap(uploadedInputStream, mapInfo);
-
 		//add the file path to the mongo and get the id. It will be returned with response
-		String mapKey = "tempkey";
+		String mapKey = contentService.uploadMap(uploadedInputStream, mapInfo);
 		logger.info("{} map key : {}, return 200", fname, mapKey);
 
 		return Response.status(Status.OK).entity(mapKey).build();
