@@ -7,30 +7,43 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Comment implements Serializable{
 
-	String mapKey;
-	String content;
-	String userKey;
+	private String mapKey;
+	private String content;
+	private String userKey;
 	
 	public Comment() {}
-	
+
 	public String getMapKey() {
 		return mapKey;
 	}
+
 	public void setMapKey(String mapKey) {
 		this.mapKey = mapKey;
 	}
-	public String getComment() {
+
+	public String getContent() {
 		return content;
 	}
-	public void setComment(String comment) {
-		this.content = comment;
+
+	public void setContent(String content) {
+		this.content = content;
 	}
+
 	public String getUserKey() {
 		return userKey;
 	}
+
 	public void setUserKey(String userKey) {
 		this.userKey = userKey;
 	}
 	
+	@Override
+	public String toString() 
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.userKey).append(", ").append(this.content);
+		
+		return sb.toString();
+	}
 	
 }

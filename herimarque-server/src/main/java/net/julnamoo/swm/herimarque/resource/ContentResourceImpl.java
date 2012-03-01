@@ -2,8 +2,6 @@ package net.julnamoo.swm.herimarque.resource;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -17,6 +15,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.xml.bind.JAXBElement;
 
 import net.julnamoo.swm.herimarque.model.Comment;
 import net.julnamoo.swm.herimarque.model.MapInfo;
@@ -157,12 +156,21 @@ public class ContentResourceImpl implements ContentResource {
 	@POST
 	@Path("/u/comment")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	@Override
-	public Response addComment(Comment comment) 
+	public Response addComment(String msg)
 	{
-		logger.debug("adding comment from {} to {}", comment.getUserKey(), comment.getMapKey());
+		Comment comment = (Comment) new Gson().fromJson(msg, Comment.class);
+		logger.debug("adding comment to {} with {}", comment.getMapKey(), comment.toString());
 		//add the comment
-		logger.info("adding new comment to {}, return 200", comment.getMapKey());
-		return Response.ok().build();
+		boolean result = contentService.addComment(comment);
+		if(result)
+		{
+			logger.info("adding new comment to {}, return 200", comment.getMapKey());
+			return Response.ok().build();
+		}else
+		{
+			logger.info("fail to add new comment to {}, return 400", comment.getMapKey());
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+
 	}
 }

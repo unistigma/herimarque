@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import net.julnamoo.swm.herimarque.model.Comment;
 import net.julnamoo.swm.herimarque.model.MapInfo;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -46,9 +47,10 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		{
 			setMongo();
 			logger.info("upload map info into mongo of {}", mapInfo.getFilePath());
-			DBObject doc = (DBObject) JSON.parse(new Gson().toJson(mapInfo));
+			BasicDBObject doc = (BasicDBObject) JSON.parse(new Gson().toJson(mapInfo));
 			collection.insert(doc);
-			return doc.get("_id").toString();
+			ObjectId oid = (ObjectId) doc.get("_id");
+			return oid.toString();
 		}
 		
 		return null;
@@ -135,7 +137,8 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		setMongo();
 		
 		DBObject qdoc = new BasicDBObject();
-		qdoc.put("_id", comment.getMapKey());
+		qdoc.put("_id", new ObjectId(comment.getMapKey()));
+		
 		DBCursor cursor = collection.find(qdoc);
 		if(cursor.size() > 0)
 		{
@@ -212,9 +215,8 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 	private DBObject comment2DBObj(Comment comment)
 	{
 		BasicDBObject target = new BasicDBObject();
-		target.put("mapKey", comment.getMapKey());
-		target.put("content", comment.getComment());
-		target.put("userKey", comment.getUserKey());
+		target.put("content", comment.getContent());
+		target.put("user", comment.getUserKey());
 		
 		return target;
 	}

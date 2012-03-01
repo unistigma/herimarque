@@ -129,6 +129,13 @@ public class ContentService {
 	{
 		logger.debug("request add comment to the map");
 		boolean result = false;
+		try 
+		{
+			result = contentsDAO.addComment(comment);
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
 		
 		return result;
 	}
