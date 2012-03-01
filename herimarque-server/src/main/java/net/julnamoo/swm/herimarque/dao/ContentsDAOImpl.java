@@ -1,13 +1,11 @@
 package net.julnamoo.swm.herimarque.dao;
 
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import net.julnamoo.swm.herimarque.model.Comment;
 import net.julnamoo.swm.herimarque.model.MapInfo;
 
 import org.slf4j.Logger;
@@ -15,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.google.gson.Gson;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -39,7 +38,7 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		collectionName = "data";
 	}
 
-	public void addMapInfo(MapInfo mapInfo)
+	public String addMapInfo(MapInfo mapInfo)
 	{
 
 		//check authentication of the user
@@ -49,7 +48,10 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 			logger.info("upload map info into mongo of {}", mapInfo.getFilePath());
 			DBObject doc = (DBObject) JSON.parse(new Gson().toJson(mapInfo));
 			collection.insert(doc);
+			return doc.get("_id").toString();
 		}
+		
+		return null;
 	}
 
 	public List<MapInfo> getUsersMapList(String id)
@@ -65,6 +67,7 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 			qdoc.put("user", id);
 			
 			DBCursor results = collection.find(qdoc);
+			results.batchSize(20);
 			
 			while(results.hasNext())
 			{
@@ -90,6 +93,8 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		qdoc.put("area", ctrdCd);
 		
 		DBCursor results = collection.find(qdoc);
+		results.batchSize(20);
+		
 		while(results.hasNext())
 		{
 			//set mapInfo instances for adding to the list
@@ -111,6 +116,8 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		qdoc.put("kind", itemCd);
 		
 		DBCursor results = collection.find(qdoc);
+		results.batchSize(20);
+		
 		while(results.hasNext())
 		{
 			MapInfo mi = doc2MapInfo(results.next());
@@ -120,6 +127,49 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		
 		logger.debug("return the kind:{} list , size is {}", itemCd, mapList.size());
 		return mapList;
+	}
+	
+	public boolean addComment(Comment comment) throws Exception
+	{
+		boolean result = false;
+		setMongo();
+		
+		DBObject qdoc = new BasicDBObject();
+		qdoc.put("_id", comment.getMapKey());
+		DBCursor cursor = collection.find(qdoc);
+		if(cursor.size() > 0)
+		{
+			if(cursor.size() != 1) throw new Exception(cursor.next().get("_id") + " map is more than one, please check it.");
+			
+			BasicDBObject mapInfo = (BasicDBObject) cursor.next();
+			
+			//check whether it has comments
+			BasicDBList cList = null;
+			if(mapInfo.containsField("comments"))
+			{
+				cList = (BasicDBList) mapInfo.get("comments");
+			}else
+			{
+				//the first comment to save
+				cList = new BasicDBList();
+			}
+			
+			//build DBobject with the comment and add it to comment list
+			DBObject cObj = comment2DBObj(comment);
+			cList.add(cObj);
+			
+			//put it to origin DBObj
+			mapInfo.put("comments", cList);
+			
+			//update the obj
+			collection.save(mapInfo);
+			
+			result = true;
+		}else
+		{
+			result = false;
+		}
+		return result;
 	}
 	
 	private boolean isAuthedUser(String id)
@@ -157,5 +207,15 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		mi.setUploadTime(doc.get("uploadTime").toString());
 		
 		return mi;
+	}
+	
+	private DBObject comment2DBObj(Comment comment)
+	{
+		BasicDBObject target = new BasicDBObject();
+		target.put("mapKey", comment.getMapKey());
+		target.put("content", comment.getComment());
+		target.put("userKey", comment.getUserKey());
+		
+		return target;
 	}
 }

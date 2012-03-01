@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,10 +12,10 @@ import javax.annotation.Resource;
 
 import net.julnamoo.swm.herimarque.dao.ContentsDAOImpl;
 import net.julnamoo.swm.herimarque.dao.UserDAOImpl;
+import net.julnamoo.swm.herimarque.model.Comment;
 import net.julnamoo.swm.herimarque.model.MapInfo;
 import net.julnamoo.swm.herimarque.util.PropertiesUtil;
 
-import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,7 +33,7 @@ public class ContentService {
 	@Resource(name="userDAO")
 	UserDAOImpl userDAO;
 	
-	public void uploadMap(InputStream uploadedInputStream, MapInfo mapInfo)
+	public String uploadMap(InputStream uploadedInputStream, MapInfo mapInfo)
 	{
 		logger.debug("Start to write {}", mapInfo.getFilePath());
 		
@@ -82,7 +80,7 @@ public class ContentService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
 		mapInfo.setUploadTime(sdf.format(new Date()));
 		//save other information of the map to the mongo
-		contentsDAO.addMapInfo(mapInfo);
+		return contentsDAO.addMapInfo(mapInfo);
 	}
 	
 	public String getMyMapList(String id)
@@ -127,4 +125,11 @@ public class ContentService {
 		return msg;
 	}
 	
+	public boolean addComment(Comment comment)
+	{
+		logger.debug("request add comment to the map");
+		boolean result = false;
+		
+		return result;
+	}
 }
