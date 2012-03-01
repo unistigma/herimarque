@@ -91,7 +91,7 @@ public class ContentService {
 		List<MapInfo> myMapList = contentsDAO.getUsersMapList(id);
 		
 		String msg = new Gson().toJson(myMapList);
-		logger.debug("getMyMapList, return json format {}", msg);
+		logger.debug("getMyMapList, return json {}", msg);
 		return msg;
 	}
 	
@@ -101,7 +101,7 @@ public class ContentService {
 		List<MapInfo> otherMapList = contentsDAO.getUsersMapList(id);
 		
 		String msg = new Gson().toJson(otherMapList);
-		logger.debug("getOtherMapList, return json format {}", msg);
+		logger.debug("getOtherMapList, return json {}", msg);
 		return msg;
 	}
 	
@@ -112,7 +112,19 @@ public class ContentService {
 		List<MapInfo> mapList = contentsDAO.getLocationMapList(ctrdCd);
 		
 		String msg = new Gson().toJson(mapList);
-		logger.debug("getLocationMapList, return json format {}", msg);
+		logger.debug("getLocationMapList, return json {}", msg);
 		return msg;
 	}
+	
+	public String getKindMapList(String itemCd)
+	{
+		logger.debug("request maps of the kind:{}", itemCd);
+		
+		List<MapInfo> mapList = contentsDAO.getKindMapList(itemCd);
+		
+		String msg = new Gson().toJson(mapList);
+		logger.debug("getKindMapList, return json {}", msg);
+		return msg;
+	}
+	
 }

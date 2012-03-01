@@ -148,13 +148,8 @@ public class ContentResourceImpl implements ContentResource {
 	{
 		logger.debug("start handling getKindMapList of {} ", itemCd);
 
-		//new Object will be changed with Image url list
-		ArrayList<String> imgs = new ArrayList<String>();
-		imgs.add("kind url1");
-		imgs.add("kind url2");
-		logger.debug("total {} map list size is {}", itemCd, imgs.size());
-
-		String msg = new Gson().toJson(imgs);
+		//get path list of images
+		String msg = contentService.getKindMapList(itemCd);
 		Response response = Response.ok().entity(msg).build();
 		logger.info("kind map retrieve, return 200");
 
@@ -169,15 +164,7 @@ public class ContentResourceImpl implements ContentResource {
 	{
 		logger.debug("adding comment from {} to {}", comment.getUserKey(), comment.getMapKey());
 		//add the comment
-
 		logger.info("adding new comment to {}, return 200", comment.getMapKey());
 		return Response.ok().build();
 	}
-
-	//	@GET
-	//	@Path("/resources/{category}/{user}/{fname}")
-	//	public Response getMaps()
-	//	{
-	//		
-	//	}
 }

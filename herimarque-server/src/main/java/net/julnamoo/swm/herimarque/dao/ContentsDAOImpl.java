@@ -94,11 +94,31 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		{
 			//set mapInfo instances for adding to the list
 			MapInfo mi = doc2MapInfo(results.next());
-			logger.debug("add {} tp tje locationMapList", mi.toString());
+			logger.debug("add {} tp the locationMapList", mi.toString());
 			mapList.add(mi);
 		}
 		
 		logger.debug("return the area:{} map list, size is {}", ctrdCd, mapList.size());
+		return mapList;
+	}
+	
+	public List<MapInfo> getKindMapList(String itemCd)
+	{
+		List<MapInfo> mapList = new ArrayList<MapInfo>();
+		
+		setMongo();
+		DBObject qdoc = new BasicDBObject();
+		qdoc.put("kind", itemCd);
+		
+		DBCursor results = collection.find(qdoc);
+		while(results.hasNext())
+		{
+			MapInfo mi = doc2MapInfo(results.next());
+			logger.debug("add {} to the kindMapList", mi.toString());
+			mapList.add(mi);
+		}
+		
+		logger.debug("return the kind:{} list , size is {}", itemCd, mapList.size());
 		return mapList;
 	}
 	
