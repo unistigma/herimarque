@@ -27,18 +27,23 @@ import com.mongodb.util.JSON;
  */
 
 @Repository(value="contentsDAO")
-public class ContentsDAOImpl extends SimpleHerimarqueDAO {
+public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO {
 
 	Logger logger = LoggerFactory.getLogger(ContentsDAOImpl.class);
 
 	public ContentsDAOImpl(){}
 
 	@PostConstruct
-	public void setUp()
+	@Override
+	public void setCollectionName() 
 	{
 		collectionName = "data";
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.dao.ContentsDAO#addMapInfo(net.julnamoo.swm.herimarque.model.MapInfo)
+	 */
+	@Override
 	public String addMapInfo(MapInfo mapInfo)
 	{
 
@@ -56,6 +61,10 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.dao.ContentsDAO#getUsersMapList(java.lang.String)
+	 */
+	@Override
 	public List<MapInfo> getUsersMapList(String id)
 	{
 		List<MapInfo> resultList = new ArrayList<MapInfo>();
@@ -86,6 +95,10 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		return resultList;
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.dao.ContentsDAO#getLocationMapList(java.lang.String)
+	 */
+	@Override
 	public List<MapInfo> getLocationMapList(String ctrdCd)
 	{
 		List<MapInfo> mapList = new ArrayList<MapInfo>();
@@ -109,6 +122,10 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		return mapList;
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.dao.ContentsDAO#getKindMapList(java.lang.String)
+	 */
+	@Override
 	public List<MapInfo> getKindMapList(String itemCd)
 	{
 		List<MapInfo> mapList = new ArrayList<MapInfo>();
@@ -131,6 +148,10 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO {
 		return mapList;
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.dao.ContentsDAO#addComment(net.julnamoo.swm.herimarque.model.Comment)
+	 */
+	@Override
 	public boolean addComment(Comment comment) throws Exception
 	{
 		boolean result = false;

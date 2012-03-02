@@ -27,9 +27,11 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 	public UserDAOImpl(){}
 	
 	@PostConstruct
-	public void setup()
+	@Override
+	public void setCollectionName() 
 	{
 		collectionName = "users";
+		
 	}
 	
 	@Override
