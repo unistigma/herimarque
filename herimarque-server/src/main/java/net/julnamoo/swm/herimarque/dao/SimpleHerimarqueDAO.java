@@ -1,5 +1,7 @@
 package net.julnamoo.swm.herimarque.dao;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +10,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 
-public class SimpleHerimarqueDAO {
+public abstract class SimpleHerimarqueDAO {
 
 	Logger logger = LoggerFactory.getLogger(SimpleHerimarqueDAO.class);
 	
@@ -20,6 +22,12 @@ public class SimpleHerimarqueDAO {
 
 	protected DB db = null;
 	protected DBCollection collection = null;
+	
+	/**
+	 * setter for collection name for each service DAO
+	 */
+	@PostConstruct
+	public abstract void setCollectionName();
 	
 	/**
 	 * It must be called before performing any mongo process.
