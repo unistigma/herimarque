@@ -2,9 +2,6 @@ package net.julnamoo.swm.herimarque.mongo;
 
 import javax.annotation.Resource;
 
-import net.julnamoo.swm.herimarque.model.Comment;
-
-import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
