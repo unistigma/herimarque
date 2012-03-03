@@ -4,13 +4,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import net.julnamoo.swm.herimarque.dao.ContentsDAOImpl;
+import net.julnamoo.swm.herimarque.dao.ContentsDAO;
 import net.julnamoo.swm.herimarque.dao.UserDAOImpl;
 import net.julnamoo.swm.herimarque.model.Comment;
 import net.julnamoo.swm.herimarque.model.MapInfo;
@@ -23,16 +24,20 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 
 @Service
-public class ContentService {
+public class ContentServiceImpl implements ContentService {
 
-	Logger logger = LoggerFactory.getLogger(ContentService.class);
+	Logger logger = LoggerFactory.getLogger(ContentServiceImpl.class);
 	
 	@Resource(name="contentsDAO")
-	ContentsDAOImpl contentsDAO;
+	ContentsDAO contentsDAO;
 	
 	@Resource(name="userDAO")
 	UserDAOImpl userDAO;
 	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.ContentService#uploadMap(java.io.InputStream, net.julnamoo.swm.herimarque.model.MapInfo)
+	 */
+	@Override
 	public String uploadMap(InputStream uploadedInputStream, MapInfo mapInfo)
 	{
 		logger.debug("Start to write {}", mapInfo.getFilePath());
@@ -77,12 +82,15 @@ public class ContentService {
 			e.printStackTrace();
 		}
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
-		mapInfo.setUploadTime(sdf.format(new Date()));
+		mapInfo.setUploadTime(DateFormat.getInstance().format(new Date()));
 		//save other information of the map to the mongo
 		return contentsDAO.addMapInfo(mapInfo);
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.ContentService#getMyMapList(java.lang.String)
+	 */
+	@Override
 	public String getMyMapList(String id)
 	{
 		logger.debug("request user map list to contents dao");
@@ -93,6 +101,10 @@ public class ContentService {
 		return msg;
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.ContentService#getOtherMapList(java.lang.String)
+	 */
+	@Override
 	public String getOtherMapList(String id)
 	{
 		logger.debug("request user {} map list from another user", id);
@@ -103,6 +115,10 @@ public class ContentService {
 		return msg;
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.ContentService#getLocationMapList(java.lang.String)
+	 */
+	@Override
 	public String getLocationMapList(String ctrdCd)
 	{
 		logger.debug("request maps of the location:{}", ctrdCd);
@@ -114,6 +130,10 @@ public class ContentService {
 		return msg;
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.ContentService#getKindMapList(java.lang.String)
+	 */
+	@Override
 	public String getKindMapList(String itemCd)
 	{
 		logger.debug("request maps of the kind:{}", itemCd);
@@ -125,6 +145,10 @@ public class ContentService {
 		return msg;
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.ContentService#addComment(net.julnamoo.swm.herimarque.model.Comment)
+	 */
+	@Override
 	public boolean addComment(Comment comment)
 	{
 		logger.debug("request add comment to the map");

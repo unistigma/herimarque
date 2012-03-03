@@ -2,8 +2,6 @@ package net.julnamoo.swm.herimarque.service;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +9,6 @@ import javax.annotation.Resource;
 
 import net.julnamoo.swm.herimarque.dao.NoticeDAOImpl;
 import net.julnamoo.swm.herimarque.model.Notice;
-import net.julnamoo.swm.herimarque.util.PropertiesUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +33,7 @@ public class NoticeServiceImpl {
 	public Notice addNotice(String notice)
 	{
 		Notice newNotice = new Gson().fromJson(notice, Notice.class);
-		
-		String format = PropertiesUtil.getValueFromProperties("herimarque.properties", "dateFormat");
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
-		String date = sdf.format(new Date());
-		newNotice.setDate(date);
+		newNotice.setDate(DateFormat.getInstance().format(new Date()));
 		noticeDAO.addNotice(newNotice);
 		
 		return newNotice;
@@ -84,10 +77,20 @@ public class NoticeServiceImpl {
 	 * @param from - start date
 	 * @return List<Notice> - notices updated from 'from'
 	 */
-	public List<Notice> getNotices(String from)
+	public String getNotices(String from)
 	{
-		List<Notice> noticeList = new ArrayList<Notice>();
+		Date start;
+		try 
+		{
+			start = DateFormat.getInstance().parse(from);
+		} catch (ParseException e) 
+		{
+			e.printStackTrace();
+			return "";
+		}
 		
-		return noticeList;
+		List<Notice> noticeList = noticeDAO.getNotices(start);
+		
+		return new Gson().toJson(noticeList);
 	}
 }

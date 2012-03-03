@@ -31,7 +31,6 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 	public void setCollectionName() 
 	{
 		collectionName = "users";
-		
 	}
 	
 	@Override
@@ -126,7 +125,7 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 		List<String> userList = new ArrayList<String>();
 		while(results.hasNext())
 		{
-			userList.add(results.next().get("email").toString());
+			userList.add(results.next().toString());
 		}
 		
 		logger.debug("total user count is {}. return the list", userList.size());

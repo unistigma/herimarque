@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	version="2.5">
+	version="2.6">
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:rootContext.xml</param-value>
 	</context-param>
-	
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener
 		</listener-class>
@@ -24,7 +24,7 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>Jersey Spring Web Application</servlet-name>
 		<url-pattern>/api/*</url-pattern>
@@ -63,4 +63,14 @@
 		<filter-name>CORS</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+
+	<!-- <servlet>
+		<servlet-name>JettyStaticResourceProvider</servlet-name>
+		<servlet-class>net.julnamoo.swm.herimarque.service.ResourceProvider</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JettyStaticResourceProvider</servlet-name>
+		<url-pattern>/resources/*</url-pattern>
+	</servlet-mapping> -->
+
 </web-app>

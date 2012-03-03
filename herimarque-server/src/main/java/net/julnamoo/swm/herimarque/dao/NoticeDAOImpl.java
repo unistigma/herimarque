@@ -3,7 +3,9 @@ package net.julnamoo.swm.herimarque.dao;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -58,6 +60,13 @@ public class NoticeDAOImpl extends SimpleHerimarqueDAO{
 		Notice notice = this.getNewest();
 		return notice.getDate();
 	}
+
+	public List<Notice> getNotices(Date start)
+	{
+		List<Notice> noticeList = new ArrayList<Notice>();
+		
+		return noticeList;
+	}
 	
 	/**
 	 * convert notice to DBobject
@@ -70,12 +79,10 @@ public class NoticeDAOImpl extends SimpleHerimarqueDAO{
 		target.put("title", notice.getTitle());
 		target.put("content", notice.getContent());
 		//set date field value
-		String format = PropertiesUtil.getValueFromProperties("herimarque.properties", "dateFormat");
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		Date uploadTime = null;
 		try 
 		{
-			uploadTime = sdf.parse(notice.getDate());
+			uploadTime = DateFormat.getInstance().parse(notice.getDate());
 		} catch (ParseException e) 
 		{
 			e.printStackTrace();
