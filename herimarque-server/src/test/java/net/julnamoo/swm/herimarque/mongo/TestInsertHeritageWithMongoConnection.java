@@ -60,21 +60,27 @@ public class TestInsertHeritageWithMongoConnection {
 		System.out.println("Using jsonparser with file reader");
 //		JsonArray jsonarray = jsonparser.parse(new InputStreamReader(getClass().getResourceAsStream("kindList.json"))).getAsJsonArray();
 		JsonArray jsonarray = jsonparser.parse(new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream("kindList.json"))).getAsJsonArray();
-		JsonElement jsonElement = jsonarray.get(0);
-		
-		DBObject object = (DBObject) JSON.parse(jsonElement.toString());
-		System.out.println("insert the json " + object);
-		collection.insert(object);
-		System.out.println("_id is " + object.get("_id"));
-		
-		BasicDBObject queryDoc = new BasicDBObject();
-		queryDoc.put("crltsNm", "서울 숭례문");
-		
-		DBCursor result = collection.find(queryDoc);
-		if(result.hasNext())
+		for(JsonElement je : jsonarray)
 		{
-			System.out.println(result.next());
+			BasicDBObject object = (BasicDBObject) JSON.parse(je.toString());
+			collection.save(object);
+			System.out.println("insert " + object);
 		}
+//		JsonElement jsonElement = jsonarray.get(0);
+//		
+//		DBObject object = (DBObject) JSON.parse(jsonElement.toString());
+//		System.out.println("insert the json " + object);
+//		collection.insert(object);
+//		System.out.println("_id is " + object.get("_id"));
+//		
+//		BasicDBObject queryDoc = new BasicDBObject();
+//		queryDoc.put("crltsNm", "서울 숭례문");
+//		
+//		DBCursor result = collection.find(queryDoc);
+//		if(result.hasNext())
+//		{
+//			System.out.println(result.next());
+//		}
 	}
 	
 	@After
