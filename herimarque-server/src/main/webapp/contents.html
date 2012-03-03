@@ -5,8 +5,9 @@
 <body>
 	<h1>File Upload with Jersey</h1>
 	<form name="uploadForm" method="post" enctype="multipart/form-data" accept-charset="UTF-8" onsubmit="return setAction()">
-		<input type="text" id="id"/>
-		Select a file : <input type="file" name="file" size="45" />
+		ID <input type="text" name="id" value="testId"/>
+		<br>
+		Upload file <input type="file" name="file" size="45" />
 		<div>
 			<div>
 			지역 		
@@ -30,7 +31,7 @@
 			<option value="ZZ">기타</option>
 			</select>
 			</div>
-			<div>
+			<!-- <div>
 			시대		
 			<select id="age">
 			<option value="01">선사시대</option>
@@ -70,15 +71,16 @@
 			<option value="31">문화재자료</option>
 			<option value="79">등록문화재</option>
 			</select>
-			</div>
+			</div> -->
 		</div>
+		<input type="text" style="height: 200; width: 200;" name="mapInfo" value="input json for GPS tracking log"/>
+		<br>
 		<input type="submit" value="Upload It" />
 	</form>
 </body>
 <script type="text/javascript">
 	function setAction() {
-
-		var actionURL = "api/c/upload/"+ $("#area").val() + "/" + $("#age").val() + "/" + $("#kind").val() + "?id=" + $("#id").val();
+		var actionURL = "api/c/upload";
 		/* alert(actionURL); */
 		document.uploadForm.action=actionURL;
 		return true;

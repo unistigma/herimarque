@@ -225,9 +225,9 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 		MapInfo mi = new MapInfo();
 		mi.setUser(doc.get("user").toString());
 		mi.setFilePath(doc.get("filePath").toString());
-		mi.setAge(doc.get("age").toString());
-		mi.setArea(doc.get("area").toString());
-		mi.setKind(doc.get("kind").toString());
+//		mi.setAge(doc.get("age").toString());
+//		mi.setArea(doc.get("area").toString());
+//		mi.setKind(doc.get("kind").toString());
 		mi.setUploadTime(doc.get("uploadTime").toString());
 		
 		return mi;

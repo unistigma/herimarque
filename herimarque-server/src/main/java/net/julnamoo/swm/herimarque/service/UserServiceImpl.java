@@ -71,6 +71,17 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	public boolean logIn(String id, String pwd)
+	{
+		logger.debug("Attempt to login. check key of the user with parameters");
+		String code = new StringBuilder().append(id).append(pwd).toString();
+		String expKey = MD5.digest(code);
+		String realKey = userDAO.getUserKey(id);
+		
+		boolean result = expKey.equals(realKey);
+		logger.debug("login attempt is success? {}", result);
+		return result;
+	}
 	@Override
 	public void delUser(String id) 
 	{

@@ -30,6 +30,7 @@ import org.springframework.stereotype.Component;
 import com.google.gson.Gson;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
+import com.sun.jersey.server.impl.model.method.dispatch.MultipartFormDispatchProvider;
 
 /**
  * 
@@ -47,43 +48,46 @@ public class ContentResourceImpl implements ContentResource {
 	private ContentService contentService;
 
 	@POST
-	@Path("upload/{age}/{area}/{kind}")
+	@Path("upload")
 	@Consumes("multipart/form-data")
-	public Response uploadMap(@FormDataParam("file") InputStream uploadedInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileDeatil, @QueryParam("id") String user,
-			@PathParam("area") String area, @PathParam("age")String age, @PathParam("kind")String kind) 
+	public Response uploadMap(
+			@FormDataParam("id") String id,
+			@FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileDeatil,
+			@FormDataParam("mapInfo") String mapInfo) 
 	{
-		logger.debug("Start upload with {}",user);
-
-		//If there is no file, then return the BAD_REQUEST
-		if(uploadedInputStream == null)
-		{
-			logger.debug("uploaded file is null, return");
-			return Response.status(Status.BAD_REQUEST).build();
-		}
-
-		//build file path
-		StringBuilder sb = new StringBuilder();
-		String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo");
-		//		String repo = "maps";
-		sb.append(repo).append(File.separatorChar);
-		sb.append(user).append(File.separatorChar);
-		String fname;
-		fname = fileDeatil.getFileName();
-		sb.append(fname);
-
-		String filePath = sb.toString();
-
-		MapInfo mapInfo = new MapInfo();
-		mapInfo.setFilePath(filePath);
-		mapInfo.setUser(user);
-		mapInfo.setAge(age);
-		mapInfo.setArea(area);
-		mapInfo.setKind(kind);
-
-		//add the file path to the mongo and get the id. It will be returned with response
-		String mapKey = contentService.uploadMap(uploadedInputStream, mapInfo);
-		logger.info("{} map key : {}, return 200", fname, mapKey);
+		logger.debug("Start upload with {}",mapInfo);
+		
+		String mapKey = "tempkey";
+//		//If there is no file, then return the BAD_REQUEST
+//		if(uploadedInputStream == null)
+//		{
+//			logger.debug("uploaded file is null, return");
+//			return Response.status(Status.BAD_REQUEST).build();
+//		}
+//
+//		//build file path
+//		StringBuilder sb = new StringBuilder();
+//		String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo");
+//		//		String repo = "maps";
+//		sb.append(repo).append(File.separatorChar);
+//		sb.append(user).append(File.separatorChar);
+//		String fname;
+//		fname = fileDeatil.getFileName();
+//		sb.append(fname);
+//
+//		String filePath = sb.toString();
+//
+//		MapInfo mapInfo = new MapInfo();
+//		mapInfo.setFilePath(filePath);
+//		mapInfo.setUser(user);
+//		mapInfo.setAge(age);
+//		mapInfo.setArea(area);
+//		mapInfo.setKind(kind);
+//
+//		//add the file path to the mongo and get the id. It will be returned with response
+//		String mapKey = contentService.uploadMap(uploadedInputStream, mapInfo);
+//		logger.info("{} map key : {}, return 200", fname, mapKey);
 
 		return Response.status(Status.OK).entity(mapKey).build();
 	}

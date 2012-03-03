@@ -100,6 +100,29 @@ public class UserResourceImpl implements UserResource {
 	}
 
 	/**
+	 * Login
+	 * @param id
+	 * @param pwd
+	 * @return
+	 */
+	@GET
+	@Path("/login/{id}")
+	public Response logIn(@PathParam("id")String id, @HeaderParam("pwd") String pwd)
+	{
+		logger.debug("request log in authentication");
+		boolean result = userServiceImpl.logIn(id, pwd);
+		
+		if(result)
+		{
+			logger.info("{} is logged in", id);
+			return Response.ok().build();
+		}else
+		{
+			logger.info("{} trys to logged in with malformed password", id);
+			return Response.status(Status.FORBIDDEN).build();
+		}
+	}
+	/**
 	 * Change the user info
 	 */
 	@PUT

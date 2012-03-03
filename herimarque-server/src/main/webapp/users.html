@@ -10,20 +10,29 @@
 	<h1>회원 가입/정보수정/탈퇴</h1>
 	<div class="addUser">
 		<h2>회원 가입</h2>
+		<div>아이디</div><input type="text" style="width: 60;" id="add_id">
 		<div>이메일</div><input type="text" style="width: 60;" id="add_email">
 		<div>비밀번호</div><input type="password" style="width: 60;" id="add_pwd">
 		<button onclick="addajax()">가입하기</button>
 		<div class="addResult"></div>
 	</div>
-	<h2>회원 정보 수정</h2>
+	<div class="loginUser">
+	<h2>로그인</h2>
+		<div>아이디</div><input type="text" style="width: 60;" id="login_id">
+		<div>비밀번호</div><input type="password" style="width: 60;" id="login_pwd">
+		<button onclick="loginajax()">로그인하기</button>
+		<div class="loginResult"></div>
+	</div>
 	<div class="modifyUser">
+		<h2>회원 정보 수정</h2>
 		<div>이메일</div><input type="text" style="width: 60;" id="mod_email">
 		<div>비밀번호</div><input type="password" style="width: 60;" id="mod_pwd">
+		<div>새로운 비밀번호</div><input type="password" style="width: 60;" id="mod_npwd">
 		<button onclick="modajax()">수정하기</button>
 		<div class="modResult"></div>
 	</div>
-	<h2>회원 탈퇴</h2>
 	<div class="delUser">
+		<h2>회원 탈퇴</h2>
 		<div>이메일</div><input type="text" style="width: 60;" id="del_email">
 		<button onclick="delajax()">탈퇴하기</button>
 		<div class="delResult"></div>
@@ -36,7 +45,7 @@
 <script type="text/javascript">
 function addajax(){
 	$.ajax({
-		url:'api/u',
+		url:'api/u?id=' + $("#add_id").val(),
 		type:'POST',
 		beforeSend: function(xhr){
 			xhr.setRequestHeader('email', $("#add_email").val());
@@ -50,6 +59,21 @@ function addajax(){
 	});
 }
 
+function loginajax(){
+	$.ajax({
+		url:'api/u/login/' + $("#login_id").val(),
+		type:'GET',
+		beforeSend: function(xhr){
+			xhr.setRequestHeader('pwd', $("#login_pwd").val());
+		},
+		statusCode:{
+			201: function(){
+				$(".loginResult").html("success to login");
+			}
+		}
+	});
+}
+
 function modajax(){
 	$.ajax({
 		url:'api/u',
@@ -57,6 +81,7 @@ function modajax(){
 		beforeSend: function(xhr){
 			xhr.setRequestHeader('email', $("#mod_email").val());
 			xhr.setRequestHeader('pwd', $("#mod_pwd").val());
+			xhr.setRequestHeader('isNew', $("#mod_npwd").val());
 		},
 		statusCode:{
 			200: function(){
