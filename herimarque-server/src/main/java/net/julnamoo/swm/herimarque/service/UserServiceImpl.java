@@ -8,6 +8,7 @@ import net.julnamoo.swm.herimarque.dao.UserDAOImpl;
 import net.julnamoo.swm.herimarque.util.MailSender;
 import net.julnamoo.swm.herimarque.util.UserInfoEncryptor;
 
+import org.eclipse.jetty.util.security.Credential.MD5;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -36,17 +37,17 @@ public class UserServiceImpl implements UserService {
 		
 		// generate the temporal key and insert to Mongo
 		logger.debug("Generate temp key for respected user {}", id);
-		String key = UserInfoEncryptor.encryption(email, pwd);
-		String _id = userDAO.addUser(id, key, false);
+		String key = UserInfoEncryptor.encryption(id);
+		userDAO.addUser(id, pwd, false);
 		
 		/** Send the email **/
 		new MailSender().sendMail(email, id, key);
-		return _id;
+		return key;
 	}
 
 	/**
 	 * Unauthorized user are removed by admin.
-	 * Generate the real key with email and the key
+	 * Generate the real key with information
 	 */
 	@Override
 	public boolean authUser(String id, String key) 
@@ -54,10 +55,14 @@ public class UserServiceImpl implements UserService {
 		//generate the final key
 		logger.debug("Generate final key for new user {}", id);
 		
-		String expKey = userDAO.getUserKey(id);
+		String expKey = MD5.digest(id);
 		if(expKey.equals(key))
 		{
-			String finalKey = UserInfoEncryptor.encryption(id, key);
+			//get the first password
+			String initP = userDAO.getUserKey(id);
+			//generate the new key with the password
+			String code = new StringBuilder().append(id).append(initP).toString();
+			String finalKey = UserInfoEncryptor.encryption(code);
 			userDAO.addUser(id, finalKey, true);
 			return true;
 		}else
@@ -74,14 +79,23 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String changeUserInfo(String id, String pwd) 
+	public String changeUserInfo(String id, String pwd, String nPwd) 
 	{
 		logger.debug("generate new final key with new information for {}", id);
-		String newKey = UserInfoEncryptor.encryption(id, Double.toString(Math.random()));
-		String finalKey = UserInfoEncryptor.encryption(pwd, newKey);
-		String result = userDAO.changeInfo(id, finalKey);
 		
-		return result;
+		String result;
+		String code = new StringBuilder().append(id).append(pwd).toString();
+		String olderKey = UserInfoEncryptor.encryption(code);
+		//If the user is real
+		if(olderKey.equals(userDAO.getUserKey(id)))
+		{
+			code = new StringBuilder().append(id).append(nPwd).toString();
+			String newKey = UserInfoEncryptor.encryption(code);
+			userDAO.changeInfo(id, newKey);
+			result = newKey;
+		}
+		
+		return null;
 	}
 	
 	public List<String> allUsers()

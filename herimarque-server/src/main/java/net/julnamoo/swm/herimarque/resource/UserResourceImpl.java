@@ -104,12 +104,12 @@ public class UserResourceImpl implements UserResource {
 	 */
 	@PUT
 	@Override
-	public Response changeUserInfo(@HeaderParam("email") String email, @HeaderParam("pwd") String pwd) 
+	public Response changeUserInfo(@HeaderParam("id") String id, @HeaderParam("pwd") String pwd, @HeaderParam("isNew") String nPwd) 
 	{
 		logger.info("start handling changeKey");
 		
 		Response response = null;
-		String changed = userServiceImpl.changeUserInfo(email, pwd);
+		String changed = userServiceImpl.changeUserInfo(id, pwd, nPwd);
 		
 		if(changed != null)
 		{

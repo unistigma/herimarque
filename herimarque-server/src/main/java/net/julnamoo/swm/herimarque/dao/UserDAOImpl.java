@@ -38,30 +38,20 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 	{
 		setMongo();
 
-		//Set authorization value to verify on going or done.
+		//find there is non-authenticated user in mongo
 		DBObject doc = new BasicDBObject();
 		doc.put("id", id);
-		doc.put("finalKey", key);
-		doc.put("auth", auth);
-
-		//insert or update
-		String _id = null;
 		if(auth)
 		{
-			DBObject qdoc = new BasicDBObject();
-			qdoc.put("id", id);
-			collection.update(qdoc, doc);
-			BasicDBObject fdoc = (BasicDBObject) collection.findOne(qdoc);
-			ObjectId oid = (ObjectId) fdoc.get("_id");
-			_id = String.valueOf(oid.getInc());
-		}else
-		{
-			collection.save(doc);
-			ObjectId oid = (ObjectId) doc.get("_id");
-			_id = oid.toString();
+			doc = collection.findOne(doc);
 		}
+		
+		doc.put("auth", auth);
+		doc.put("finalKey", key);
+		collection.save(doc);
+
 		logger.debug("exec save with a object, {}", doc);
-		return _id;//doc.get("_id").toString();
+		return key;//doc.get("_id").toString();
 	}
 
 	@Override
@@ -69,20 +59,13 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 	{
 		setMongo();
 
-		DBObject doc = new BasicDBObject();
+		BasicDBObject doc = new BasicDBObject();
 		doc.put("id", id);
 
 		logger.info("Retrive key of {}", id);
-		DBCursor cursor = collection.find(doc);
-		if(cursor.size() == 0)
-		{
-			return null;
-		}else
-		{
-			DBObject resultDoc = cursor.next();
-			ObjectId oid = (ObjectId) resultDoc.get("_id");
-			return oid.toString();
-		}
+		doc = (BasicDBObject) collection.findOne(doc);
+		
+		return doc.getString("finalKey");
 	}
 
 	@Override
@@ -98,10 +81,8 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 		doc.put("finalKey", newKey);
 		collection.save(doc);
 
-		ObjectId oid = (ObjectId) doc.get("_id");
-		String _id = oid.toString();
 		logger.debug("change Info of {} with {}", id, newKey);
-		return _id;
+		return newKey;
 	}
 
 	@Override

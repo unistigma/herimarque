@@ -13,7 +13,7 @@ public interface UserService {
 	 * Return the _id received from DAO, the key for each user
 	 * 
 	 * Send a mail containing the key and user email in the url request
-	 * The key and the email address will be passed by HeaderParam.
+	 * The key and the id address will be passed by HeaderParam.
 	 * @param email
 	 * @param pwd
 	 * @return userKey
@@ -37,10 +37,11 @@ public interface UserService {
 	 
 	 /**
 	  * Change the info of the user with the email.
+	  * At first, auth the user is the origin with id and older pwd
 	  * Password can be modified ONLY
 	  * @param id
 	  * @param pwd
 	  * @return _id from the mongo
 	  */
-	 public String changeUserInfo(String id, String pwd);
+	 public String changeUserInfo(String id, String pwd, String nPwd);
 }
