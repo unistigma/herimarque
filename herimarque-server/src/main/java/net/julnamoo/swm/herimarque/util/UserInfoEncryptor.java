@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.eclipse.jetty.util.security.Credential.MD5;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,38 +26,33 @@ public class UserInfoEncryptor
 	 * @param param2
 	 * @return generatedKey
 	 */
-	public static String encryption(String param1, String param2)
+	public static String encryption(String target)
 	{
-		MessageDigest md = null;
-		String code = null;
-
-		try 
-		{
-			md = MessageDigest.getInstance("MD5");
-			md.reset();
-			md.update(param1.getBytes("UTF-8"));
-			md.update(param2.getBytes("UTF-8"));
-
-			BigInteger bi = new BigInteger(md.digest());
-			code = bi.toString();
-
-		} catch (NoSuchAlgorithmException e) 
-		{
-			code = "-1";
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) 
-		{
-			e.printStackTrace();
-			
-			md.reset();
-			md.update(param1.getBytes());
-			md.update(param2.getBytes());
-			
-			BigInteger bi = new BigInteger(md.digest());
-			code = bi.toString();
-		}
-
-		logger.debug("success to encrypt {}, generated key length is {}", param1, code.length());
+//		MessageDigest md = null;
+//		String code = null;
+//
+//		try 
+//		{
+//			md = MessageDigest.getInstance("MD5");
+//			md.reset();
+//			md.update(target.getBytes("UTF-8"));
+//			code = new String(md.digest());
+//
+//		} catch (NoSuchAlgorithmException e) 
+//		{
+//			md.reset();
+//			code = "-1";
+//			e.printStackTrace();
+//		} catch (UnsupportedEncodingException e) 
+//		{
+//			e.printStackTrace();
+//			
+//			md.reset();
+//			md.update(target.getBytes());
+//			code = new String(md.digest());
+//		}
+		String code = MD5.digest(target);
+		logger.debug("success to encrypt {}, generated key length is {}", target, code.length());
 		return code;
 	}
 }
