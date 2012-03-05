@@ -218,7 +218,6 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>1.0.1.RELEASE</version>
-			<scope>test</scope>
 		</dependency>
 		
 		<dependency>
