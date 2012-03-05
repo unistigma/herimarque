@@ -1,12 +1,27 @@
 package net.julnamoo.swm.herimarque.mongo;
 
-import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import javax.annotation.Resource;
+import javax.xml.bind.JAXB;
+
+import net.julnamoo.swm.herimarque.model.Comment;
+import net.julnamoo.swm.herimarque.model.Location;
+import net.julnamoo.swm.herimarque.model.MapInfo;
+
+import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.google.gson.Gson;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -14,6 +29,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+import com.mongodb.QueryBuilder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:rootContext.xml"}) 
@@ -67,6 +83,66 @@ public class TestAddArrayList {
 			System.out.println();
 		}
 		
+	}
+	
+	@Test
+	public void insertMapInfo()
+	{
+		MapInfo mi = new MapInfo();
+		mi.setUploadTime(new Date().toString());
+		mi.setUser("testId");
+		mi.setFilePath("testFilePath");
+		
+		ArrayList<String> areas = new ArrayList<String>();
+		areas.add("a1");
+		areas.add("a2");
+		mi.setArea(areas);
+		
+		List<Comment> comments =  new ArrayList<Comment>();
+		
+		Comment c1 = new Comment();
+		c1.setUserKey("u1");
+		c1.setContent("comment1");
+		
+		Comment c2 = new Comment();
+		c2.setUserKey("u2");
+		c2.setContent("comment2");
+		
+		comments.add(c1);
+		comments.add(c2);
+		mi.setComments(comments);
+		mi.setLikeCount(2);
+		
+		List<String> likes = new ArrayList<String>();
+		likes.add("u1");
+		likes.add("u2");
+		mi.setLikes(likes);
+		
+		List<Location> logging = new ArrayList<Location>();
+		Location l1 = new Location();
+		l1.setType('c');
+		l1.setX("0.00");
+		l1.setY("0.01");
+		
+		Location l2 = new Location();
+		l2.setType('g');
+		l2.setX("0.0023413");
+		l2.setY("0.011232315");
+		logging.add(l1);
+		logging.add(l2);
+		mi.setLogging(logging);
+		
+		String json = new Gson().toJson(mi);
+		System.out.println("first converted by gson : " + json);
+
+		MongoTemplate mt = new MongoTemplate(mongo, "herimarque");
+		mt.save(mi, "test");
+		
+		Query q = new Query();
+//		new QueryBuilder().is(obj);
+		q.addCriteria(new Criteria("filePath").is("testFilePath"));
+		MapInfo mir = mt.findOne(q, MapInfo.class, "test");
+		System.out.println(new Gson().toJson(mir));
 		
 	}
 }
