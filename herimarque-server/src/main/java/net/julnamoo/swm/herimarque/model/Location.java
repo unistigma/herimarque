@@ -1,6 +1,11 @@
 package net.julnamoo.swm.herimarque.model;
 
-public class Location {
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class Location implements Serializable{
 
 	Character type;
 	String x;
