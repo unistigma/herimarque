@@ -3,8 +3,11 @@ package net.julnamoo.swm.herimarque.resource;
 
 import java.io.InputStream;
 
+import javax.jws.HandlerChain;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -16,9 +19,11 @@ import com.sun.jersey.multipart.FormDataParam;
 public interface ContentResource {
 
 	/**
-	 * with POST.
-	 * The map photos will be downgraded
-	 * @param key
+	 * 
+	 * @param id - upload user id
+	 * @param uploadedInputStream - file input stream with form param
+	 * @param fileDeatil
+	 * @param mapInfo - json for gps tracking log
 	 * @return
 	 */
 	public Response uploadMap(
@@ -45,6 +50,7 @@ public interface ContentResource {
 	 * @return
 	 */
 	public abstract Response getLocationMapList(
+			@HeaderParam("user") String user,
 			@DefaultValue("11") @PathParam("ctrdCd") String ctrdCd);
 	
 	/**
@@ -53,7 +59,10 @@ public interface ContentResource {
 	 * @return
 	 */
 	@Consumes({MediaType.APPLICATION_JSON})
-	public abstract Response addComment(String msg);
+	public abstract Response addComment(
+			@HeaderParam("user") String user,
+			@PathParam("map") String map,
+			String msg);
 	
 	/**
 	 * update the hit(like) for the map with the user
@@ -69,7 +78,8 @@ public interface ContentResource {
 	 * Retrieve the maps in decrease order of like count
 	 * @return
 	 */
-	public abstract Response mostHitMaps();
+	public abstract Response mostHitMaps(
+			@HeaderParam("user") String user);
 	
 	/**
 	 * Retrieve the maps in the preriod 
@@ -77,6 +87,8 @@ public interface ContentResource {
 	 * @return
 	 */
 	@Consumes({MediaType.APPLICATION_JSON})
-	public abstract Response getMapsInPeriod(String msg);
+	public abstract Response getMapsInPeriod(
+			@HeaderParam("user")String user,
+			String msg);
 	
 }

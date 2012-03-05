@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -56,52 +57,32 @@ public class ContentResourceImpl implements ContentResource {
 			@FormDataParam("file") FormDataContentDisposition fileDeatil,
 			@FormDataParam("mapInfo") String mapInfo) 
 	{
-		logger.debug("Start upload with {}",mapInfo);
 		
-		String mapKey = "tempkey";
-//		//If there is no file, then return the BAD_REQUEST
-//		if(uploadedInputStream == null)
-//		{
-//			logger.debug("uploaded file is null, return");
-//			return Response.status(Status.BAD_REQUEST).build();
-//		}
-//
-//		//build file path
-//		StringBuilder sb = new StringBuilder();
-//		String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo");
-//		//		String repo = "maps";
-//		sb.append(repo).append(File.separatorChar);
-//		sb.append(user).append(File.separatorChar);
-//		String fname;
-//		fname = fileDeatil.getFileName();
-//		sb.append(fname);
-//
-//		String filePath = sb.toString();
-//
-//		MapInfo mapInfo = new MapInfo();
-//		mapInfo.setFilePath(filePath);
-//		mapInfo.setUser(user);
-//		mapInfo.setAge(age);
-//		mapInfo.setArea(area);
-//		mapInfo.setKind(kind);
-//
-//		//add the file path to the mongo and get the id. It will be returned with response
-//		String mapKey = contentService.uploadMap(uploadedInputStream, mapInfo);
-//		logger.info("{} map key : {}, return 200", fname, mapKey);
-
-		return Response.status(Status.OK).entity(mapKey).build();
+		String fname = fileDeatil.getFileName();
+		logger.debug("Start upload with {} for {}",mapInfo, fname);
+		String mapKey = contentService.uploadMap(uploadedInputStream, fname, id, mapInfo);
+		logger.debug("returing generated map key {}", mapKey);
+		
+		if(mapKey == null)
+		{
+			return Response.status(Status.BAD_REQUEST).build();
+		}else
+		{
+			return Response.status(Status.OK).entity(mapKey).build();
+		}
 	}
 
 	@GET
-	@Path("/d/my")
+	@Path("maps/user/{id}")
 	@Produces({ MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML })
 	@Override
-	public Response getMyMapList(@HeaderParam("key") String key) 
+	public Response getUserMapList(
+			@DefaultValue("testId") @PathParam("id") String key) 
 	{
 		logger.debug("start handling getMyMapList with user {}", key);
 
 		//get path list of images
-		String msg = contentService.getMyMapList(key);
+		String msg = contentService.getUserMapList(key);
 		
 		Response response = Response.ok().entity(msg).build();
 		logger.info("user map retrieve, return 200");
@@ -110,26 +91,12 @@ public class ContentResourceImpl implements ContentResource {
 	}
 
 	@GET
-	@Path("/d/other")
+	@Path("maps/loc/{ctrdCd}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Override
-	public Response getTheOtehrMapList(@HeaderParam("user") String id) 
-	{
-		logger.debug("start handling getTheOtehrMapList of {} user", id);
-
-		//get path list of images
-		String msg = contentService.getOtherMapList(id);
-		Response response = Response.ok().entity(msg).build();
-		logger.info("other user map retrieve, return 200");
-
-		return response;
-	}
-
-	@GET
-	@Path("/d/loc/{ctrdCd}")
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	@Override
-	public Response getLocationMapList(@PathParam("ctrdCd") String ctrdCd) 
+	public Response getLocationMapList(
+			@HeaderParam("user") String user,
+			@DefaultValue("11") @PathParam("ctrdCd") String ctrdCd)
 	{
 		logger.debug("start handling getLocationMapList of {} ", ctrdCd);
 
@@ -142,39 +109,58 @@ public class ContentResourceImpl implements ContentResource {
 	}
 
 	@GET
-	@Path("/d/kind/{itemCd}")
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Path("maps/period")
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Override
-	public Response getKindMapList(@PathParam("itemCd") String itemCd) 
+	public Response getMapsInPeriod(
+			@HeaderParam("user")String user,
+			String msg) 
 	{
-		logger.debug("start handling getKindMapList of {} ", itemCd);
-
-		//get path list of images
-		String msg = contentService.getKindMapList(itemCd);
-		Response response = Response.ok().entity(msg).build();
-		logger.info("kind map retrieve, return 200");
-
-		return response;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
+	@GET
+	@Path("maps/hot")
+	@Override
+	public Response mostHitMaps(@HeaderParam("user") String user) 
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@POST
-	@Path("/u/comment")
+	@Path("u")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response addComment(String msg)
+	public Response addComment(
+			@HeaderParam("user") String user,
+			@PathParam("map") String map,
+			String msg)
 	{
 		Comment comment = (Comment) new Gson().fromJson(msg, Comment.class);
-		logger.debug("adding comment to {} with {}", comment.getMapKey(), comment.toString());
+//		logger.debug("adding comment to {} with {}", comment.getMapKey(), comment.toString());
 		//add the comment
-		boolean result = contentService.addComment(comment);
+		boolean result = contentService.addComment(msg);
 		if(result)
 		{
-			logger.info("adding new comment to {}, return 200", comment.getMapKey());
+//			logger.info("adding new comment to {}, return 200", comment.getMapKey());
 			return Response.ok().build();
 		}else
 		{
-			logger.info("fail to add new comment to {}, return 400", comment.getMapKey());
+//			logger.info("fail to add new comment to {}, return 400", comment.getMapKey());
 			return Response.status(Status.BAD_REQUEST).build();
 		}
-
 	}
+	
+	@POST
+	@Path("maps")
+	@Override
+	public Response likeMap(
+			@DefaultValue("testId") @PathParam("id") String id, 
+			@QueryParam("map") String mapId) 
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

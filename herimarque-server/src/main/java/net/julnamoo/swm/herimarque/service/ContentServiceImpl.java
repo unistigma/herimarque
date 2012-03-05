@@ -17,6 +17,7 @@ import net.julnamoo.swm.herimarque.model.Comment;
 import net.julnamoo.swm.herimarque.model.MapInfo;
 import net.julnamoo.swm.herimarque.util.PropertiesUtil;
 
+import org.eclipse.jetty.util.security.Credential.MD5;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -38,13 +39,16 @@ public class ContentServiceImpl implements ContentService {
 	 * @see net.julnamoo.swm.herimarque.service.ContentService#uploadMap(java.io.InputStream, net.julnamoo.swm.herimarque.model.MapInfo)
 	 */
 	@Override
-	public String uploadMap(InputStream uploadedInputStream, MapInfo mapInfo)
+	public String uploadMap(InputStream uploadedInputStream, String fname,
+			String id, String otherInfo) 
 	{
-		logger.debug("Start to write {}", mapInfo.getFilePath());
+		logger.debug("Start to write {}", fname);
 		
-		StringBuilder sb = new StringBuilder();
+		//build map file path
 		String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo");
-		sb.append(repo).append(File.separatorChar).append(mapInfo.getUser());
+		StringBuilder sb = new StringBuilder();
+		sb.append(repo).append(File.separatorChar).append(id);
+		sb.append(File.separatorChar).append("maps");
 		String dirPath = sb.toString();
 		
 		File userDir = new File(dirPath);
@@ -55,7 +59,8 @@ public class ContentServiceImpl implements ContentService {
 		}
 		
 		//CAN BE PROCESSED with THREAD for taking SHORTER TIME for saving the image
-		String mapPath = mapInfo.getFilePath();
+		String mapPath = sb.append(File.separatorChar).append(fname).toString();
+		logger.debug("start save the file {}", mapPath);
 		//It needs downgrade the resolution of the map picture
 		try
 		{
@@ -82,30 +87,31 @@ public class ContentServiceImpl implements ContentService {
 			e.printStackTrace();
 		}
 		
-		mapInfo.setUploadTime(DateFormat.getInstance().format(new Date()));
-		//save other information of the map to the mongo
-		return contentsDAO.addMapInfo(mapInfo);
-	}
-	
-	/* (non-Javadoc)
-	 * @see net.julnamoo.swm.herimarque.service.ContentService#getMyMapList(java.lang.String)
-	 */
-	@Override
-	public String getMyMapList(String id)
-	{
-		logger.debug("request user map list to contents dao");
-		List<MapInfo> myMapList = contentsDAO.getUsersMapList(id);
+		String mapKey = MD5.digest(mapPath);
 		
-		String msg = new Gson().toJson(myMapList);
-		logger.debug("getMyMapList, return json {}", msg);
-		return msg;
+		MapInfo mapInfo = new MapInfo();
+		mapInfo.setUploadTime(DateFormat.getInstance().format(new Date()));
+		mapInfo.setUser(id);
+		mapInfo.setFilePath(mapPath);
+		mapInfo.setLikeCount(0);
+		mapInfo.setMapKey(mapKey);
+		
+		//save other information of the map to the mongo
+		mapKey = contentsDAO.addMapInfo(mapInfo);
+		//fail to save the mapinfo
+		if(mapKey == null)
+		{
+			File f = new File(mapPath);
+			f.delete();
+			return null;
+		}else return mapKey;
 	}
 	
 	/* (non-Javadoc)
 	 * @see net.julnamoo.swm.herimarque.service.ContentService#getOtherMapList(java.lang.String)
 	 */
 	@Override
-	public String getOtherMapList(String id)
+	public String getUserMapList(String id)
 	{
 		logger.debug("request user {} map list from another user", id);
 		List<MapInfo> otherMapList = contentsDAO.getUsersMapList(id);
@@ -130,37 +136,22 @@ public class ContentServiceImpl implements ContentService {
 		return msg;
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.julnamoo.swm.herimarque.service.ContentService#getKindMapList(java.lang.String)
-	 */
 	@Override
-	public String getKindMapList(String itemCd)
+	public boolean addComment(String comment) 
 	{
-		logger.debug("request maps of the kind:{}", itemCd);
-		
-		List<MapInfo> mapList = contentsDAO.getKindMapList(itemCd);
-		
-		String msg = new Gson().toJson(mapList);
-		logger.debug("getKindMapList, return json {}", msg);
-		return msg;
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
-	/* (non-Javadoc)
-	 * @see net.julnamoo.swm.herimarque.service.ContentService#addComment(net.julnamoo.swm.herimarque.model.Comment)
-	 */
+
 	@Override
-	public boolean addComment(Comment comment)
-	{
-		logger.debug("request add comment to the map");
-		boolean result = false;
-		try 
-		{
-			result = contentsDAO.addComment(comment);
-		} catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		
-		return result;
+	public String mostHitMaps() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getMapsInPeriod(String perioid) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
