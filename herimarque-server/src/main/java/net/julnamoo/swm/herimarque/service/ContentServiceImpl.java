@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import net.julnamoo.swm.herimarque.dao.ContentsDAO;
 import net.julnamoo.swm.herimarque.dao.UserDAOImpl;
 import net.julnamoo.swm.herimarque.model.Comment;
+import net.julnamoo.swm.herimarque.model.Location;
 import net.julnamoo.swm.herimarque.model.MapInfo;
 import net.julnamoo.swm.herimarque.util.PropertiesUtil;
 
@@ -42,7 +43,7 @@ public class ContentServiceImpl implements ContentService {
 	public String uploadMap(InputStream uploadedInputStream, String fname,
 			String id, String otherInfo) 
 	{
-		logger.debug("Start to write {}", fname);
+		logger.debug("Start to write {} with {}", fname, otherInfo);
 		
 		//build map file path
 		String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo");
@@ -96,6 +97,12 @@ public class ContentServiceImpl implements ContentService {
 		mapInfo.setLikeCount(0);
 		mapInfo.setMapKey(mapKey);
 		
+		MapInfo temp = new Gson().fromJson(otherInfo, MapInfo.class);
+		logger.debug("temp MapInfo with json, 0th area : {}, 0th location : {}", temp.getArea().get(0), temp.getLogging().get(0));
+		
+		mapInfo.setArea(temp.getArea());
+		mapInfo.setLogging(temp.getLogging());
+		temp = null;
 		//save other information of the map to the mongo
 		mapKey = contentsDAO.addMapInfo(mapInfo);
 		//fail to save the mapinfo

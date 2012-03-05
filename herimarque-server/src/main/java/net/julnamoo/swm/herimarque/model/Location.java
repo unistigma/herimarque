@@ -40,5 +40,9 @@ public class Location implements Serializable{
 		this.y = y;
 	}
 	
-	
+	@Override
+	public String toString() 
+	{
+		return getType()+",("+getX()+","+getY()+")";
+	}
 }
