@@ -39,11 +39,13 @@ public interface ContentService {
 	public abstract String getLocationMapList(String ctrdCd);
 
 	/**
-	 * Adding comment to the map contained in parameter 
+	 * Adding comment to the map contained in parameter
+	 * @param user - user adding comment
+	 * @param map - comment added map 
 	 * @param comment - json msg of comment POJO
 	 * @return success - boolean of whether success
 	 */
-	public abstract boolean addComment(String comment);
+	public abstract boolean addComment(String user, String map, String comment);
 
 	/**
 	 * Retrieve the map info list in decrease order of likes count of each maps

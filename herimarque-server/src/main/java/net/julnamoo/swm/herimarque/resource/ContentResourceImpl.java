@@ -1,6 +1,5 @@
 package net.julnamoo.swm.herimarque.resource;
 
-import java.io.File;
 import java.io.InputStream;
 
 import javax.ws.rs.Consumes;
@@ -16,22 +15,16 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.xml.bind.JAXBElement;
 
-import net.julnamoo.swm.herimarque.model.Comment;
-import net.julnamoo.swm.herimarque.model.MapInfo;
 import net.julnamoo.swm.herimarque.service.ContentService;
-import net.julnamoo.swm.herimarque.util.PropertiesUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.gson.Gson;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
-import com.sun.jersey.server.impl.model.method.dispatch.MultipartFormDispatchProvider;
 
 /**
  * 
@@ -50,7 +43,7 @@ public class ContentResourceImpl implements ContentResource {
 
 	@POST
 	@Path("upload")
-	@Consumes("multipart/form-data")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadMap(
 			@FormDataParam("id") String id,
 			@FormDataParam("file") InputStream uploadedInputStream,
@@ -130,24 +123,23 @@ public class ContentResourceImpl implements ContentResource {
 	}
 	
 	@POST
-	@Path("u")
+	@Path("u/{map}")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response addComment(
 			@HeaderParam("user") String user,
 			@PathParam("map") String map,
-			String msg)
+			@FormParam("content") String msg)
 	{
-		Comment comment = (Comment) new Gson().fromJson(msg, Comment.class);
-//		logger.debug("adding comment to {} with {}", comment.getMapKey(), comment.toString());
+		logger.debug("adding comment to {} with {}", map, user);
 		//add the comment
-		boolean result = contentService.addComment(msg);
+		boolean result = contentService.addComment(user, map, msg);
 		if(result)
 		{
-//			logger.info("adding new comment to {}, return 200", comment.getMapKey());
+			logger.info("adding new comment to {}, return 200", map);
 			return Response.ok().build();
 		}else
 		{
-//			logger.info("fail to add new comment to {}, return 400", comment.getMapKey());
+			logger.info("fail to add new comment to {}, return 400", map);
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 	}

@@ -16,6 +16,7 @@ import net.julnamoo.swm.herimarque.dao.UserDAOImpl;
 import net.julnamoo.swm.herimarque.model.Comment;
 import net.julnamoo.swm.herimarque.model.Location;
 import net.julnamoo.swm.herimarque.model.MapInfo;
+import net.julnamoo.swm.herimarque.util.HerimarqueEncryptor;
 import net.julnamoo.swm.herimarque.util.PropertiesUtil;
 
 import org.eclipse.jetty.util.security.Credential.MD5;
@@ -88,7 +89,7 @@ public class ContentServiceImpl implements ContentService {
 			e.printStackTrace();
 		}
 		
-		String mapKey = MD5.digest(mapPath);
+		String mapKey = HerimarqueEncryptor.encryption(mapPath);
 		
 		MapInfo mapInfo = new MapInfo();
 		mapInfo.setUploadTime(DateFormat.getInstance().format(new Date()));
@@ -144,10 +145,15 @@ public class ContentServiceImpl implements ContentService {
 	}
 	
 	@Override
-	public boolean addComment(String comment) 
+	public boolean addComment(String user, String map, String c) 
 	{
-		// TODO Auto-generated method stub
-		return false;
+		logger.debug("Convert comment information({}, {}) to the comment object from "+user, map, c);
+		Comment comment = new Comment();
+		comment.setUserKey(user);
+		comment.setContent(c);
+		comment.setUploadTime(DateFormat.getInstance().format(new Date()));
+		
+		return contentsDAO.addComment(map, comment);
 	}
 
 	@Override

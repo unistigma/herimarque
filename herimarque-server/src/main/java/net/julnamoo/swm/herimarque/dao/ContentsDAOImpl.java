@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.google.gson.Gson;
@@ -143,48 +144,73 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 	 * @see net.julnamoo.swm.herimarque.dao.ContentsDAO#addComment(net.julnamoo.swm.herimarque.model.Comment)
 	 */
 	@Override
-	public boolean addComment(Comment comment) throws Exception
+	public boolean addComment(String mapKey, Comment comment) 
 	{
 		boolean result = false;
-		setMongo();
+		MongoTemplate mt = new MongoTemplate(mongo, "herimarque");
 		
-		DBObject qdoc = new BasicDBObject();
-//		qdoc.put("_id", new ObjectId(comment.getMapKey()));
-		
-		DBCursor cursor = collection.find(qdoc);
-		if(cursor.size() > 0)
+		Query query = new Query();
+		query.addCriteria(new Criteria("mapKey").is(mapKey));
+		//retrieve the older map
+		MapInfo mapInfo = mt.findOne(query, MapInfo.class);
+		if(mapInfo == null)
 		{
-			if(cursor.size() != 1) throw new Exception(cursor.next().get("_id") + " map is more than one, please check it.");
-			
-			BasicDBObject mapInfo = (BasicDBObject) cursor.next();
-			
-			//check whether it has comments
-			BasicDBList cList = null;
-			if(mapInfo.containsField("comments"))
-			{
-				cList = (BasicDBList) mapInfo.get("comments");
-			}else
-			{
-				//the first comment to save
-				cList = new BasicDBList();
-			}
-			
-			//build DBobject with the comment and add it to comment list
-			DBObject cObj = comment2DBObj(comment);
-			cList.add(cObj);
-			
-			//put it to origin DBObj
-			mapInfo.put("comments", cList);
-			
-			//update the obj
-			collection.save(mapInfo);
-			
-			result = true;
+			logger.info("There is no map with the key :{}", mapKey);
+			result = false;
 		}else
 		{
-			result = false;
+			List<Comment> comments = mapInfo.getComments();
+			if(comments == null)
+			{
+				logger.debug("The first comment for the map:{}", mapKey);
+				comments = new ArrayList<Comment>();
+			}
+			comments.add(comment);
+			logger.info("Add the comment by {} to the map {}", comment.getUserKey(), mapKey);
+			
+			mt.updateFirst(query, Update.update("comments", comments), MapInfo.class);
+			result = true;
 		}
+		
 		return result;
+//		setMongo();
+//		
+//		DBObject qdoc = new BasicDBObject();
+////		qdoc.put("_id", new ObjectId(comment.getMapKey()));
+//		
+//		DBCursor cursor = collection.find(qdoc);
+//		if(cursor.size() > 0)
+//		{
+//			if(cursor.size() != 1) throw new Exception(cursor.next().get("_id") + " map is more than one, please check it.");
+//			
+//			BasicDBObject mapInfo = (BasicDBObject) cursor.next();
+//			
+//			//check whether it has comments
+//			BasicDBList cList = null;
+//			if(mapInfo.containsField("comments"))
+//			{
+//				cList = (BasicDBList) mapInfo.get("comments");
+//			}else
+//			{
+//				//the first comment to save
+//				cList = new BasicDBList();
+//			}
+//			
+//			//build DBobject with the comment and add it to comment list
+//			DBObject cObj = comment2DBObj(comment);
+//			cList.add(cObj);
+//			
+//			//put it to origin DBObj
+//			mapInfo.put("comments", cList);
+//			
+//			//update the obj
+//			collection.save(mapInfo);
+//			
+//			result = true;
+//		}else
+//		{
+//			result = false;
+//		}
 	}
 	
 	@Override

@@ -32,11 +32,12 @@ public interface ContentsDAO {
 	/**
 	 * Insert comment to mongo.
 	 * If there are maps, like duplicate mapInfo object, throws multiple map exception
+	 * @param mapKey - mapKey for adding comment
 	 * @param comment - Comment to add
 	 * @return success whether of insert
 	 * @throws Exception
 	 */
-	public abstract boolean addComment(Comment comment) throws Exception;
+	public abstract boolean addComment(String mapKey, Comment comment) ;
 	
 	/**
 	 * Retrieve the objects from the mongo in decrease order of likes count of maps
