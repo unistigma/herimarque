@@ -5,9 +5,12 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import net.julnamoo.swm.herimarque.model.User;
+
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.BasicDBObject;
@@ -30,17 +33,17 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 	@Override
 	public void setCollectionName() 
 	{
-		collectionName = "users";
+		collectionName = "user";
 	}
 	
 	@Override
 	public String addUser(String id, String key, boolean auth) 
 	{
 		setMongo();
-
+		
 		//find there is non-authenticated user in mongo
 		DBObject doc = new BasicDBObject();
-		doc.put("id", id);
+		doc.put("user", id);
 		if(auth)
 		{
 			doc = collection.findOne(doc);
@@ -60,12 +63,14 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 		setMongo();
 
 		BasicDBObject doc = new BasicDBObject();
-		doc.put("id", id);
+		doc.put("user", id);
 
 		logger.info("Retrive key of {}", id);
 		doc = (BasicDBObject) collection.findOne(doc);
 		
-		return doc.getString("finalKey");
+		if(doc == null) return null;
+		String key = doc.containsField("finalKey") ? doc.getString("finalKey") : null; 
+		return key;
 	}
 
 	@Override
@@ -75,7 +80,7 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 
 		//find the target object
 		DBObject doc = new BasicDBObject();
-		doc.put("id", id);
+		doc.put("user", id);
 		doc = collection.findOne(doc);
 		//set the new key
 		doc.put("finalKey", newKey);
@@ -92,24 +97,18 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 		
 		//build query object
 		DBObject qdoc = new BasicDBObject();
-		qdoc.put("id", id);
+		qdoc.put("user", id);
 		
 		collection.remove(qdoc);
 		logger.debug("remove the user {} info from the mongo", id);
 	}
 
-	public List<String> allUsers()
+	public List<User> allUsers()
 	{
-		setMongo();
-		DBCursor results = collection.find();
-		
-		List<String> userList = new ArrayList<String>();
-		while(results.hasNext())
-		{
-			userList.add(results.next().toString());
-		}
-		
-		logger.debug("total user count is {}. return the list", userList.size());
-		return userList;
+//		setMongo();
+		MongoTemplate mt = new MongoTemplate(mongo, "herimarque");
+		List<User> allUsers = mt.findAll(User.class);
+		logger.debug("total user count is {}. return the list", allUsers.size());
+		return allUsers;
 	}
 }

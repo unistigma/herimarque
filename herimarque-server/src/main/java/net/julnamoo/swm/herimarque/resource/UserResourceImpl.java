@@ -153,7 +153,7 @@ public class UserResourceImpl implements UserResource {
 		logger.info("request information of all users");
 		
 		Response response = null;
-		String msg = new Gson().toJson(userServiceImpl.allUsers()).toString();
+		String msg = userServiceImpl.allUsers();
 		return response.ok().entity(msg).build();
 	}
 }
