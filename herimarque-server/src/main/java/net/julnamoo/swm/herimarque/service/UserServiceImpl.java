@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
+
 /**
  * 
  * @author Julie_air
@@ -82,6 +84,7 @@ public class UserServiceImpl implements UserService {
 		logger.debug("login attempt is success? {}", result);
 		return result;
 	}
+	
 	@Override
 	public void delUser(String id) 
 	{
@@ -109,9 +112,10 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 	
-	public List<String> allUsers()
+	public String allUsers()
 	{
 		logger.debug("retrive all users");
-		return userDAO.allUsers();
+		String json = new Gson().toJson(userDAO.allUsers());
+		return json;
 	}
 }
