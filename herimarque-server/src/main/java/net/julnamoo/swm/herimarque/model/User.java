@@ -2,36 +2,18 @@ package net.julnamoo.swm.herimarque.model;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-@XmlRootElement
+@Document
 public class User implements Serializable{
 
-	String id;
+	String user;
 	String finalKey;
 	boolean auth;
 
 	public User(){}
 	
-	public String getEmail() {
-		return id;
-	}
-	public void setEmail(String email) {
-		this.id = email;
-	}
-	public String getFinalKey() {
-		return finalKey;
-	}
-	public void setFinalKey(String finalKey) {
-		this.finalKey = finalKey;
-	}
-	public boolean isAuth() {
-		return auth;
-	}
-	public void setAuth(boolean auth) {
-		this.auth = auth;
-	}
-
 	@Override
 	public boolean equals(Object obj) 
 	{
@@ -39,7 +21,7 @@ public class User implements Serializable{
 		{
 			User user = (User) obj;
 
-			return user.getEmail().equals(this.getEmail());
+			return user.getUser().equals(this.getUser());
 		}else
 			return false;
 	}
@@ -47,6 +29,33 @@ public class User implements Serializable{
 	@Override
 	public String toString() 
 	{
-		return this.getEmail();
+		return "[id@" + this.user + ", finalKey@" + this.finalKey + ", auth@" + this.auth + "]" ;
 	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getFinalKey() {
+		return finalKey;
+	}
+
+	public void setFinalKey(String finalKey) {
+		this.finalKey = finalKey;
+	}
+
+	public boolean isAuth() {
+		return auth;
+	}
+
+	public void setAuth(boolean auth) {
+		this.auth = auth;
+	}
+
+	
+	
 }

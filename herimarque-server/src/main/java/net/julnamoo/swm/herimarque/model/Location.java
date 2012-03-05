@@ -4,7 +4,10 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.springframework.data.mongodb.core.mapping.Field;
+
 @XmlRootElement
+@Field
 public class Location implements Serializable{
 
 	Character type;
