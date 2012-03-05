@@ -1,14 +1,11 @@
 package net.julnamoo.swm.herimarque.service;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import net.julnamoo.swm.herimarque.dao.UserDAOImpl;
+import net.julnamoo.swm.herimarque.util.HerimarqueEncryptor;
 import net.julnamoo.swm.herimarque.util.MailSender;
-import net.julnamoo.swm.herimarque.util.UserInfoEncryptor;
 
-import org.eclipse.jetty.util.security.Credential.MD5;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -39,7 +36,7 @@ public class UserServiceImpl implements UserService {
 		
 		// generate the temporal key and insert to Mongo
 		logger.debug("Generate temp key for respected user {}", id);
-		String key = UserInfoEncryptor.encryption(id);
+		String key = HerimarqueEncryptor.encryption(id);
 		userDAO.addUser(id, pwd, false);
 		
 		/** Send the email **/
@@ -56,15 +53,14 @@ public class UserServiceImpl implements UserService {
 	{
 		//generate the final key
 		logger.debug("Generate final key for new user {}", id);
-		
-		String expKey = MD5.digest(id);
+		String expKey = HerimarqueEncryptor.encryption(id);
 		if(expKey.equals(key))
 		{
 			//get the first password
 			String initP = userDAO.getUserKey(id);
 			//generate the new key with the password
 			String code = new StringBuilder().append(id).append(initP).toString();
-			String finalKey = UserInfoEncryptor.encryption(code);
+			String finalKey = HerimarqueEncryptor.encryption(code);
 			userDAO.addUser(id, finalKey, true);
 			return true;
 		}else
@@ -77,7 +73,7 @@ public class UserServiceImpl implements UserService {
 	{
 		logger.debug("Attempt to login. check key of the user with parameters");
 		String code = new StringBuilder().append(id).append(pwd).toString();
-		String expKey = MD5.digest(code);
+		String expKey = HerimarqueEncryptor.encryption(code);
 		String realKey = userDAO.getUserKey(id);
 		
 		boolean result = expKey.equals(realKey);
@@ -97,19 +93,19 @@ public class UserServiceImpl implements UserService {
 	{
 		logger.debug("generate new final key with new information for {}", id);
 		
-		String result;
+		String result = null;
 		String code = new StringBuilder().append(id).append(pwd).toString();
-		String olderKey = UserInfoEncryptor.encryption(code);
+		String olderKey = HerimarqueEncryptor.encryption(code);
 		//If the user is real
 		if(olderKey.equals(userDAO.getUserKey(id)))
 		{
 			code = new StringBuilder().append(id).append(nPwd).toString();
-			String newKey = UserInfoEncryptor.encryption(code);
+			String newKey = HerimarqueEncryptor.encryption(code);
 			userDAO.changeInfo(id, newKey);
 			result = newKey;
 		}
 		
-		return null;
+		return result; 
 	}
 	
 	public String allUsers()
