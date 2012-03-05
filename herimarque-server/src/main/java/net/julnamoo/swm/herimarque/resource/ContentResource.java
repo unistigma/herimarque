@@ -3,12 +3,15 @@ package net.julnamoo.swm.herimarque.resource;
 
 import java.io.InputStream;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBElement;
-
-import net.julnamoo.swm.herimarque.model.Comment;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataParam;
 
 public interface ContentResource {
 
@@ -18,6 +21,11 @@ public interface ContentResource {
 	 * @param key
 	 * @return
 	 */
+	public Response uploadMap(
+			@FormDataParam("id") String id,
+			@FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileDeatil,
+			@FormDataParam("mapInfo") String mapInfo);
 	// For Up/Download maps
 //	public Response uploadMap();
 //	public Response uploadMap(String key); // upload
@@ -28,34 +36,47 @@ public interface ContentResource {
 	 * @param key
 	 * @return
 	 */
-	public Response getMyMapList(String key);  
-	
-	/**
-	 * retrieve someone's maps with comments of it
-	 * @param email
-	 * @return
-	 */
-	public Response getTheOtehrMapList(String email); 
+	public abstract Response getUserMapList(
+			@DefaultValue("testId") @PathParam("id") String key);  
 	
 	/**
 	 * retrieve some place's(using gps location) maps with comments of it
 	 * @param ctrdCd
 	 * @return
 	 */
-	public Response getLocationMapList(String ctrdCd);
-	
-	/**
-	 * retrieve maps of the kind with comments of it
-	 * @param itemCd
-	 * @return
-	 */
-	public Response getKindMapList(String itemCd);
+	public abstract Response getLocationMapList(
+			@DefaultValue("11") @PathParam("ctrdCd") String ctrdCd);
 	
 	/**
 	 * adding comment to the map 
 	 * @param msg
 	 * @return
 	 */
-	public Response addComment(String msg);
+	@Consumes({MediaType.APPLICATION_JSON})
+	public abstract Response addComment(String msg);
+	
+	/**
+	 * update the hit(like) for the map with the user
+	 * @param id
+	 * @param mapId
+	 * @return
+	 */
+	public abstract Response likeMap(
+			@DefaultValue("testId") @PathParam("id") String id, 
+			@QueryParam("map") String mapId);
+	
+	/**
+	 * Retrieve the maps in decrease order of like count
+	 * @return
+	 */
+	public abstract Response mostHitMaps();
+	
+	/**
+	 * Retrieve the maps in the preriod 
+	 * @param msg
+	 * @return
+	 */
+	@Consumes({MediaType.APPLICATION_JSON})
+	public abstract Response getMapsInPeriod(String msg);
 	
 }
