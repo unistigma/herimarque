@@ -110,8 +110,17 @@ public class ContentResourceImpl implements ContentResource {
 			@FormParam("start") String start,
 			@FormParam("end") String end) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		logger.debug("handling request get maps in period from {} to {}", start, end);
+		String msg = contentService.getMapsInPeriod(user, start, end);
+		if(msg == null)
+		{
+			logger.debug("Fail to load the map info with period, return 503");
+			return Response.status(Status.SERVICE_UNAVAILABLE).build();
+		}else
+		{
+			logger.debug("Success to get map list with perioid, return 200");
+			return Response.ok(msg).build();
+		}
 	}
 
 	@GET
@@ -119,8 +128,17 @@ public class ContentResourceImpl implements ContentResource {
 	@Override
 	public Response mostHitMaps(@HeaderParam("user") String user) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		logger.debug("handling get most hit maps request");
+		String msg = contentService.getMostHitMaps(user);
+		if(msg == null)
+		{
+			logger.debug("Cannot get most hit maps, return 503");
+			return Response.status(Status.SERVICE_UNAVAILABLE).build();
+		}else
+		{
+			logger.debug("Sucess to retrieve the most hit maps info list, return 200");
+			return Response.ok(msg).build();
+		}
 	}
 	
 	@POST
