@@ -2,9 +2,9 @@ package net.julnamoo.swm.herimarque.model;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@XmlRootElement(name="notice")
+@Document
 public class Notice implements Serializable{
 
 	String date;

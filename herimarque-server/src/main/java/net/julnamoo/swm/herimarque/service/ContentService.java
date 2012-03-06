@@ -2,9 +2,6 @@ package net.julnamoo.swm.herimarque.service;
 
 import java.io.InputStream;
 
-import net.julnamoo.swm.herimarque.model.Comment;
-import net.julnamoo.swm.herimarque.model.MapInfo;
-
 /**
  * Convert msg from the resource class to POJO and perform each service logic
  * @author Julie_air
@@ -22,7 +19,7 @@ public interface ContentService {
 	 * @return mapId - id of uploaded map
 	 */
 	public abstract String uploadMap(InputStream uploadedInputStream,
-			String fname, String id, String otherInfo);
+			String fname, String otherInfo);
 
 	/**
 	 * Retrieve the map info list with the id
@@ -49,16 +46,19 @@ public interface ContentService {
 
 	/**
 	 * Retrieve the map info list in decrease order of likes count of each maps
+	 * @param user - check for authentication
 	 * @return json of mapInfo list
 	 */
-	public abstract String mostHitMaps();
+	public abstract String getMostHitMaps(String user);
 	
 	/**
 	 * Retrieve the map info list in the period
-	 * @param perioid
+	 * @param user - request user
+	 * @param start - start date of uploaded
+	 * @param end - end date of uploaded
 	 * @return json of mapInfo list
 	 */
-	public abstract String getMapsInPeriod(String perioid);
+	public abstract String getMapsInPeriod(String user, String start, String end);
 	
 	/**
 	 * Increase the count of the map.

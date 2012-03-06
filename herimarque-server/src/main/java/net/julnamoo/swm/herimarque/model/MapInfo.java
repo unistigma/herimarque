@@ -1,7 +1,6 @@
 package net.julnamoo.swm.herimarque.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,10 +9,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class MapInfo implements Serializable{
 
 	String user;
-	String filePath;
+	String title;
+	String content;
 	List<String> area;
-	List<Location> logging;
+	String filePath;
+	List<Location> timeline;
 	String uploadTime;
+	
 	List<String> likes;
 	Integer likeCount;
 	List<Comment> comments;
@@ -35,12 +37,20 @@ public class MapInfo implements Serializable{
 		this.user = user;
 	}
 
-	public String getFilePath() {
-		return filePath;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public List<String> getArea() {
@@ -51,12 +61,20 @@ public class MapInfo implements Serializable{
 		this.area = area;
 	}
 
-	public List<Location> getLogging() {
-		return logging;
+	public String getFilePath() {
+		return filePath;
 	}
 
-	public void setLogging(List<Location> logging) {
-		this.logging = logging;
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public List<Location> getTimeline() {
+		return timeline;
+	}
+
+	public void setTimeline(List<Location> timeline) {
+		this.timeline = timeline;
 	}
 
 	public String getUploadTime() {
@@ -98,5 +116,4 @@ public class MapInfo implements Serializable{
 	public void setMapKey(String mapKey) {
 		this.mapKey = mapKey;
 	}
-	
 }

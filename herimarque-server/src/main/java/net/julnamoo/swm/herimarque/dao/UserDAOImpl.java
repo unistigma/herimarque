@@ -103,7 +103,7 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 	public List<User> allUsers()
 	{
 //		setMongo();
-		MongoTemplate mt = new MongoTemplate(mongo, "herimarque");
+		MongoTemplate mt = new MongoTemplate(mongo, dbName);
 		List<User> allUsers = mt.findAll(User.class);
 		logger.debug("total user count is {}. return the list", allUsers.size());
 		return allUsers;

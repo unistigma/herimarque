@@ -2,6 +2,8 @@ package net.julnamoo.swm.herimarque.resource;
 
 import java.io.InputStream;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
@@ -12,12 +14,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import net.julnamoo.swm.herimarque.service.ContentService;
 
+import org.eclipse.jetty.util.MultiPartOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,8 @@ import org.springframework.stereotype.Component;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
+import com.sun.jersey.multipart.MultiPartConfig;
+import com.sun.jersey.multipart.MultiPartMediaTypes;
 
 /**
  * 
@@ -41,19 +47,17 @@ public class ContentResourceImpl implements ContentResource {
 	@Autowired
 	private ContentService contentService;
 
-	@POST
-	@Path("upload")
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
+//	@POST
+//	@Path("upload/map")
+//	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadMap(
-			@FormDataParam("id") String id,
 			@FormDataParam("file") InputStream uploadedInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileDeatil,
 			@FormDataParam("mapInfo") String mapInfo) 
 	{
-		
 		String fname = fileDeatil.getFileName();
 		logger.debug("Start upload with {} for {}",mapInfo, fname);
-		String mapKey = contentService.uploadMap(uploadedInputStream, fname, id, mapInfo);
+		String mapKey = contentService.uploadMap(uploadedInputStream, fname, mapInfo);
 		logger.debug("returing generated map key {}", mapKey);
 		
 		if(mapKey == null)
@@ -65,6 +69,26 @@ public class ContentResourceImpl implements ContentResource {
 		}
 	}
 
+	@POST
+	@Path("upload/map")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response uploadMap(@Context HttpServletRequest request)
+	{
+		
+		return null;
+	}
+	@POST
+	@Path("upload/img/{map}")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Override
+	public Response uploadImg(@HeaderParam("user") String user,
+			@PathParam("map") String mapKey,
+			@FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileDetail)
+	{
+		return null;
+	}
+	
 	@GET
 	@Path("maps/user/{id}")
 	@Produces({ MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML })
@@ -110,8 +134,17 @@ public class ContentResourceImpl implements ContentResource {
 			@FormParam("start") String start,
 			@FormParam("end") String end) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		logger.debug("handling request get maps in period from {} to {}", start, end);
+		String msg = contentService.getMapsInPeriod(user, start, end);
+		if(msg == null)
+		{
+			logger.debug("Fail to load the map info with period, return 503");
+			return Response.status(Status.SERVICE_UNAVAILABLE).build();
+		}else
+		{
+			logger.debug("Success to get map list with perioid, return 200");
+			return Response.ok(msg).build();
+		}
 	}
 
 	@GET
@@ -119,8 +152,17 @@ public class ContentResourceImpl implements ContentResource {
 	@Override
 	public Response mostHitMaps(@HeaderParam("user") String user) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		logger.debug("handling get most hit maps request");
+		String msg = contentService.getMostHitMaps(user);
+		if(msg == null)
+		{
+			logger.debug("Cannot get most hit maps, return 503");
+			return Response.status(Status.SERVICE_UNAVAILABLE).build();
+		}else
+		{
+			logger.debug("Sucess to retrieve the most hit maps info list, return 200");
+			return Response.ok(msg).build();
+		}
 	}
 	
 	@POST

@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -14,12 +14,10 @@ import javax.annotation.Resource;
 import net.julnamoo.swm.herimarque.dao.ContentsDAO;
 import net.julnamoo.swm.herimarque.dao.UserDAOImpl;
 import net.julnamoo.swm.herimarque.model.Comment;
-import net.julnamoo.swm.herimarque.model.Location;
 import net.julnamoo.swm.herimarque.model.MapInfo;
 import net.julnamoo.swm.herimarque.util.HerimarqueEncryptor;
 import net.julnamoo.swm.herimarque.util.PropertiesUtil;
 
-import org.eclipse.jetty.util.security.Credential.MD5;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -41,10 +39,12 @@ public class ContentServiceImpl implements ContentService {
 	 * @see net.julnamoo.swm.herimarque.service.ContentService#uploadMap(java.io.InputStream, net.julnamoo.swm.herimarque.model.MapInfo)
 	 */
 	@Override
-	public String uploadMap(InputStream uploadedInputStream, String fname,
-			String id, String otherInfo) 
+	public String uploadMap(InputStream uploadedInputStream, String fname, String otherInfo) 
 	{
 		logger.debug("Start to write {} with {}", fname, otherInfo);
+		
+		MapInfo mapInfo = new Gson().fromJson(otherInfo, MapInfo.class);
+		String id = mapInfo.getUser();
 		
 		//build map file path
 		String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo");
@@ -91,19 +91,11 @@ public class ContentServiceImpl implements ContentService {
 		
 		String mapKey = HerimarqueEncryptor.encryption(mapPath);
 		
-		MapInfo mapInfo = new MapInfo();
 		mapInfo.setUploadTime(DateFormat.getInstance().format(new Date()));
-		mapInfo.setUser(id);
 		mapInfo.setFilePath(mapPath);
 		mapInfo.setLikeCount(0);
 		mapInfo.setMapKey(mapKey);
 		
-		MapInfo temp = new Gson().fromJson(otherInfo, MapInfo.class);
-		logger.debug("temp MapInfo with json, 0th area : {}, 0th location : {}", temp.getArea().get(0), temp.getLogging().get(0));
-		
-		mapInfo.setArea(temp.getArea());
-		mapInfo.setLogging(temp.getLogging());
-		temp = null;
 		//save other information of the map to the mongo
 		mapKey = contentsDAO.addMapInfo(mapInfo);
 		//fail to save the mapinfo
@@ -157,15 +149,33 @@ public class ContentServiceImpl implements ContentService {
 	}
 
 	@Override
-	public String mostHitMaps() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getMostHitMaps(String user) 
+	{
+		List<MapInfo> mapInfoList = contentsDAO.getMostHitMapList(user);
+		logger.debug("get most hit maps, length is {}", mapInfoList.size());
+		String json = new Gson().toJson(mapInfoList);
+		logger.debug("return most hit maps {}", json);
+		return json;
 	}
 
 	@Override
-	public String getMapsInPeriod(String perioid) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getMapsInPeriod(String user, String start, String end) 
+	{
+		Date startDate, endDate;
+		try 
+		{
+			startDate = DateFormat.getInstance().parse(start);
+			endDate = DateFormat.getInstance().parse(end);
+		} catch (ParseException e) 
+		{
+			e.printStackTrace();
+			return null;
+		}
+		List<MapInfo> mapInfoList = contentsDAO.getMapsInPeriod(user, startDate, endDate);
+		String json = new Gson().toJson(mapInfoList);
+		logger.debug("return json is {} uploaded from {} to " + end, json, start);
+		
+		return json;
 	}
 	
 	@Override

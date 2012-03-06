@@ -14,7 +14,7 @@ public abstract class SimpleHerimarqueDAO {
 
 	Logger logger = LoggerFactory.getLogger(SimpleHerimarqueDAO.class);
 	
-	private String dbName = "herimarque";
+	protected String dbName = "herimarque";
 	protected String collectionName = null;
 	
 	@Autowired

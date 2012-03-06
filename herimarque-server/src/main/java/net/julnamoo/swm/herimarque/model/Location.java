@@ -10,17 +10,21 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Field
 public class Location implements Serializable{
 
-	Character type;
+	String type;
+	
 	String x;
 	String y;
+	String content;
+	String image;
+	String time;
 	
 	public Location() {	}
-
-	public Character getType() {
+	
+	public String getType() {
 		return type;
 	}
 
-	public void setType(Character type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -39,7 +43,31 @@ public class Location implements Serializable{
 	public void setY(String y) {
 		this.y = y;
 	}
-	
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
 	@Override
 	public String toString() 
 	{

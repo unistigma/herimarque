@@ -2,7 +2,6 @@ package net.julnamoo.swm.herimarque.dao;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import net.julnamoo.swm.herimarque.model.Notice;
-import net.julnamoo.swm.herimarque.util.PropertiesUtil;
 
 import org.springframework.stereotype.Repository;
 

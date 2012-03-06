@@ -41,17 +41,19 @@ public interface ContentsDAO {
 	
 	/**
 	 * Retrieve the objects from the mongo in decrease order of likes count of maps
+	 * @param user - request user for checking authentication
 	 * @return List<MapInfo>
 	 */
-	public abstract List<MapInfo> mostHitMap();
+	public abstract List<MapInfo> getMostHitMapList(String user);
 
 	/**
 	 * Retrieve map info objects from the mongo uploaded in period from start to end.
+	 * @param user - request user for checking authenticate
 	 * @param start - start date
 	 * @param end - end date
 	 * @return List<MapInfo>
 	 */
-	public abstract List<MapInfo> getMapsInPeriod(Date start, Date end);
+	public abstract List<MapInfo> getMapsInPeriod(String user, Date start, Date end);
 	
 	/**
 	 * Add the user to the like list of the map and increse the like count.

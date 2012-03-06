@@ -27,8 +27,7 @@ public interface ContentResource {
 	 * @param mapInfo - json for gps tracking log
 	 * @return
 	 */
-	public Response uploadMap(
-			@FormDataParam("id") String id,
+	public abstract Response uploadMap(
 			@FormDataParam("file") InputStream uploadedInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileDeatil,
 			@FormDataParam("mapInfo") String mapInfo);
@@ -37,6 +36,10 @@ public interface ContentResource {
 //	public Response uploadMap(String key); // upload
 //	public Response uploadMap(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String user, String area, String age, String kind);
 	
+	public abstract Response uploadImg(@HeaderParam("user") String user,
+			@PathParam("map") String mapKey,
+			@FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileDetail);
 	/**
 	 * retrieve my maps with comments of it
 	 * @param key

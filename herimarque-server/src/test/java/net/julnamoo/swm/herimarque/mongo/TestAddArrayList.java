@@ -121,12 +121,12 @@ public class TestAddArrayList {
 		
 		List<Location> logging = new ArrayList<Location>();
 		Location l1 = new Location();
-		l1.setType('c');
+		l1.setType("PT");
 		l1.setX("0.00");
 		l1.setY("0.01");
 		
 		Location l2 = new Location();
-		l2.setType('g');
+		l2.setType("TR");
 		l2.setX("0.0023413");
 		l2.setY("0.011232315");
 		logging.add(l1);

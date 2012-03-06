@@ -53,7 +53,7 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 		if(isAuthedUser(mapInfo.getUser()))
 		{
 			
-			MongoTemplate mt = new MongoTemplate(mongo, "herimarque");
+			MongoTemplate mt = new MongoTemplate(mongo, dbName);
 			logger.info("upload map info into mongo of {}", mapInfo.getFilePath());
 			mt.save(mapInfo);
 			return mapInfo.getMapKey();
@@ -75,26 +75,11 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 		if(isAuthedUser(id))
 		{
 			logger.debug("find all maps paths of {}", id);
-			MongoTemplate mt = new MongoTemplate(mongo, "herimarque");
+			MongoTemplate mt = new MongoTemplate(mongo, dbName);
 			Query query = new Query();
 			query.addCriteria(new Criteria("id").is(id));
 			resultList = mt.find(query, MapInfo.class);
 			
-//			DBObject qdoc = new BasicDBObject();
-//			qdoc.put("user", id);
-//			
-//			DBCursor results = collection.find(qdoc);
-//			results.batchSize(20);
-//			
-//			while(results.hasNext())
-//			{
-//				DBObject doc = results.next();
-//				
-//				//set mapInfo instances for adding to the list
-//				MapInfo mi = doc2MapInfo(doc);
-//				logger.debug("add {} to the UserMapList", mi.toString());
-//				resultList.add(mi);
-//			}
 			logger.debug("return the {} map list, size is {}", id, resultList.size());
 		}
 		
@@ -110,12 +95,11 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 	{
 		List<MapInfo> mapList = new ArrayList<MapInfo>();
 		
-		MongoTemplate mt = new MongoTemplate(mongo, "herimarque");
+		MongoTemplate mt = new MongoTemplate(mongo, dbName);
 		
-		DBObject qdoc = new BasicDBObject();
-		qdoc.put("area", ctrdCd);
-		BasicQuery query = new BasicQuery(qdoc);
+		Query query = new Query();
 		query.limit(20);
+		query.addCriteria(new Criteria().elemMatch(new Criteria("area").is(ctrdCd)));
 		mapList = mt.find(query, MapInfo.class);
 		logger.debug("return the area:{} map list, size is {}", ctrdCd, mapList.size());
 		return mapList;
@@ -128,7 +112,7 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 	public boolean addComment(String mapKey, Comment comment) 
 	{
 		boolean result = false;
-		MongoTemplate mt = new MongoTemplate(mongo, "herimarque");
+		MongoTemplate mt = new MongoTemplate(mongo, dbName);
 		
 		Query query = new Query();
 		query.addCriteria(new Criteria("mapKey").is(mapKey));
@@ -157,18 +141,41 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 	}
 	
 	@Override
-	public List<MapInfo> mostHitMap() 
+	public List<MapInfo> getMostHitMapList(String user) 
 	{
-		setMongo();
-		
-		
-		return null;
+		if(isAuthedUser(user))
+		{
+			MongoTemplate mt = new MongoTemplate(mongo, dbName);
+			BasicQuery query = new BasicQuery(new BasicDBObject());
+			query.limit(20);
+			query.setSortObject(new BasicDBObject("likeCount", -1));
+
+			logger.debug("query obj is {}", query);
+			List<MapInfo> mapInfoList = mt.find(query, MapInfo.class);
+			return mapInfoList;
+		}else
+		{
+			logger.info("{} is not authenticated user at getMostHitMapList", user);
+			return null;
+		}
 	}
 	
 	@Override
-	public List<MapInfo> getMapsInPeriod(Date start, Date end) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<MapInfo> getMapsInPeriod(String user, Date start, Date end) 
+	{
+		if(isAuthedUser(user))
+		{
+			MongoTemplate mt = new MongoTemplate(mongo, dbName);
+			Query query = new Query();
+			query.limit(20);
+			List<MapInfo> mapInfoList = mt.find(query, MapInfo.class);
+			logger.debug("retrieve the mapInfo list, size is {}", mapInfoList.size());
+			return mapInfoList;
+		}else
+		{
+			logger.info("{} is not authenticated user at getMapsInPeriod");
+			return null;
+		}
 	}
 	
 	@Override
@@ -177,7 +184,7 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 		//check the user is the authenticated
 		if(isAuthedUser(id))
 		{
-			MongoTemplate mt = new MongoTemplate(mongo, "herimarque");
+			MongoTemplate mt = new MongoTemplate(mongo, dbName);
 			Query query = new Query();
 			query.addCriteria(new Criteria("mapKey").is(mapKey));
 
@@ -208,7 +215,7 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 	{
 		logger.debug("check authentication of the {}", id);
 
-		MongoTemplate mt = new MongoTemplate(mongo, "herimarque");
+		MongoTemplate mt = new MongoTemplate(mongo, dbName);
 	
 		Query q = new Query();
 		q.addCriteria(new Criteria("user").is(id));
