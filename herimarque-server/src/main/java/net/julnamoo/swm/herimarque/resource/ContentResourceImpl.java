@@ -107,7 +107,8 @@ public class ContentResourceImpl implements ContentResource {
 	@Override
 	public Response getMapsInPeriod(
 			@HeaderParam("user")String user,
-			String msg) 
+			@FormParam("start") String start,
+			@FormParam("end") String end) 
 	{
 		// TODO Auto-generated method stub
 		return null;
@@ -145,14 +146,24 @@ public class ContentResourceImpl implements ContentResource {
 	}
 	
 	@POST
-	@Path("maps")
+	@Path("maps/{id}")
 	@Override
 	public Response likeMap(
 			@DefaultValue("testId") @PathParam("id") String id, 
 			@QueryParam("map") String mapId) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		String result = contentService.likeMap(id, mapId);
+		if(result != null)
+		{
+			logger.debug("Success add count to map {}, return 200", mapId);
+			
+			return Response.ok(result).build();
+		}else
+		{
+			logger.debug("Fail to add like to map {}, retrun 503", mapId);
+			
+			return Response.status(Status.SERVICE_UNAVAILABLE).build();
+		}
 	}
 	
 }

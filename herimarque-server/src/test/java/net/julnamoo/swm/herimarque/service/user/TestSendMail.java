@@ -17,7 +17,7 @@ import javax.mail.internet.MimeMessage;
 
 import junit.framework.Assert;
 
-import net.julnamoo.swm.herimarque.util.UserInfoEncryptor;
+import net.julnamoo.swm.herimarque.util.HerimarqueEncryptor;
 
 import org.eclipse.jetty.util.security.Credential.MD5;
 import org.junit.Test;
@@ -97,7 +97,7 @@ public class TestSendMail {
 
 			String html = sb.toString();
 			//build html containg user key
-			String key = UserInfoEncryptor.encryption("test@test.com");
+			String key = HerimarqueEncryptor.encryption("test@test.com");
 			String targetURL = new StringBuilder().append("http://localhost:8080/herimarque/api/u/").append(key).append("?email=").append(toAddress).toString();
 			html = html.replaceAll("url", targetURL);
 			System.out.println("send : " + html);

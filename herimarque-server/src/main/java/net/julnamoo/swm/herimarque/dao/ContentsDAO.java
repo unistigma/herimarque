@@ -52,4 +52,13 @@ public interface ContentsDAO {
 	 * @return List<MapInfo>
 	 */
 	public abstract List<MapInfo> getMapsInPeriod(Date start, Date end);
+	
+	/**
+	 * Add the user to the like list of the map and increse the like count.
+	 * Also, update the map information object of the map to mongo
+	 * @param id - like user
+	 * @param mapKey - map user like
+	 * @return mapInfo - target map instance
+	 */
+	public abstract MapInfo likeMap(String id, String mapKey);
 }

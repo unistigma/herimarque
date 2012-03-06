@@ -25,7 +25,7 @@
 	</div>
 	<div class="modifyUser">
 		<h2>회원 정보 수정</h2>
-		<div>이메일</div><input type="text" style="width: 60;" id="mod_email">
+		<div>아이디</div><input type="text" style="width: 60;" id="mod_id">
 		<div>비밀번호</div><input type="password" style="width: 60;" id="mod_pwd">
 		<div>새로운 비밀번호</div><input type="password" style="width: 60;" id="mod_npwd">
 		<button onclick="modajax()">수정하기</button>
@@ -79,7 +79,7 @@ function modajax(){
 		url:'api/u',
 		type:'PUT',
 		beforeSend: function(xhr){
-			xhr.setRequestHeader('email', $("#mod_email").val());
+			xhr.setRequestHeader('id', $("#mod_id").val());
 			xhr.setRequestHeader('pwd', $("#mod_pwd").val());
 			xhr.setRequestHeader('isNew', $("#mod_npwd").val());
 		},

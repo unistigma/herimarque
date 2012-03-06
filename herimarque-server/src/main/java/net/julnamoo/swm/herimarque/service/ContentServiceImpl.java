@@ -167,4 +167,20 @@ public class ContentServiceImpl implements ContentService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public String likeMap(String id, String mapKey) 
+	{
+		MapInfo mi = contentsDAO.likeMap(id, mapKey);
+		if(mi == null)
+		{
+			logger.debug("the like map operation fail, return null");
+			return null;
+		}else
+		{
+			String json = new Gson().toJson(mi);
+			logger.debug("likeMap, return {}", json);
+			return json;
+		}
+	}
 }

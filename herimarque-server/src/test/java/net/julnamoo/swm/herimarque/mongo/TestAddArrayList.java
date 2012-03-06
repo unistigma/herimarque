@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -141,8 +142,30 @@ public class TestAddArrayList {
 		Query q = new Query();
 //		new QueryBuilder().is(obj);
 		q.addCriteria(new Criteria("filePath").is("testFilePath"));
+//		q.addCriteria(new Criteria("filePath").is("testFileth"));
+		
 		MapInfo mir = mt.findOne(q, MapInfo.class, "test");
-		System.out.println(new Gson().toJson(mir));
+		Comment c3 = new Comment();
+		c3.setUserKey("ddd");
+		c3.setContent("testContents");
+		
+		List<Comment> cs = mir.getComments();
+		cs.add(c3);
+		mt.updateFirst(q, Update.update("comments", cs), "test");
+		
+		List<MapInfo> maps = mt.find(q, MapInfo.class, "test");
+		System.out.println("returned map list size is " + maps.size());
+		for(MapInfo m : maps)
+		{
+			System.out.println(m);
+			List<Comment> temp = m.getComments();
+			for(Comment tempC : temp)
+			{
+				System.out.println(tempC.toString());
+			}
+		}
+		System.out.println(mir == null);
+		System.out.println(mir);
 		
 	}
 }

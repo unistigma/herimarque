@@ -4,11 +4,12 @@
 	src="http://code.jquery.com/jquery-1.7.1.js"></script>
 <body>
 	<h1>File Upload with Jersey</h1>
-	<form name="uploadForm" method="post" enctype="multipart/form-data" accept-charset="UTF-8" onsubmit="return setAction()">
+	<form name="uploadForm" id="uploadForm" method="post" action="api/c/upload" enctype="multipart/form-data" accept-charset="UTF-8" >
 		ID <input type="text" name="id" value="testId"/>
 		<br>
 		Upload file <input type="file" name="file" size="45" />
-		<div>
+		<br>
+		<!-- <div>
 			<div>
 			지역 		
 			<select id="area">
@@ -31,7 +32,7 @@
 			<option value="ZZ">기타</option>
 			</select>
 			</div>
-			<!-- <div>
+			<div>
 			시대		
 			<select id="age">
 			<option value="01">선사시대</option>
@@ -71,19 +72,64 @@
 			<option value="31">문화재자료</option>
 			<option value="79">등록문화재</option>
 			</select>
-			</div> -->
-		</div>
-		<input type="text" style="height: 200; width: 200;" name="mapInfo" value="input json for GPS tracking log"/>
+			</div>
+		</div> -->
+		<textarea rows="3" cols="50" name="mapInfo">
+{area:["서울", "경남"], logging:[{type:"g", x:"10.1111", y:"12.1111"},{type:"i", x:"12.12412", y:"53.351351"}]}
+		</textarea>
 		<br>
-		<input type="submit" value="Upload It" />
+		<!-- <input type="button" value="Upload" id="submit" /> -->
+		<button id="upload">Upload</button>
 	</form>
+	<div class="uploadResult"></div>
+	<div class="addComment">
+		<h2>Add Comment to the map</h2>
+		mapKey:<input type="text" id="mapkey" value="e11a088801c1e26a40c9a05861acd071"><br>
+		id:<input type="text" id="id" value="testId"><br>
+		contents:<input type="text" id="contents"><br>
+		<input type="button" id="addComment" value="addIt">
+		<div class="addCommentResult"></div>
+	</div>
+	<div class="periodFind">
+	
+	</div>
+	<div class="likeMap">
+	<h1>Like Map</h1>
+		id:<input type="text" id="likeUser" value="testId"><br>
+		mapKey:<input type="text" id="likeMapKey" value="e11a088801c1e26a40c9a05861acd071""><br>
+		<input type="button" id="likeMap" value="Like!">
+		<div class="likeMapResult"></div>
+	</div>
 </body>
 <script type="text/javascript">
-	function setAction() {
-		var actionURL = "api/c/upload";
-		/* alert(actionURL); */
-		document.uploadForm.action=actionURL;
-		return true;
-	}
+$("#addComment").click(function(){
+	$.ajax({
+		type:'POST',
+		url:'api/c/u/'+$("#mapkey").val(),
+		beforeSend: function(xhr){
+			xhr.setRequestHeader("content-type", "application/json");
+			xhr.setRequestHeader('user', $("#id").val());
+		},
+		data: {content:$("#contents").val()},
+		statusCode:{
+			200: function(){
+				$(".addCommentResult").empty().append("success to add the comment");
+			},
+			400: function(){
+				$(".addCommentResult").empty().append("Fail to add the comment");
+			}
+		}
+	});
+});
+
+$("#likeMap").click(function(){
+	$.ajax({
+		type:'POST',
+		url:'api/c/maps/' + $("#likeUser").val() + "/?map=" + $("#likeMapKey").val(),
+		success:function(){
+			$(".likeMapResult").empty().append("Success to add like to the map!");
+		}
+	});
+});
 </script>
 </html>

@@ -6,6 +6,7 @@ import java.io.InputStream;
 import javax.jws.HandlerChain;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -62,7 +63,7 @@ public interface ContentResource {
 	public abstract Response addComment(
 			@HeaderParam("user") String user,
 			@PathParam("map") String map,
-			String msg);
+			@FormParam("content") String msg);
 	
 	/**
 	 * update the hit(like) for the map with the user
@@ -89,6 +90,7 @@ public interface ContentResource {
 	@Consumes({MediaType.APPLICATION_JSON})
 	public abstract Response getMapsInPeriod(
 			@HeaderParam("user")String user,
-			String msg);
+			@FormParam("start") String start,
+			@FormParam("end") String end);
 	
 }

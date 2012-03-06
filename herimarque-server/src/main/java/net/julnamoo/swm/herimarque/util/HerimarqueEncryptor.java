@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
  * @author Julie_air
  *
  */
-public class UserInfoEncryptor 
+public class HerimarqueEncryptor 
 {
-	private static Logger logger = LoggerFactory.getLogger(UserInfoEncryptor.class.getSimpleName());
+	private static Logger logger = LoggerFactory.getLogger(HerimarqueEncryptor.class.getSimpleName());
 
 	/**
 	 * There is some Error and cannot finish the request
@@ -51,7 +51,7 @@ public class UserInfoEncryptor
 //			md.update(target.getBytes());
 //			code = new String(md.digest());
 //		}
-		String code = MD5.digest(target);
+		String code = MD5.digest(target).split(":")[1];
 		logger.debug("success to encrypt {}, generated key length is {}", target, code.length());
 		return code;
 	}

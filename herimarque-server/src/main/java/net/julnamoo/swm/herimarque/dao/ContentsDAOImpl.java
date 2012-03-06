@@ -10,7 +10,6 @@ import net.julnamoo.swm.herimarque.model.Comment;
 import net.julnamoo.swm.herimarque.model.MapInfo;
 import net.julnamoo.swm.herimarque.model.User;
 
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -20,13 +19,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import com.google.gson.Gson;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.QueryBuilder;
-import com.mongodb.util.JSON;
 
 /**
  * 
@@ -122,20 +117,6 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 		BasicQuery query = new BasicQuery(qdoc);
 		query.limit(20);
 		mapList = mt.find(query, MapInfo.class);
-		
-//		setMongo();
-//		
-//		DBCursor results = collection.find(qdoc);
-//		results.batchSize(20);
-//		
-//		while(results.hasNext())
-//		{
-//			//set mapInfo instances for adding to the list
-//			MapInfo mi = doc2MapInfo(results.next());
-//			logger.debug("add {} tp the locationMapList", mi.toString());
-//			mapList.add(mi);
-//		}
-		
 		logger.debug("return the area:{} map list, size is {}", ctrdCd, mapList.size());
 		return mapList;
 	}
@@ -173,44 +154,6 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 		}
 		
 		return result;
-//		setMongo();
-//		
-//		DBObject qdoc = new BasicDBObject();
-////		qdoc.put("_id", new ObjectId(comment.getMapKey()));
-//		
-//		DBCursor cursor = collection.find(qdoc);
-//		if(cursor.size() > 0)
-//		{
-//			if(cursor.size() != 1) throw new Exception(cursor.next().get("_id") + " map is more than one, please check it.");
-//			
-//			BasicDBObject mapInfo = (BasicDBObject) cursor.next();
-//			
-//			//check whether it has comments
-//			BasicDBList cList = null;
-//			if(mapInfo.containsField("comments"))
-//			{
-//				cList = (BasicDBList) mapInfo.get("comments");
-//			}else
-//			{
-//				//the first comment to save
-//				cList = new BasicDBList();
-//			}
-//			
-//			//build DBobject with the comment and add it to comment list
-//			DBObject cObj = comment2DBObj(comment);
-//			cList.add(cObj);
-//			
-//			//put it to origin DBObj
-//			mapInfo.put("comments", cList);
-//			
-//			//update the obj
-//			collection.save(mapInfo);
-//			
-//			result = true;
-//		}else
-//		{
-//			result = false;
-//		}
 	}
 	
 	@Override
@@ -228,6 +171,39 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 		return null;
 	}
 	
+	@Override
+	public MapInfo likeMap(String id, String mapKey) 
+	{
+		//check the user is the authenticated
+		if(isAuthedUser(id))
+		{
+			MongoTemplate mt = new MongoTemplate(mongo, "herimarque");
+			Query query = new Query();
+			query.addCriteria(new Criteria("mapKey").is(mapKey));
+
+			//find the map info instance of the user
+			MapInfo mi = mt.findOne(query, MapInfo.class);
+			//get the like list and count then update them
+			List<String> likeList = mi.getLikes();
+			if(likeList == null)
+			{
+				likeList = new ArrayList<String>();
+			}
+			likeList.add(id);
+			mi.setLikes(likeList); //update like list
+			int likeCount = likeList.size();
+			mi.setLikeCount(likeCount); //update like count
+			
+			mt.updateFirst(query, Update.update("likes", likeList).update("likeCount", likeCount), MapInfo.class);
+			logger.debug("update the map {} like count to {}", mapKey, likeCount);
+			
+			return mi;
+		}else
+		{
+			return null;
+		}
+	}
+
 	private boolean isAuthedUser(String id)
 	{
 		logger.debug("check authentication of the {}", id);

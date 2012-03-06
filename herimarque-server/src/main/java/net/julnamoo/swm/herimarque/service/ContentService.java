@@ -60,4 +60,12 @@ public interface ContentService {
 	 */
 	public abstract String getMapsInPeriod(String perioid);
 	
+	/**
+	 * Increase the count of the map.
+	 * Also, add the user to the like list
+	 * @param id - like user
+	 * @param mapKey - map user like
+	 * @return json of the target map instance
+	 */
+	public abstract String likeMap(String id, String mapKey);
 }
