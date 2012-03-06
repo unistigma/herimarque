@@ -2,13 +2,14 @@ package net.julnamoo.swm.herimarque.model;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@XmlRootElement
+@Document
 public class Comment implements Serializable{
 
 	private String content;
 	private String userKey;
+	private String uploadTime;
 	
 	public Comment() {}
 
@@ -28,6 +29,15 @@ public class Comment implements Serializable{
 		this.userKey = userKey;
 	}
 	
+	
+	public String getUploadTime() {
+		return uploadTime;
+	}
+
+	public void setUploadTime(String uploadTime) {
+		this.uploadTime = uploadTime;
+	}
+
 	@Override
 	public String toString() 
 	{
