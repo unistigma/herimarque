@@ -182,6 +182,11 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>1.0.1.RELEASE</version>
+		</dependency>
 
 		<!-- IO Supporter -->
 		<dependency>
@@ -212,12 +217,6 @@
 			<version>8.1.1.v20120215</version>
 			<type>jar</type>
 			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-mongodb</artifactId>
-			<version>1.0.1.RELEASE</version>
 		</dependency>
 		
 		<dependency>
