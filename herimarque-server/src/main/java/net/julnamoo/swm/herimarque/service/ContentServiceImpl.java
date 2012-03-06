@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -157,15 +158,33 @@ public class ContentServiceImpl implements ContentService {
 	}
 
 	@Override
-	public String mostHitMaps() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getMostHitMaps(String user) 
+	{
+		List<MapInfo> mapInfoList = contentsDAO.getMostHitMapList(user);
+		logger.debug("get most hit maps, length is {}", mapInfoList.size());
+		String json = new Gson().toJson(mapInfoList);
+		logger.debug("return most hit maps {}", json);
+		return json;
 	}
 
 	@Override
-	public String getMapsInPeriod(String perioid) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getMapsInPeriod(String user, String start, String end) 
+	{
+		Date startDate, endDate;
+		try 
+		{
+			startDate = DateFormat.getInstance().parse(start);
+			endDate = DateFormat.getInstance().parse(end);
+		} catch (ParseException e) 
+		{
+			e.printStackTrace();
+			return null;
+		}
+		List<MapInfo> mapInfoList = contentsDAO.getMapsInPeriod(user, startDate, endDate);
+		String json = new Gson().toJson(mapInfoList);
+		logger.debug("return json is {} uploaded from {} to " + end, json, start);
+		
+		return json;
 	}
 	
 	@Override
