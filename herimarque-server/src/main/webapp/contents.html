@@ -4,10 +4,13 @@
 	src="http://code.jquery.com/jquery-1.7.1.js"></script>
 <body>
 	<h1>File Upload with Jersey</h1>
-	<form name="uploadForm" id="uploadForm" method="post" action="api/c/upload/map" enctype="multipart/form-data" accept-charset="UTF-8" >
+	<form name="uploadForm" id="uploadForm" method="post" onsubmit="setAction(this)" enctype="multipart/form-data" accept-charset="UTF-8" >
 		ID <input type="text" name="id" value="testId"/>
 		<br>
-		Upload file <input type="file" name="file" size="45" />
+		Upload file<br>
+		<input type="file" name="map" size="45" />
+		<input type="file" name="file1" size="45" />
+		<input type="file" name="file2" size="45" />
 		<br>
 		<!-- <div>
 			<div>
@@ -75,11 +78,10 @@
 			</div>
 		</div> -->
 		<textarea rows="3" cols="50" name="mapInfo">
-{area:["서울", "경남"], logging:[{type:"g", x:"10.1111", y:"12.1111"},{type:"i", x:"12.12412", y:"53.351351"}], title:"title", comment:"testComment"}
+{area:["서울", "경남"], timeline:[{type:"g", x:"10.1111", y:"12.1111"},{type:"i", x:"12.12412", y:"53.351351"}], title:"title", content:"testComment",user:"testId"}
 		</textarea>
 		<br>
-		<!-- <input type="button" value="Upload" id="submit" /> -->
-		<button id="upload">Upload</button>
+		<input type="submit" value="Upload">
 	</form>
 	<div class="uploadResult"></div>
 	<div class="addComment">
@@ -107,6 +109,10 @@
 	</div>
 </body>
 <script type="text/javascript">
+function setAction(form)
+{
+	form.action="api/c/upload/map/"+$("#id").val();
+}
 $("#addComment").click(function(){
 	$.ajax({
 		type:'POST',

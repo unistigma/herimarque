@@ -1,45 +1,32 @@
 package net.julnamoo.swm.herimarque.resource;
 
 
-import java.io.InputStream;
-
-import javax.jws.HandlerChain;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.HeaderParam;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataParam;
 
 public interface ContentResource {
 
 	/**
-	 * 
-	 * @param id - upload user id
-	 * @param uploadedInputStream - file input stream with form param
-	 * @param fileDeatil
-	 * @param mapInfo - json for gps tracking log
+	 * Save the image from the form data then pass the json to service class
+	 * for saving via DAO
+	 * @param request - HttpServletRequest containing mapInfo json and img files
+	 * @param user - request user
 	 * @return
 	 */
-	public abstract Response uploadMap(
-			@FormDataParam("file") InputStream uploadedInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileDeatil,
-			@FormDataParam("mapInfo") String mapInfo);
+	public Response uploadMap(@Context HttpServletRequest request, @PathParam("id")String user);
 	// For Up/Download maps
 //	public Response uploadMap();
 //	public Response uploadMap(String key); // upload
 //	public Response uploadMap(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String user, String area, String age, String kind);
 	
-	public abstract Response uploadImg(@HeaderParam("user") String user,
-			@PathParam("map") String mapKey,
-			@FormDataParam("file") InputStream uploadedInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileDetail);
 	/**
 	 * retrieve my maps with comments of it
 	 * @param key

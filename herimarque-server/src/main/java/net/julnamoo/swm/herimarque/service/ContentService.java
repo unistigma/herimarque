@@ -1,6 +1,5 @@
 package net.julnamoo.swm.herimarque.service;
 
-import java.io.InputStream;
 
 /**
  * Convert msg from the resource class to POJO and perform each service logic
@@ -10,16 +9,11 @@ import java.io.InputStream;
 public interface ContentService {
 
 	/**
-	 * Store the file into map repository 
-	 * and passing mapinfo to content dao for saving map info in the mongo
-	 * @param uploadedInputStream - map input stream
-	 * @param fname - name of the map
-	 * @param id - upload user
-	 * @param otherInfo - other information of the map like area string list, gps tracking logs
+	 * passing mapinfo to content dao for saving map info in the mongo
+	 * @param mapInfo - json of mapinfo
 	 * @return mapId - id of uploaded map
 	 */
-	public abstract String uploadMap(InputStream uploadedInputStream,
-			String fname, String otherInfo);
+//	public abstract String uploadMap(String mapInfo);
 
 	/**
 	 * Retrieve the map info list with the id

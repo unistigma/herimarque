@@ -1,8 +1,13 @@
 package net.julnamoo.swm.herimarque.resource;
 
+import java.io.File;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.List;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -19,18 +24,25 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import net.julnamoo.swm.herimarque.model.MapInfo;
 import net.julnamoo.swm.herimarque.service.ContentService;
+import net.julnamoo.swm.herimarque.util.PropertiesUtil;
 
-import org.eclipse.jetty.util.MultiPartOutputStream;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUpload;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
-import com.sun.jersey.multipart.MultiPartConfig;
-import com.sun.jersey.multipart.MultiPartMediaTypes;
 
 /**
  * 
@@ -47,48 +59,115 @@ public class ContentResourceImpl implements ContentResource {
 	@Autowired
 	private ContentService contentService;
 
-//	@POST
-//	@Path("upload/map")
-//	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response uploadMap(
-			@FormDataParam("file") InputStream uploadedInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileDeatil,
-			@FormDataParam("mapInfo") String mapInfo) 
+	@POST
+	@Path("upload/map/{id}")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response uploadMap(@Context HttpServletRequest request, @PathParam("id")String user)
 	{
-		String fname = fileDeatil.getFileName();
-		logger.debug("Start upload with {} for {}",mapInfo, fname);
-		String mapKey = contentService.uploadMap(uploadedInputStream, fname, mapInfo);
-		logger.debug("returing generated map key {}", mapKey);
 		
-		if(mapKey == null)
+		if(ServletFileUpload.isMultipartContent(request))
 		{
-			return Response.status(Status.BAD_REQUEST).build();
-		}else
-		{
-			return Response.status(Status.OK).entity(mapKey).build();
-		}
-	}
+			String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo");
+			StringBuilder sb = new StringBuilder();
+			repo = sb.append(repo).append(File.separatorChar).append(user).append(File.separatorChar).toString();
+			
+			DiskFileItemFactory factory = new DiskFileItemFactory();
+			ServletFileUpload upload = new ServletFileUpload(factory);
+			List<FileItem> items = null;
+			
+			try 
+			{
+				items = upload.parseRequest(request);
+				logger.debug("Total img count is {}", items.size());
+			} catch (FileUploadException e) 
+			{
+				e.printStackTrace();
+			}
+			
+			if(items == null)
+			{
+				logger.debug("Fail to receive multiple files, return 400");
+				return Response.status(Status.BAD_REQUEST).build();
+			}
+			
+			//for saving meta infos
+			String mapPath = null;
+			
+			for(FileItem item : items)
+			{
+				logger.error("field name is {}, contentType is {}",item.getFieldName(), item.getContentType());
+				if(!item.isFormField() && item.getSize() > 0)
+				{
+					String fileName = processFileName(item.getName());
+					String dirPath = null;
+					String fpath = null;
+					StringBuilder pathBuilder = new StringBuilder(repo);
 
-	@POST
-	@Path("upload/map")
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response uploadMap(@Context HttpServletRequest request)
-	{
+					//build map path or img paths
+					if(item.getFieldName().contains("map"))
+					{
+						dirPath = pathBuilder.append("maps")
+								.append(File.separatorChar).toString();
+						//create directories
+						File dir = new File(dirPath);
+						if(!dir.exists()) dir.mkdirs();
+						//set up final path
+						fpath = pathBuilder.append(fileName).toString();
+						
+						//set mapPath
+						mapPath = fpath;
+					}else
+					{
+						dirPath = pathBuilder.append("imgs")
+								.append(File.separatorChar).toString();
+						//create directories
+						File dir = new File(dirPath);
+						if(!dir.exists()) dir.mkdirs();
+						//set up final path
+						fpath = pathBuilder.append(fileName).toString();
+					}
+					logger.error("save the file {}", fpath);
+					try 
+					{
+						File target =new File(fpath); 
+						item.write(target);
+					} catch (Exception e) 
+					{
+						logger.error("Fail to receive file {}", fpath);
+						e.printStackTrace();
+					}
+				}else if(item.getFieldName().equals("mapInfo"))
+				{
+					String msg;
+					try 
+					{
+						msg = item.getString("UTF-8");
+						logger.debug("parse the json {}", msg);
+						
+						MapInfo mapInfo = new Gson().fromJson(msg, MapInfo.class);
+						mapInfo.setFilePath(mapPath);
+						
+					} catch (UnsupportedEncodingException e) 
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+			
+			logger.debug("Finish to save images, return 200");
+			return Response.ok().build();
+		}
 		
-		return null;
-	}
-	@POST
-	@Path("upload/img/{map}")
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	@Override
-	public Response uploadImg(@HeaderParam("user") String user,
-			@PathParam("map") String mapKey,
-			@FormDataParam("file") InputStream uploadedInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileDetail)
-	{
-		return null;
+		logger.debug("the Request is not multipart/formdata, return 400");
+		return Response.status(Status.BAD_REQUEST).build();
 	}
 	
+	private String processFileName(String fname)
+	{
+		String target = fname.substring(fname.lastIndexOf("\\")+1, fname.length());
+		return target;
+	}
+
 	@GET
 	@Path("maps/user/{id}")
 	@Produces({ MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML })
