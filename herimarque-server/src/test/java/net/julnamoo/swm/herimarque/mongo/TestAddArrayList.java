@@ -131,7 +131,7 @@ public class TestAddArrayList {
 		l2.setY("0.011232315");
 		logging.add(l1);
 		logging.add(l2);
-		mi.setLogging(logging);
+		mi.setTimeline(logging);
 		
 		String json = new Gson().toJson(mi);
 		System.out.println("first converted by gson : " + json);
