@@ -5,6 +5,7 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -19,6 +20,9 @@ public abstract class SimpleHerimarqueDAO {
 	
 	@Autowired
 	Mongo mongo;
+	
+	@Autowired
+	MongoTemplate mongoTemplate;
 
 	protected DB db = null;
 	protected DBCollection collection = null;
