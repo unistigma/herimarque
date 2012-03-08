@@ -7,37 +7,165 @@
 	src="http://code.jquery.com/jquery-1.7.1.js"></script>
 </head>
 <body>
-<h1>공지사항 관리 페이지</h1>
-<div class="addNotice">
-<h2>공지사항 업로드</h2>
-<input type="text" id="addTitle" value="noticeTitle"><br>
-<textarea rows="10" cols="50" id="addContent">
-안녕하세요, 헤리마크입니다!
-</textarea><br>
-<button id="addNotice">add!</button>
-<div class="addNoticeResult"></div>
-</div>
+	<h1>공지사항 관리 페이지</h1>
+	<div class="addNotice">
+		<h2>공지사항 업로드</h2>
+		<input type="text" id="addTitle" value="noticeTitle"><br>
+		<textarea rows="10" cols="50" id="addContent">
+안녕하세요, 헤리마크입니다!</textarea>
+		<br>
+		<button id="addNotice">add!</button>
+		<div class="addNoticeResult"></div>
+	</div>
 
-<div class="checkNew">
+	<div class="checkNew">
+		<h2>공지사항확인</h2>
+		날짜: <select name="year" id="year">년 
+		<option value="12" selected="selected">2012</option>
+		</select>
+		<select name="month" id="month" ></select>월 
+		<select name="day" id="day"></select>일 
+		<select name="daynight" id="daynight"></select>
+		<select name="hour" id="hour"></select>시 
+		<select name="minute" id="minute"></select>분
+		<button id="checkNew">checkNew</button><br>
+		<div class="checkNewResult"></div>		
+	</div>
 
-</div>
-
-<div class="getNotice">
-</div>
+	<div class="getNotice"></div>
 </body>
 <script type="text/javascript">
+window.onload = function(){
+	var date = new Date();
+	
+	//add month options
+	var month = $("#month");
+	var init = document.createElement("option");
+	init.text="월";
+	month.append(init);
+	for(var i = 1; i < 13; ++i){
+		var opt = document.createElement("option");
+		opt.text=i;		
+		opt.value=i;
+		month.append(opt);
+	}
+	//set month
+	month.val(date.getMonth()+1).attr("selected", "selected");
+	month.change(setDay);
 
-$("#addNotice").click(function(){
-	console.log("addNotice");
-	$.ajax({
-		type:'POST',
-		url:'api/n',
-		contentType:'application/json',
-		data:{title: $("#addTitle").val(), content:$("#addContent").val()},
-		success: function(data){
-			$(".addNoticeResult").empty().append("Success to add the notice, " + msg);
+	//add init days
+	setDay();
+	$("#day").val(date.getDate()).attr("selected", "selected");
+	
+	//set hour
+	var hour = $("#hour");
+	for(var i = 1; i < 13; ++i){
+		var opt = document.createElement("option");
+		opt.text=i;
+		opt.value=i;
+		hour.append(opt);
+	}
+	hour.val(date.getHours()%12).attr("selected", "selected");
+	
+	//add daynight options
+	var am = document.createElement("option");
+	am.text="오전";
+	am.value="am";
+	var pm = document.createElement("option");
+	pm.text="오후";
+	pm.value="pm";
+	$("#daynight").append(am, pm);	
+	if(date.getHours() < 12){
+		$("#daynight").val("am").attr("selected", "selected");
+	}else{
+		$("#daynight").val("pm").attr("selected", "selected");
+	}
+	
+	//set minute
+	var minute = $("#minute");
+	for(var i = 1; i < 61; ++i){
+		var opt = document.createElement("option");
+		opt.text=i;
+		opt.value=i;
+		minute.append(opt);
+	}
+	minute.val(date.getMinutes()+1).attr("selected", "selected");
+}
+
+function getDays(m){
+	if(m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12){
+		return 31;
+	}else if(m == 2){
+		return 29;
+	}else{
+		return 30;
+	}
+}
+
+function setDay(){
+		var day = $("#day");
+		day.empty();
+		var m = $("#month option:selected").val();
+		var d = getDays(m);
+		
+		for(var i = 1; i < d+1; ++i){
+			var opt = document.createElement("option");
+			opt.text=i;
+			opt.value=i;
+			day.append(opt);
 		}
+}
+
+$("#addNotice").click(
+		function() {
+			$.ajax({
+				type : 'POST',
+				url : 'api/n',
+				contentType : 'application/json',
+				dataType : 'json',
+				data : {
+					title : $("#addTitle").val(),
+					content : $("#addContent").val()
+				},
+				success : function(data) {
+					$(".addNoticeResult").empty().append(
+							"Success to add the notice, " + data);
+				}
+			});
+		});
+	
+	$("#checkNew").click(function(){
+		var now = $("#year option:selected").val() + '. '
+		+ $("#month option:selected").text() + ". "
+		+ $("#day option:selected").text() + " "
+		+ $("#daynight option:selected").text() + " "
+		+ $("#hour option:selected").text() + ":" + $("#minute option:selected").text();
+
+		$.ajax({
+			type:'GET',
+			url:'api/n/new/' + now,
+			success:function(data){
+				console.log(data);
+				$('.checkNewResult').empty().append("success to retrieve notices >>");
+				if(data.length > 0){
+					for(var i = 0; i < data.length; ++i){
+						console.log(data[i]);
+						var div = document.createElement("div");
+						var txt = document.createTextNode(data[i].title + ", " + data[i].content + "["+ data[i].date +"]");
+						div.appendChild(txt);
+						$('.checkNewResult').append(div);
+					}
+				}else{
+					var div = document.createElement("div");
+					var txt = document.createTextNode(data.title + ", " + data.content + "["+ data.date +"]");
+					div.appendChild(txt);
+					$('.checkNewResult').append(div);
+				}
+				$('.checkNewResult div').attr("class", "checkNewNotice");
+			}
+		});
 	});
-});
+	
+
 </script>
 </html>

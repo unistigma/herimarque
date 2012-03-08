@@ -1,6 +1,5 @@
 package net.julnamoo.swm.herimarque.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -67,10 +66,9 @@ public class NoticeDAOImpl extends SimpleHerimarqueDAO{
 		MongoTemplate mt = new MongoTemplate(mongo, dbName);
 		Query query = new Query();
 		//{ date: { $gt: "2012-03-06T06:11:53.182Z" } 
-		query.addCriteria(new Criteria("date").gt(start));
+		query.addCriteria(new Criteria("date").gte(start));
 		query.sort().on("date", Order.DESCENDING);
 		query.limit(10);
-		
 		List<Notice> noticeList = mt.find(query, Notice.class);
 		logger.debug("Retrieve notices from date {}, size is {}", start, noticeList.size());
 		return noticeList;

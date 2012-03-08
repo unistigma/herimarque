@@ -30,11 +30,13 @@ public class NoticeServiceImpl {
 	 * @param notice
 	 * @return Notice inserted notice Object
 	 */
-	public String addNotice(String notice)
+	public String addNotice(String title, String content)
 	{
 		logger.debug("request save the new notice");
 		
-		Notice newNotice = new Gson().fromJson(notice, Notice.class);
+		Notice newNotice = new Notice();
+		newNotice.setTitle(title);
+		newNotice.setContent(content);
 		newNotice.setDate(DateFormat.getInstance().format(new Date()));
 		newNotice = noticeDAO.addNotice(newNotice);
 
@@ -85,7 +87,8 @@ public class NoticeServiceImpl {
 	{
 		logger.debug("request notices from {}", from);
 		List<Notice> noticeList = noticeDAO.getNotices(from);
-		
-		return new Gson().toJson(noticeList);
+		String msg = new Gson().toJson(noticeList); 
+		logger.debug("return the notice list: {}", msg);
+		return msg;
 	}
 }

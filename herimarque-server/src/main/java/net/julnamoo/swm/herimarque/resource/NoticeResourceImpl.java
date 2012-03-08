@@ -1,6 +1,10 @@
 package net.julnamoo.swm.herimarque.resource;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -12,12 +16,10 @@ import javax.ws.rs.core.Response.Status;
 
 import net.julnamoo.swm.herimarque.service.NoticeServiceImpl;
 
-import org.apache.lucene.util.CharacterUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Path("/n")
 @Component
@@ -28,19 +30,33 @@ public class NoticeResourceImpl implements NoticeResource {
 	@Autowired
 	NoticeServiceImpl noticeService;
 	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.resource.NoticeResource#addNotice(java.lang.String, java.lang.String)
+	 */
 	@POST
 	@Path("/")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Override
-	public Response addNotice(String notice) 
+	public Response addNotice(@FormParam("title") String title, @FormParam("content") String contents)
 	{
-		logger.debug("handling add notice request with {}", notice);
-		String msg = noticeService.addNotice(notice);
+		try 
+		{
+			title = URLDecoder.decode(title, "UTF-8");
+			contents = URLDecoder.decode(contents, "UTF-8");
+		} catch (UnsupportedEncodingException e) 
+		{
+			e.printStackTrace();
+		}
+		logger.debug("handling add notice request with {},{}", title, contents);
+		String msg = noticeService.addNotice(title, contents);
 		
 		Response response = Response.ok(msg).build();
 		return response;
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.resource.NoticeResource#isExist(java.lang.String)
+	 */
 	@GET
 	@Path("/hasnew/{lastupdated}")
 	@Override
@@ -64,6 +80,9 @@ public class NoticeResourceImpl implements NoticeResource {
 		return response;
 	}
 
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.resource.NoticeResource#getNewNotice(java.lang.String)
+	 */
 	@GET
 	@Path("/new/{lastupdated}")
 	@Produces( {MediaType.APPLICATION_JSON} )
@@ -74,7 +93,7 @@ public class NoticeResourceImpl implements NoticeResource {
 		
 		String msg = noticeService.getNotices(lastupdate);
 		logger.debug("send the notice after {}", lastupdate);
-		Response response = Response.ok().entity(msg).build();
+		Response response = Response.ok(msg).build();
 		
 		return response;
 	}

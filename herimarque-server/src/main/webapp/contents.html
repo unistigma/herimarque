@@ -139,6 +139,13 @@ $("#likeMap").click(function(){
 		url:'api/c/maps/' + $("#likeUser").val() + "/?map=" + $("#likeMapKey").val(),
 		success:function(){
 			$(".likeMapResult").empty().append("Success to add like to the map!");
+			if(data.length > 0){
+				for(var i = 0; i < data.length; ++i){
+					$(".likeMapResult").append(data[i]);
+				}else{
+					$(".likeMapResult").append(data);
+				}
+			}
 		}
 	});
 });

@@ -36,6 +36,6 @@ public class Notice implements Serializable{
 	@Override
 	public String toString() 
 	{
-		return this.title;
+		return "[title@"+this.title + ", content@" + this.getContent() + "]";
 	}
 }
