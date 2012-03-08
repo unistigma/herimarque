@@ -55,6 +55,13 @@ public class ContentResourceImpl implements ContentResource {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadMap(@Context HttpServletRequest request, @PathParam("id")String user)
 	{
+		try 
+		{
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e1) 
+		{
+			e1.printStackTrace();
+		}
 		
 		if(ServletFileUpload.isMultipartContent(request))
 		{
