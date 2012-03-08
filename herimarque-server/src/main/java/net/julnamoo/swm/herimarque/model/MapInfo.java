@@ -94,11 +94,11 @@ public class MapInfo implements Serializable{
 	}
 
 	public Integer getLikeCount() {
-		return likeCount;
+		return this.likes.size();
 	}
 
 	public void setLikeCount(Integer likeCount) {
-		this.likeCount = likeCount;
+//		this.likeCount = likeCount;
 	}
 
 	public List<Comment> getComments() {
