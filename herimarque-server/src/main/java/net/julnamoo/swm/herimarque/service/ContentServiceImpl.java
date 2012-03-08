@@ -1,9 +1,6 @@
 package net.julnamoo.swm.herimarque.service;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
@@ -14,10 +11,8 @@ import javax.annotation.Resource;
 import net.julnamoo.swm.herimarque.dao.ContentsDAO;
 import net.julnamoo.swm.herimarque.dao.UserDAOImpl;
 import net.julnamoo.swm.herimarque.model.Comment;
-import net.julnamoo.swm.herimarque.model.Location;
 import net.julnamoo.swm.herimarque.model.MapInfo;
 import net.julnamoo.swm.herimarque.util.HerimarqueEncryptor;
-import net.julnamoo.swm.herimarque.util.PropertiesUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

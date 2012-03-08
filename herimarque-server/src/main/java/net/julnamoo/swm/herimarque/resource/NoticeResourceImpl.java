@@ -10,15 +10,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import net.julnamoo.swm.herimarque.model.Notice;
 import net.julnamoo.swm.herimarque.service.NoticeServiceImpl;
 
+import org.apache.lucene.util.CharacterUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.google.gson.Gson;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Path("/n")
 @Component
@@ -35,9 +34,8 @@ public class NoticeResourceImpl implements NoticeResource {
 	@Override
 	public Response addNotice(String notice) 
 	{
-		logger.debug("handling add notice request");
-		Notice uploaded = noticeService.addNotice(notice);
-		String msg = new Gson().toJson(uploaded);
+		logger.debug("handling add notice request with {}", notice);
+		String msg = noticeService.addNotice(notice);
 		
 		Response response = Response.ok(msg).build();
 		return response;

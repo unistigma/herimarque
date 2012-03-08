@@ -30,13 +30,17 @@ public class NoticeServiceImpl {
 	 * @param notice
 	 * @return Notice inserted notice Object
 	 */
-	public Notice addNotice(String notice)
+	public String addNotice(String notice)
 	{
+		logger.debug("request save the new notice");
+		
 		Notice newNotice = new Gson().fromJson(notice, Notice.class);
 		newNotice.setDate(DateFormat.getInstance().format(new Date()));
-		noticeDAO.addNotice(newNotice);
-		
-		return newNotice;
+		newNotice = noticeDAO.addNotice(newNotice);
+
+		String msg = new Gson().toJson(newNotice);
+		logger.debug("addNotice, return {}", msg);
+		return msg;
 	}
 	
 	/**
@@ -50,14 +54,13 @@ public class NoticeServiceImpl {
 	public boolean checkNew(String lastupdate)
 	{
 		boolean result = true;
-		
 		Date usrNewest = null;
-		
 		//get the last updated
 		String last = noticeDAO.getLastUpdateNoticeDate();
 		Date hmqNewest = null;
 		try 
 		{
+			logger.debug("Compare the date usr:{} from mongo:{}", lastupdate, last);
 			usrNewest = DateFormat.getDateTimeInstance().parse(lastupdate);
 			hmqNewest = DateFormat.getDateTimeInstance().parse(last);
 			
@@ -68,6 +71,7 @@ public class NoticeServiceImpl {
 			e.printStackTrace();
 			result = true;
 		}
+		logger.debug("checkNew, return {}", result);
 		return result;
 	}
 	
@@ -79,17 +83,8 @@ public class NoticeServiceImpl {
 	 */
 	public String getNotices(String from)
 	{
-		Date start;
-		try 
-		{
-			start = DateFormat.getInstance().parse(from);
-		} catch (ParseException e) 
-		{
-			e.printStackTrace();
-			return "";
-		}
-		
-		List<Notice> noticeList = noticeDAO.getNotices(start);
+		logger.debug("request notices from {}", from);
+		List<Notice> noticeList = noticeDAO.getNotices(from);
 		
 		return new Gson().toJson(noticeList);
 	}

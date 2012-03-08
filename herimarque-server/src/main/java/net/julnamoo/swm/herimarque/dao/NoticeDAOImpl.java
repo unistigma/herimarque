@@ -1,8 +1,5 @@
 package net.julnamoo.swm.herimarque.dao;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,11 +7,11 @@ import javax.annotation.PostConstruct;
 
 import net.julnamoo.swm.herimarque.model.Notice;
 
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Order;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 
 @Repository(value="noticeDAO")
 public class NoticeDAOImpl extends SimpleHerimarqueDAO{
@@ -29,11 +26,12 @@ public class NoticeDAOImpl extends SimpleHerimarqueDAO{
 	 * add notice object to mongo
 	 * @param newNotice
 	 */
-	public void addNotice(Notice newNotice)
+	public Notice addNotice(Notice newNotice)
 	{
-		setMongo();
-		DBObject notice = notice2DBObj(newNotice);
-		collection.save(notice);
+		MongoTemplate mt = new MongoTemplate(mongo, dbName);
+		logger.info("Enroll new notice object");
+		mt.save(newNotice);
+		return newNotice;
 	}
 
 	/**
@@ -42,11 +40,11 @@ public class NoticeDAOImpl extends SimpleHerimarqueDAO{
 	 */
 	public Notice getNewest()
 	{
-		setMongo();
-		
-		DBCursor cursor = collection.find().limit(1).sort(new BasicDBObject("date", -1));
-		BasicDBObject result = (BasicDBObject) cursor.next();
-		return DBObj2Notice(result);
+		MongoTemplate mt = new MongoTemplate(mongo, dbName);
+		Query query = new Query();
+		query.sort().on("date", Order.DESCENDING);
+		Notice notice = mt.findOne(query, Notice.class);
+		return notice;
 	}
 	
 	/**
@@ -59,51 +57,22 @@ public class NoticeDAOImpl extends SimpleHerimarqueDAO{
 		return notice.getDate();
 	}
 
-	public List<Notice> getNotices(Date start)
+	/**
+	 * return the newest 10 notices in the order from start date 
+	 * @param start
+	 * @return noticeList with 10 
+	 */
+	public List<Notice> getNotices(String start)
 	{
-		List<Notice> noticeList = new ArrayList<Notice>();
+		MongoTemplate mt = new MongoTemplate(mongo, dbName);
+		Query query = new Query();
+		//{ date: { $gt: "2012-03-06T06:11:53.182Z" } 
+		query.addCriteria(new Criteria("date").gt(start));
+		query.sort().on("date", Order.DESCENDING);
+		query.limit(10);
 		
+		List<Notice> noticeList = mt.find(query, Notice.class);
+		logger.debug("Retrieve notices from date {}, size is {}", start, noticeList.size());
 		return noticeList;
 	}
-	
-	/**
-	 * convert notice to DBobject
-	 * @param notice
-	 * @return converted DBobject
-	 */
-	private DBObject notice2DBObj(Notice notice)
-	{
-		BasicDBObject target = new BasicDBObject();
-		target.put("title", notice.getTitle());
-		target.put("content", notice.getContent());
-		//set date field value
-		Date uploadTime = null;
-		try 
-		{
-			uploadTime = DateFormat.getInstance().parse(notice.getDate());
-		} catch (ParseException e) 
-		{
-			e.printStackTrace();
-			uploadTime = new Date();
-		}
-		target.put("date", uploadTime);
-		
-		return target;
-	}
-	
-	/**
-	 * convert DBobject to Notice
-	 * @param dbObj
-	 * @return converted notice object
-	 */
-	private Notice DBObj2Notice(DBObject dbObj)
-	{
-		Notice target = new Notice();
-		target.setTitle(((BasicDBObject)dbObj).getString("title"));
-		target.setContent(((BasicDBObject) dbObj).getString("content"));
-		target.setDate(((BasicDBObject) dbObj).getString("date"));
-
-		return target;
-	}
-	
 }

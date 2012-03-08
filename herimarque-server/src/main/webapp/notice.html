@@ -7,13 +7,37 @@
 	src="http://code.jquery.com/jquery-1.7.1.js"></script>
 </head>
 <body>
+<h1>공지사항 관리 페이지</h1>
 <div class="addNotice">
-<input type="text" id="addTitle">
+<h2>공지사항 업로드</h2>
+<input type="text" id="addTitle" value="noticeTitle"><br>
 <textarea rows="10" cols="50" id="addContent">
-</textarea>
+안녕하세요, 헤리마크입니다!
+</textarea><br>
+<button id="addNotice">add!</button>
 <div class="addNoticeResult"></div>
 </div>
 
+<div class="checkNew">
 
+</div>
+
+<div class="getNotice">
+</div>
 </body>
+<script type="text/javascript">
+
+$("#addNotice").click(function(){
+	console.log("addNotice");
+	$.ajax({
+		type:'POST',
+		url:'api/n',
+		contentType:'application/json',
+		data:{title: $("#addTitle").val(), content:$("#addContent").val()},
+		success: function(data){
+			$(".addNoticeResult").empty().append("Success to add the notice, " + msg);
+		}
+	});
+});
+</script>
 </html>
