@@ -34,7 +34,7 @@ public class ContentServiceImpl implements ContentService {
 	/* (non-Javadoc)
 	 * @see net.julnamoo.swm.herimarque.service.ContentService#uploadMap(java.io.InputStream, net.julnamoo.swm.herimarque.model.MapInfo)
 	 */
-//	@Override
+	@Override
 	public String uploadMap(MapInfo mapInfo) 
 	{
 		mapInfo.setUploadTime(DateFormat.getInstance().format(new Date()));
@@ -146,5 +146,13 @@ public class ContentServiceImpl implements ContentService {
 			logger.debug("likeMap, return {}", json);
 			return json;
 		}
+	}
+	
+	public boolean unlikeMap(String id, String mapKey)
+	{
+		boolean result = contentsDAO.unlikeMap(id, mapKey);
+		
+		logger.debug("request delete user {} from like list of the map {} :" + result, id, mapKey);
+		return result;
 	}
 }

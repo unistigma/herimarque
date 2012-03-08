@@ -63,4 +63,12 @@ public interface ContentsDAO {
 	 * @return mapInfo - target map instance
 	 */
 	public abstract MapInfo likeMap(String id, String mapKey);
+	
+	/**
+	 * Delete the user from like list of the map and update to mongo
+	 * @param id - delete like user
+	 * @param mapKey - target map
+	 * @return success of the transaction
+	 */
+	public abstract boolean unlikeMap(String id, String mapKey);
 }

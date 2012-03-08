@@ -19,9 +19,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 
 /**
  * 
@@ -196,13 +194,16 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 			{
 				likeList = new ArrayList<String>();
 			}
-			likeList.add(id);
-			mi.setLikes(likeList); //update like list
-			int likeCount = likeList.size();
-			mi.setLikeCount(likeCount); //update like count
 			
-			mt.updateFirst(query, Update.update("likes", likeList).update("likeCount", likeCount), MapInfo.class);
-			logger.debug("update the map {} like count to {}", mapKey, likeCount);
+			if(!likeList.contains(id))
+			{
+				likeList.add(id);
+				mi.setLikes(likeList); //update like list
+				int likeCount = likeList.size();
+				mi.setLikeCount(likeCount); //update like count
+				mt.updateFirst(query, Update.update("likes", likeList), MapInfo.class);
+				logger.debug("update the map {} like count to {}", mapKey, likeCount);
+			}
 			
 			return mi;
 		}else
@@ -211,6 +212,29 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 		}
 	}
 
+	@Override
+	public boolean unlikeMap(String id, String mapKey)
+	{
+		if(isAuthedUser(id))
+		{
+			Query query = new Query();
+			query.addCriteria(new Criteria("mapKey").is(mapKey));
+			query.addCriteria(new Criteria("likes").is(id));
+			
+			MapInfo mapInfo = mongoTemplate.findOne(query, MapInfo.class);
+			//If there is no user or no map, then return false
+			if(mapInfo == null) return false;
+			List<String> likeList = mapInfo.getLikes();
+			likeList.remove(id);
+			mongoTemplate.updateFirst(query, Update.update("likes", likeList), MapInfo.class);
+			logger.debug("Success to remove the user {} from like list of {}", id, mapKey);
+			return true;
+		}else
+		{
+			return false;
+		}
+	}
+	
 	private boolean isAuthedUser(String id)
 	{
 		logger.debug("check authentication of the {}", id);
@@ -227,32 +251,4 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 		return result;
 	}
 	
-	private MapInfo doc2MapInfo(DBObject doc)
-	{
-		MapInfo mi = new MapInfo();
-		mi.setUser(doc.get("user").toString());
-		mi.setFilePath(doc.get("filePath").toString());
-		mi.setUploadTime(doc.get("uploadTime").toString());
-		
-		mi.setLikeCount(Integer.valueOf(doc.get("likeCount").toString()));
-		
-		BasicDBList areaList = (BasicDBList) doc.get("area");
-		BasicDBList logList = (BasicDBList) doc.get("logging");
-		BasicDBList likeUserList = (BasicDBList) doc.get("likes");
-		BasicDBList commentList = (BasicDBList) doc.get("comments");
-//		mi.setAge(doc.get("age").toString());
-//		mi.setArea(doc.get("area").toString());
-//		mi.setKind(doc.get("kind").toString());
-		
-		return mi;
-	}
-	
-	private DBObject comment2DBObj(Comment comment)
-	{
-		BasicDBObject target = new BasicDBObject();
-		target.put("content", comment.getContent());
-		target.put("user", comment.getUserKey());
-		
-		return target;
-	}
 }

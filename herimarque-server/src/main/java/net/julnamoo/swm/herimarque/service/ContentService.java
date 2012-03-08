@@ -1,5 +1,7 @@
 package net.julnamoo.swm.herimarque.service;
 
+import net.julnamoo.swm.herimarque.model.MapInfo;
+
 
 /**
  * Convert msg from the resource class to POJO and perform each service logic
@@ -13,7 +15,7 @@ public interface ContentService {
 	 * @param mapInfo - json of mapinfo
 	 * @return mapId - id of uploaded map
 	 */
-//	public abstract String uploadMap(String mapInfo);
+	public abstract String uploadMap(MapInfo mapInfo);
 
 	/**
 	 * Retrieve the map info list with the id
@@ -62,4 +64,12 @@ public interface ContentService {
 	 * @return json of the target map instance
 	 */
 	public abstract String likeMap(String id, String mapKey);
+	
+	/**
+	 * request to service to remove the user from the like list of the map
+	 * @param id - unlike user
+	 * @param mapKey - target map
+	 * @return success of the operation
+	 */
+	public boolean unlikeMap(String id, String mapKey);
 }

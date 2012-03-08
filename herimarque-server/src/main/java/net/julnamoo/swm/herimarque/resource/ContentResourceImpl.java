@@ -6,11 +6,13 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -285,4 +287,21 @@ public class ContentResourceImpl implements ContentResource {
 		}
 	}
 	
+	@DELETE
+	@Path("maps/{id}")
+	public Response unlikeMap(
+			@PathParam("id")String id,
+			@QueryParam("map") String mapKey)
+	{
+		boolean result = contentService.unlikeMap(id, mapKey);
+		if(result)
+		{
+			logger.debug("Success remove the user {} from likes list of the map {}, return 200", id, mapKey);
+			return Response.ok().build();
+		}else
+		{
+			logger.debug("Fail to remove the user {} from likes list of the map {}, return 400", id, mapKey);
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+	}
 }
