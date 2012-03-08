@@ -3,15 +3,15 @@
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-1.7.1.js"></script>
 <body>
-	<h1>File Upload with Jersey</h1>
-	<form name="uploadForm" id="uploadForm" method="post" onsubmit="setAction(this)" enctype="multipart/form-data" accept-charset="UTF-8" >
-		ID <input type="text" name="id" value="testId"/>
-		<br>
-		Upload file<br>
-		<input type="file" name="map" size="45" />
-		<input type="file" name="file1" size="45" />
-		<input type="file" name="file2" size="45" />
-		<br>
+	<h1>Contents Manage</h1>
+	<h2>File Upload with Jersey</h2>
+	<form name="uploadForm" id="uploadForm" method="post"
+		onsubmit="setAction(this)" enctype="multipart/form-data"
+		accept-charset="UTF-8">
+		ID <input type="text" name="id" value="testId" /> <br> Upload
+		file<br> <input type="file" name="map" size="45" /> <input
+			type="file" name="file1" size="45" /> <input type="file"
+			name="file2" size="45" /> <br>
 		<!-- <div>
 			<div>
 			지역 		
@@ -80,93 +80,118 @@
 		<textarea rows="3" cols="50" name="mapInfo">
 {area:["서울", "경남"], timeline:[{type:"g", x:"10.1111", y:"12.1111"},{type:"i", x:"12.12412", y:"53.351351"}], title:"title", content:"testComment",user:"testId"}
 		</textarea>
-		<br>
-		<input type="submit" value="Upload">
+		<br> <input type="submit" value="Upload">
 	</form>
 	<div class="uploadResult"></div>
 	<div class="addComment">
 		<h2>Add Comment to the map</h2>
-		mapKey:<input type="text" id="mapkey" value="e11a088801c1e26a40c9a05861acd071"><br>
-		id:<input type="text" id="id" value="testId"><br>
-		contents:<input type="text" id="contents"><br>
-		<input type="button" id="addComment" value="addIt">
+		mapKey:<input type="text" id="mapkey"
+			value="e11a088801c1e26a40c9a05861acd071"><br> id:<input
+			type="text" id="id" value="testId"><br> contents:<input
+			type="text" id="contents"><br> <input type="button"
+			id="addComment" value="addIt">
 		<div class="addCommentResult"></div>
 	</div>
-	<div class="periodFind">
-	
-	</div>
+	<div class="periodFind"></div>
 	<div class="likeMap">
-	<h1>Like Map</h1>
+		<h2>Like Map</h2>
 		id:<input type="text" id="likeUser" value="testId"><br>
-		mapKey:<input type="text" id="likeMapKey" value="e11a088801c1e26a40c9a05861acd071""><br>
-		<input type="button" id="likeMap" value="Like!">
+		mapKey:<input type="text" id="likeMapKey"
+			value="72f852e2aa091459f603e2c86c123bce"><br>
+		<button id="likeMap">Like</button>
 		<div class="likeMapResult"></div>
 	</div>
+	<div class="unlikeMap">
+		<h2>UnLike Map</h2>
+		id:<input type="text" id="unlikeUser" value="testId"><br>
+		mapKey:<input type="text" id="unlikeMapKey" value="72f852e2aa091459f603e2c86c123bce"><br>
+		<button id="unlikeMap">unlikeMap</button>
+		<div class="unlikeMapResult"></div>
+	</div>
 	<div class="hotMaps">
-	<h1>Hot Maps</h1>
-	<input type="button" id="getHots" value="HotMaps!" />
-	<div class="hotMapsResult"></div>
+		<h2>Hot Maps</h2>
+		<button id="getHots">HotMaps!</button>
+		<div class="hotMapsResult"></div>
 	</div>
 </body>
 <script type="text/javascript">
-function setAction(form)
-{
-	form.action="api/c/upload/map/"+$("#id").val();
-}
-$("#addComment").click(function(){
-	$.ajax({
-		type:'POST',
-		url:'api/c/u/'+$("#mapkey").val(),
-		beforeSend: function(xhr){
-			xhr.setRequestHeader("content-type", "application/json");
-			xhr.setRequestHeader('user', $("#id").val());
-		},
-		data: {content:$("#contents").val()},
-		statusCode:{
-			200: function(){
-				$(".addCommentResult").empty().append("success to add the comment");
-			},
-			400: function(){
-				$(".addCommentResult").empty().append("Fail to add the comment");
-			}
-		}
-	});
-});
+	function setAction(form) {
+		form.action = "api/c/upload/map/" + $("#id").val();
+	}
+	$("#addComment").click(
+			function() {
+				$.ajax({
+					type : 'POST',
+					url : 'api/c/u/' + $("#mapkey").val(),
+					beforeSend : function(xhr) {
+						xhr
+								.setRequestHeader("content-type",
+										"application/json");
+						xhr.setRequestHeader('user', $("#id").val());
+					},
+					data : {
+						content : $("#contents").val()
+					},
+					statusCode : {
+						200 : function() {
+							$(".addCommentResult").empty().append(
+									"success to add the comment");
+						},
+						400 : function() {
+							$(".addCommentResult").empty().append(
+									"Fail to add the comment");
+						}
+					}
+				});
+			});
 
-$("#likeMap").click(function(){
-	$.ajax({
-		type:'POST',
-		url:'api/c/maps/' + $("#likeUser").val() + "/?map=" + $("#likeMapKey").val(),
-		success:function(){
-			$(".likeMapResult").empty().append("Success to add like to the map!");
-			if(data.length > 0){
-				for(var i = 0; i < data.length; ++i){
-					$(".likeMapResult").append(data[i]);
-				}else{
-					$(".likeMapResult").append(data);
+	$("#likeMap").click(
+			function() {
+				$.ajax({
+					type : 'POST',
+					url : 'api/c/maps/' + $("#likeUser").val() + "/?map="
+							+ $("#likeMapKey").val(),
+					success : function() {
+						$(".likeMapResult").empty().append(
+								"Success to add like to the map!");
+						if (data.length > 0) {
+							for ( var i = 0; i < data.length; ++i) {
+								$(".likeMapResult").append(data[i]);
+							}
+						} else {
+							$(".likeMapResult").append(data);
+						}
+					}
+				});
+			});
+
+	$("#unlikeMap").click(function(){
+		$.ajax({
+			type:'DELETE',
+			url : 'api/c/maps/' + $("#unlikeUser").val() + "/?map="+ $("#unlikeMapKey").val(),
+			success : function(){
+				$('.unlikeMapResult').empty().append("Success to remove user id from the map");
+			}
+		});
+	});
+	
+	$("#getHots").click(function() {
+		$.ajax({
+			type : 'GET',
+			url : 'api/c/maps/hot',
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader('user', 'testId');
+			},
+			statusCode : {
+				200 : function(data) {
+					$(".hotMapsResult").empty().append("Success to load<br>");
+					$(".hotMapsResult").append(data);
+				},
+				503 : function() {
+					$(".hotMapsResult").empty().append("Fail to load");
 				}
 			}
-		}
+		});
 	});
-});
-
-$("#getHots").click(function(){
-	$.ajax({
-		type:'GET',
-		url:'api/c/maps/hot',
-		beforeSend: function(xhr){
-			xhr.setRequestHeader('user', 'testId');
-		},
-		statusCode:{
-			200:function(data){
-				$(".hotMapsResult").empty().append("Success to load<br>");
-				$(".hotMapsResult").append(data);
-			},
-			503:function(){
-				$(".hotMapsResult").empty().append("Fail to load");
-			}
-		}
-	});
-});
 </script>
 </html>

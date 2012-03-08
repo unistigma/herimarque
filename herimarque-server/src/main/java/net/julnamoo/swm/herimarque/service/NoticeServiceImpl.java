@@ -17,19 +17,17 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 
 @Service
-public class NoticeServiceImpl {
+public class NoticeServiceImpl implements NoticeService {
 
 	Logger logger = LoggerFactory.getLogger(NoticeServiceImpl.class);
 	
 	@Resource(name="noticeDAO")
 	NoticeDAOImpl noticeDAO;
 	
-	/**
-	 * Convert json format String to the notice obejct
-	 * and request insert the object to mongo
-	 * @param notice
-	 * @return Notice inserted notice Object
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.NoticeService#addNotice(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String addNotice(String title, String content)
 	{
 		logger.debug("request save the new notice");
@@ -45,14 +43,10 @@ public class NoticeServiceImpl {
 		return msg;
 	}
 	
-	/**
-	 * Parse the date of lastupdate of user notice to date.
-	 * Also, get the last updated notice date and compare of them.
-	 * If the user's is out of date then return true, otherwise return false
-	 * 
-	 * @param lastupdate
-	 * @return true if out of date
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.NoticeService#checkNew(java.lang.String)
 	 */
+	@Override
 	public boolean checkNew(String lastupdate)
 	{
 		boolean result = true;
@@ -77,12 +71,10 @@ public class NoticeServiceImpl {
 		return result;
 	}
 	
-	/**
-	 * Retrieve notices uploaded from the from date
-	 * 
-	 * @param from - start date
-	 * @return List<Notice> - notices updated from 'from'
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.NoticeService#getNotices(java.lang.String)
 	 */
+	@Override
 	public String getNotices(String from)
 	{
 		logger.debug("request notices from {}", from);

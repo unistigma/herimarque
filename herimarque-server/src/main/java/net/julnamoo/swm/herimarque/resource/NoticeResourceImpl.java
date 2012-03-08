@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import net.julnamoo.swm.herimarque.service.NoticeServiceImpl;
+import net.julnamoo.swm.herimarque.service.NoticeService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class NoticeResourceImpl implements NoticeResource {
 	Logger logger = LoggerFactory.getLogger(NoticeResourceImpl.class.getSimpleName());
 	
 	@Autowired
-	NoticeServiceImpl noticeService;
+	NoticeService noticeService;
 	
 	/* (non-Javadoc)
 	 * @see net.julnamoo.swm.herimarque.resource.NoticeResource#addNotice(java.lang.String, java.lang.String)
