@@ -40,6 +40,7 @@
 	<br>
 	<button id="allUsers" onclick="allajax()"><h2>전체 회원 보기</h2></button>
 	<div class="allResult"></div>
+	<button onclick="location.href='index.html'">home</button>
 </body>
 
 <script type="text/javascript">
@@ -110,6 +111,9 @@ function allajax(){
 	$.ajax({
 		url:'api/u/admin/all',
 		type:'GET',
+		beforeSend:function(xhr){
+			xhr.setRequestHeader("user", "julie");
+		},
 		statusCode:{
 			200: function(data){
 				$(".allResult").html(data);

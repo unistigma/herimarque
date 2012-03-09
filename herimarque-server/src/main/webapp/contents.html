@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-1.7.1.js"></script>
@@ -113,6 +113,8 @@
 		<button id="getHots">HotMaps!</button>
 		<div class="hotMapsResult"></div>
 	</div>
+	
+	<button onclick="location.href='index.html'">home</button>
 </body>
 <script type="text/javascript">
 	function setAction(form) {
@@ -124,9 +126,7 @@
 					type : 'POST',
 					url : 'api/c/u/' + $("#mapkey").val(),
 					beforeSend : function(xhr) {
-						xhr
-								.setRequestHeader("content-type",
-										"application/json");
+						xhr.setRequestHeader("content-type","application/json");
 						xhr.setRequestHeader('user', $("#id").val());
 					},
 					data : {

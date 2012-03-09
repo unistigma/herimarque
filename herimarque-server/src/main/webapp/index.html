@@ -3,16 +3,46 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Herimarque Adming Page</title>
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.js"></script>
+<style type="text/css">
+.none { display:none; }
+</style>
 </head>
 <body>
-
+<h1>Herimarque admin page</h1>
+<div class="adminLogin">
+Please, Log-in<br>
+id:<input type="text" id="adminId"><br>
+password:<input type="password" id="adminPwd"><br>
+<button id="login">Login</button>
+</div>
+<div class="admin">
+<h1>Hello, Herimarque!</h1>
 <button id="contents">지도 관리</button>
 <button id="users">사용자 관리</button>
 <input type="button" id="notice" value="공지사항관리" />
+<input type="button" id="db" value="데이터관리" />
+</div>
 </body>
 <script type="text/javascript">
+window.onload = function(){
+	$(".admin").addClass("none");
+}
+
+$("#login").click(function(){
+	$.ajax({
+		type:'GET',
+		url:'api/u/admin/login',
+		beforeSend:function(xhr){
+			xhr.setRequestHeader("user", $("#adminId").val());
+			xhr.setRequestHeader("pwd", $("#adminPwd").val());
+		},
+		success:function(){
+			$(".admin").removeClass("none");
+			$(".adminLogin").addClass("none");
+		}
+	});
+});
 $("#contents").click(function(){
 	location.href="contents.html";
 });
@@ -21,6 +51,9 @@ $("#users").click(function(){
 });
 $("#notice").click(function(){
 	location.href="notice.html";
+});
+$("#db").click(function(){
+	location.href='db.html';
 });
 </script>
 </html>
