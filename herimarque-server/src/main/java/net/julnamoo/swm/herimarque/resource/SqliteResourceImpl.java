@@ -2,6 +2,8 @@ package net.julnamoo.swm.herimarque.resource;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -47,7 +49,7 @@ public class SqliteResourceImpl implements SqliteResource  {
 	@POST
 	@Path("upload/{version}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response uploadNewDB(@Context HttpServletRequest request, @PathParam("version") String version, @HeaderParam("admin")String admin)
+	public Response uploadNewDB(@Context HttpServletRequest request, @PathParam("version") String version, @HeaderParam("admin")String admin) throws URISyntaxException
 	{
 		if(!userDAO.isAdmin(admin))
 		{
@@ -117,12 +119,13 @@ public class SqliteResourceImpl implements SqliteResource  {
 			}
 			
 		}
-		Response response = Response.status(Status.OK).build();
-		return response;
+		logger.debug("cannog handle the request, return 403");
+		return Response.status(Status.BAD_REQUEST).location(new URI("/db.html")).build();
 	}
 	
 	@GET
 	@Path("/itsnew/{version}")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response isNewData(@PathParam("version") String version) 
 	{
 		String lastversion = sqliteService.itsNew(version);

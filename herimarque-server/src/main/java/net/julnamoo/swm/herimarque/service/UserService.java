@@ -53,5 +53,13 @@ public interface UserService {
 	 * @return json - json of user list  
 	 */
 	public abstract String allUsers();
+	
+	/**
+	 * return whether the user is admin
+	 * @param user - expected admin user id
+	 * @param pwd - user password
+	 * @return wheter of the admin 
+	 */
+	public abstract boolean isAdmin(String user, String pwd);
 
 }

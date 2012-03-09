@@ -53,7 +53,7 @@ public class MailSender
 			message.setSubject(subject);
 
 			//get mail contents
-			String html = getContents(id, key);
+			String html = getContents(id, key, toAddress);
 			message.setText(html);
 			//send the mail
 			Transport.send(message);
@@ -80,8 +80,11 @@ public class MailSender
 	 * @return html
 	 * @throws IOException 
 	 */
-	private String getContents(String id, String code) throws IOException
+	private String getContents(String id, String code, String mail) throws IOException
 	{
+		//check the email pattern then select the email-contents template
+		
+		
 		StringBuilder sb = new StringBuilder();
 		InputStream is = this.getClass().getResourceAsStream("/AuthUser.html");
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -91,7 +94,6 @@ public class MailSender
 			sb.append(line);
 			line = br.readLine();
 		}
-		
 		is.close();
 		br.close();
 

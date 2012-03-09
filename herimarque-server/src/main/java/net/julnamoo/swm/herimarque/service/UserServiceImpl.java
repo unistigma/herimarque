@@ -130,4 +130,14 @@ public class UserServiceImpl implements UserService{
 		String json = new Gson().toJson(userDAO.allUsers());
 		return json;
 	}
+	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.UserService#allUsers()
+	 */
+	@Override
+	public boolean isAdmin(String user, String pwd)
+	{
+		if(logIn(user, pwd) && userDAO.isAuthenticated(user) && userDAO.isAdmin(user)) return true;
+		else return false;
+	}
 }

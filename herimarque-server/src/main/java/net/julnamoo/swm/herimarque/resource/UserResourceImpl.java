@@ -120,6 +120,7 @@ public class UserResourceImpl implements UserResource {
 			return Response.status(Status.FORBIDDEN).build();
 		}
 	}
+	
 	/**
 	 * Change the user info
 	 */
@@ -146,12 +147,27 @@ public class UserResourceImpl implements UserResource {
 
 	@GET
 	@Path("admin/all")
-	public Response allUsers()
+	public Response allUsers(@HeaderParam("user") String id)
 	{
 		logger.info("request information of all users");
 		
-		Response response = null;
 		String msg = userService.allUsers();
-		return response.ok().entity(msg).build();
+		return Response.ok().entity(msg).build();
+	}
+	
+	@GET
+	@Path("admin/login")
+	public Response adminLogin(@HeaderParam("user")String user, @HeaderParam("pwd")String pwd)
+	{
+		boolean result = userService.isAdmin(user, pwd);
+		if(result)
+		{
+			logger.debug("admin user login, {}", user);
+			return Response.ok().build();
+		}else
+		{
+			logger.warn("admin user login attempt with non-admin {}", user);
+			return Response.status(Status.BAD_REQUEST).build();
+		}
 	}
 }
