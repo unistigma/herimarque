@@ -18,35 +18,37 @@ import com.google.gson.Gson;
  *
  */
 @Service
-public class UserServiceImpl implements UserService {
-	
+public class UserServiceImpl implements UserService{
+
 	Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Resource(name="userDAO")
 	UserDAOImpl userDAO;
-	
+
 	public UserServiceImpl(){}
-	
+
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.UserService#addUser(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String addUser(String id, String email, String pwd) 
 	{
 		//check existence of a user with the id
 		String isThere = userDAO.getUserKey(id);
 		if(isThere != null) return null;
-		
+
 		// generate the temporal key and insert to Mongo
 		logger.debug("Generate temp key for respected user {}", id);
 		String key = HerimarqueEncryptor.encryption(id);
 		userDAO.addUser(id, pwd, false);
-		
+
 		/** Send the email **/
 		new MailSender().sendMail(email, id, key);
 		return key;
 	}
 
-	/**
-	 * Unauthorized user are removed by admin.
-	 * Generate the real key with information
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.UserService#authUser(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public boolean authUser(String id, String key) 
@@ -69,18 +71,25 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.UserService#logIn(java.lang.String, java.lang.String)
+	 */
+	@Override
 	public boolean logIn(String id, String pwd)
 	{
 		logger.debug("Attempt to login. check key of the user with parameters");
 		String code = new StringBuilder().append(id).append(pwd).toString();
 		String expKey = HerimarqueEncryptor.encryption(code);
 		String realKey = userDAO.getUserKey(id);
-		
+
 		boolean result = expKey.equals(realKey);
 		logger.debug("login attempt is success? {}", result);
 		return result;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.UserService#delUser(java.lang.String)
+	 */
 	@Override
 	public void delUser(String id) 
 	{
@@ -88,11 +97,14 @@ public class UserServiceImpl implements UserService {
 		userDAO.delUser(id);
 	}
 
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.UserService#changeUserInfo(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String changeUserInfo(String id, String pwd, String nPwd) 
 	{
 		logger.debug("generate new final key with new information for {}", id);
-		
+
 		String result = null;
 		String code = new StringBuilder().append(id).append(pwd).toString();
 		String olderKey = HerimarqueEncryptor.encryption(code);
@@ -104,10 +116,14 @@ public class UserServiceImpl implements UserService {
 			userDAO.changeInfo(id, newKey);
 			result = newKey;
 		}
-		
+
 		return result; 
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.service.UserService#allUsers()
+	 */
+	@Override
 	public String allUsers()
 	{
 		logger.debug("retrive all users");

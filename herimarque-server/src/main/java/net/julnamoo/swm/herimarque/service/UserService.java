@@ -1,10 +1,5 @@
 package net.julnamoo.swm.herimarque.service;
 
-/**
- * 
- * @author Julie_air
- *
- */
 public interface UserService {
 
 	/**
@@ -18,30 +13,45 @@ public interface UserService {
 	 * @param pwd
 	 * @return userKey
 	 */
-	 public String addUser(String id, String email, String pwd);
-	 
-	 /**
-	  * Authenticate the user from the typical link sent to the user in enrolling
-	  * Check the key from the request and determine registering of the user.
-	  * @param id 
-	  * @param key
-	  * @return boolean value of authenticated or not
-	  */
-	 public boolean authUser(String id, String key);
-	 
-	 /**
-	  * Delete the object from the Mongo having the passed email address
-	  * @param id
-	  */
-	 public void delUser(String id);
-	 
-	 /**
-	  * Change the info of the user with the email.
-	  * At first, auth the user is the origin with id and older pwd
-	  * Password can be modified ONLY
-	  * @param id
-	  * @param pwd
-	  * @return _id from the mongo
-	  */
-	 public String changeUserInfo(String id, String pwd, String nPwd);
+	public abstract String addUser(String id, String email, String pwd);
+
+	/**
+	 * Authenticate the user from the typical link sent to the user in enrolling
+	 * Check the key from the request and determine registering of the user.
+	 * @param id
+	 * @param key
+	 * @return boolean value of authenticated or not
+	 */
+	public abstract boolean authUser(String id, String key);
+
+	/**
+	 * check the encrypted key with id and pwd is equal
+	 * @param id - user id
+	 * @param pwd - user pwd
+	 * @return true - if the encrypted value is equal with mongo
+	 */
+	public abstract boolean logIn(String id, String pwd);
+
+	/**
+	 * Delete the object from the Mongo having the passed email address
+	 * @param id
+	 */
+	public abstract void delUser(String id);
+
+	/**
+	 * Change the info of the user with the email.
+	 * At first, auth the user is the origin with id and older pwd
+	 * Password can be modified ONLY
+	 * @param id
+	 * @param pwd
+	 * @return _id from the mongo
+	 */
+	public abstract String changeUserInfo(String id, String pwd, String nPwd);
+
+	/**
+	 * Retrieve all user from mongo
+	 * @return json - json of user list  
+	 */
+	public abstract String allUsers();
+
 }

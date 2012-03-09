@@ -11,7 +11,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import net.julnamoo.swm.herimarque.service.UserServiceImpl;
+import net.julnamoo.swm.herimarque.service.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class UserResourceImpl implements UserResource {
 	Logger logger = LoggerFactory.getLogger(UserResourceImpl.class);
 	
 	@Autowired(required=false)
-	UserServiceImpl userServiceImpl;
+	UserService userService;
 	
 	/**
 	 * Enrolling the user
@@ -37,7 +37,7 @@ public class UserResourceImpl implements UserResource {
 		logger.info("start handling addUser, {}:{}", email, id);
 		logger.debug("Try to add user with {}", pwd);
 		
-		String key = userServiceImpl.addUser(id, email, pwd);
+		String key = userService.addUser(id, email, pwd);
 		
 		Response response = null;
 		
@@ -63,7 +63,7 @@ public class UserResourceImpl implements UserResource {
 	{
 		logger.info("start hanndling delUser");
 		
-		userServiceImpl.delUser(id);
+		userService.delUser(id);
 		Response response = null;
 		
 		response = Response.ok().build();
@@ -82,7 +82,7 @@ public class UserResourceImpl implements UserResource {
 		logger.info("start handling oauthUser");
 		
 		Response response = null;
-		boolean Authentication = userServiceImpl.authUser(id, key);
+		boolean Authentication = userService.authUser(id, key);
 		
 		if(Authentication)
 		{
@@ -108,7 +108,7 @@ public class UserResourceImpl implements UserResource {
 	public Response logIn(@PathParam("id")String id, @HeaderParam("pwd") String pwd)
 	{
 		logger.debug("request log in authentication");
-		boolean result = userServiceImpl.logIn(id, pwd);
+		boolean result = userService.logIn(id, pwd);
 		
 		if(result)
 		{
@@ -130,7 +130,7 @@ public class UserResourceImpl implements UserResource {
 		logger.info("start handling changeKey");
 		
 		Response response = null;
-		String changed = userServiceImpl.changeUserInfo(id, pwd, nPwd);
+		String changed = userService.changeUserInfo(id, pwd, nPwd);
 		
 		if(changed != null)
 		{
@@ -151,7 +151,7 @@ public class UserResourceImpl implements UserResource {
 		logger.info("request information of all users");
 		
 		Response response = null;
-		String msg = userServiceImpl.allUsers();
+		String msg = userService.allUsers();
 		return response.ok().entity(msg).build();
 	}
 }
