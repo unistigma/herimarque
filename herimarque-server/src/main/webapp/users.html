@@ -33,7 +33,7 @@
 	</div>
 	<div class="delUser">
 		<h2>회원 탈퇴</h2>
-		<div>이메일</div><input type="text" style="width: 60;" id="del_email">
+		<div>id</div><input type="text" style="width: 60;" id="del_id">
 		<button onclick="delajax()">탈퇴하기</button>
 		<div class="delResult"></div>
 	</div>
@@ -96,7 +96,7 @@ function modajax(){
 
 function delajax(){
 	$.ajax({
-		url:'api/u?email='+$("#del_email").val(),
+		url:'api/u?id='+$("#del_id").val(),
 		type:'DELETE',
 		statusCode:{
 			200: function(){
