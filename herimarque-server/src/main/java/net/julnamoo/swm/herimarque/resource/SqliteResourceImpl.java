@@ -1,57 +1,141 @@
 package net.julnamoo.swm.herimarque.resource;
 
 import java.io.File;
-import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
+import net.julnamoo.swm.herimarque.dao.UserDAO;
+import net.julnamoo.swm.herimarque.service.SqliteService;
+import net.julnamoo.swm.herimarque.util.PropertiesUtil;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/db")
 @Component
-public class SQLiteResourceImpl implements SQLiteResource {
+public class SqliteResourceImpl implements SqliteResource  {
 
-	Logger logger = LoggerFactory.getLogger(SQLiteResourceImpl.class.getSimpleName());
+	Logger logger = LoggerFactory.getLogger(SqliteResourceImpl.class.getSimpleName());
+	
+	@Autowired
+	SqliteService sqliteServic;
+
+	@Resource(name="userDAO")
+	UserDAO userDAO;
 	
 	@POST
-	@Path("upload")
+	@Path("upload/{version}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response uploadNewDB(@FormDataParam("db") InputStream db)
+	public Response uploadNewDB(@Context HttpServletRequest request, @PathParam("version") String version, @HeaderParam("admin")String admin)
 	{
+		if(!userDAO.isAdmin(admin))
+		{
+			logger.warn("Not admin user attemp to upload the db from {}:{}", request.getRemoteHost(), request.getRemotePort());
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+		
+		try 
+		{
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		if(ServletFileUpload.isMultipartContent(request))
+		{
+			String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "db");
+			StringBuilder sb = new StringBuilder(repo);
+			String fname = sb.append(File.separatorChar).append(version).toString();
+			
+			DiskFileItemFactory factory = new DiskFileItemFactory();
+			ServletFileUpload upload = new ServletFileUpload(factory);
+			
+			List<FileItem> items = null;
+			try 
+			{
+				items = upload.parseRequest(request);
+			} catch (FileUploadException e) 
+			{
+				e.printStackTrace();
+			}
+			
+			if(items == null)
+			{
+				logger.error("Fail to upload the new db version, {}. Return 400", version);
+				return Response.status(Status.BAD_REQUEST).build();
+			}
+			
+			logger.debug("get the new db version {}", version);
+			for(FileItem item : items)
+			{
+				logger.error("field name is {}, contentType is {}",item.getFieldName(), item.getContentType());
+				if(!item.isFormField() && item.getSize() > 0)
+				{
+					if(item.getFieldName().equals("db"))
+					{
+						File dir = new File(PropertiesUtil.getValueFromProperties("herimarque.properties", "db"));
+						
+						//If the first db file
+						if(!dir.exists()) dir.mkdirs();
+						//save the file
+						try 
+						{
+							item.write(new File(fname));
+						} catch (Exception e) 
+						{
+							logger.error("Fail to upload the new db version, {}. Return 400", version);
+							return Response.status(Status.BAD_REQUEST).build();
+						}
+						
+						sqliteServic.saveNewVersion(version);
+						logger.debug("Finish to update the db with {} return 200", version);
+						return Response.ok(version).build();
+					}
+				}
+			}
+			
+		}
 		Response response = Response.status(Status.OK).build();
 		return response;
 	}
 	
 	@GET
 	@Path("/itsnew/{version}")
-	@Override
-	public Response isNewData(@PathParam("version") String dbVersion) 
+	public Response isNewData(@PathParam("version") String version) 
 	{
-		boolean isUpdated = false;
+		boolean isUpdated = sqliteServic.itsNew(version);
 		Response response = null;
 		
 		if(isUpdated)
 		{
-			response = Response.status(Status.OK).build();
-			logger.debug("isNewData, return 200");
-		}else
-		{
 			response = Response.status(Status.NO_CONTENT).build();
 			logger.debug("isNewData, return 204");
+		}else
+		{
+			response = Response.status(Status.OK).build();
+			logger.debug("isNewData, return 200");
 		}
 		
 		return response;
@@ -60,18 +144,28 @@ public class SQLiteResourceImpl implements SQLiteResource {
 	@GET
 	@Path("/new/{version}")
 	@Produces( {MediaType.APPLICATION_OCTET_STREAM} )
-	@Override
-	public Response getNewData(@PathParam("version") String dbVersion) 
+	public Response getNewData(@PathParam("version") String dbVersion, @HeaderParam("user") String id) 
 	{
+		if(!userDAO.isAuthenticated(id))
+		{
+			logger.info("No authenticated user({}) request the db version({})", id, dbVersion);
+			return Response.status(Status.BAD_REQUEST).build();
+		}
 		//need to find the file from the resource
-		File file = new File("herimarque_dummy_db.db");
-		
-		logger.debug("getNewData, pass {}", file.getName());
-		
-		ResponseBuilder response = Response.ok((Object) file);
-		response.header("Content-Disposition",
-			"attachment; filename=\"herimarque_dummy_db.db\"");
-		return response.build();
+		File file = sqliteServic.getDB(dbVersion);
+		if(file == null)
+		{
+			logger.error("the bad request:the version({}) doesn't exist or unAuthenticated user request({})", dbVersion, id);
+			return Response.status(Status.BAD_REQUEST).build();
+		}else
+		{
+			logger.debug("getNewData, pass {}", file.getName());
+			
+			ResponseBuilder response = Response.ok((Object) file);
+			String content = "attachment; filename='" + file.getName() + "'";
+			response.header("Content-Disposition", content);
+			return response.build();
+		}
 	}
 
 }
