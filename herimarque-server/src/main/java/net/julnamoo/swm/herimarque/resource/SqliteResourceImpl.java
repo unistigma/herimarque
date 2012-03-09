@@ -39,7 +39,7 @@ public class SqliteResourceImpl implements SqliteResource  {
 	Logger logger = LoggerFactory.getLogger(SqliteResourceImpl.class.getSimpleName());
 	
 	@Autowired
-	SqliteService sqliteServic;
+	SqliteService sqliteService;
 
 	@Resource(name="userDAO")
 	UserDAO userDAO;
@@ -109,7 +109,7 @@ public class SqliteResourceImpl implements SqliteResource  {
 							return Response.status(Status.BAD_REQUEST).build();
 						}
 						
-						sqliteServic.saveNewVersion(version);
+						sqliteService.saveNewVersion(version);
 						logger.debug("Finish to update the db with {} return 200", version);
 						return Response.ok(version).build();
 					}
@@ -125,19 +125,11 @@ public class SqliteResourceImpl implements SqliteResource  {
 	@Path("/itsnew/{version}")
 	public Response isNewData(@PathParam("version") String version) 
 	{
-		boolean isUpdated = sqliteServic.itsNew(version);
+		String lastversion = sqliteService.itsNew(version);
 		Response response = null;
 		
-		if(isUpdated)
-		{
-			response = Response.status(Status.NO_CONTENT).build();
-			logger.debug("isNewData, return 204");
-		}else
-		{
-			response = Response.status(Status.OK).build();
-			logger.debug("isNewData, return 200");
-		}
-		
+		logger.debug("isNewData, return 200");
+		response = Response.status(Status.OK).entity(lastversion).build();
 		return response;
 	}
 
@@ -152,7 +144,7 @@ public class SqliteResourceImpl implements SqliteResource  {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 		//need to find the file from the resource
-		File file = sqliteServic.getDB(dbVersion);
+		File file = sqliteService.getDB(dbVersion);
 		if(file == null)
 		{
 			logger.error("the bad request:the version({}) doesn't exist or unAuthenticated user request({})", dbVersion, id);

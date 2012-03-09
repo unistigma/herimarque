@@ -15,9 +15,9 @@ public interface SqliteService {
 	 * compare userLastVersion to LastVersion
 	 * If the system db version is higher then user's then return false otherwise true 
 	 * @param version - to be compared version
-	 * @return false - If the system version is higher then the client need to download the new version 
+	 * @return version - the updated version of the server
 	 */
-	public abstract boolean itsNew(String version);
+	public abstract String itsNew(String version);
 
 	/**
 	 * check the user is authenticated then return the db file

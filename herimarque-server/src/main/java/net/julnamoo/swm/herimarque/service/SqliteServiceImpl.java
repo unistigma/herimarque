@@ -28,14 +28,14 @@ public class SqliteServiceImpl implements SqliteService {
 	 * @see net.julnamoo.swm.herimarque.service.SqliteService#itsNew(java.lang.String)
 	 */
 	@Override
-	public boolean itsNew(String version)
+	public String itsNew(String version)
 	{
 		String lastVersion = PropertiesUtil.getValueFromProperties("herimarque.properties", "dbVersion");
 		float lval = Float.valueOf(lastVersion);
 		float uval = Float.valueOf(version);
 
 		logger.debug("compare the dbVersion user is {}, server is {}", version, lastVersion);
-		return (lval > uval ? false : true);
+		return lastVersion;
 	}
 
 	/* (non-Javadoc)
