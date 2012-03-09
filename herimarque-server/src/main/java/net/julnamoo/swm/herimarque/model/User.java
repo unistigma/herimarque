@@ -3,7 +3,6 @@ package net.julnamoo.swm.herimarque.model;
 import java.io.Serializable;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document
 public class User implements Serializable{
@@ -11,6 +10,7 @@ public class User implements Serializable{
 	String user;
 	String finalKey;
 	boolean auth;
+	String type;
 
 	public User(){}
 	
@@ -56,6 +56,12 @@ public class User implements Serializable{
 		this.auth = auth;
 	}
 
-	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 	
 }

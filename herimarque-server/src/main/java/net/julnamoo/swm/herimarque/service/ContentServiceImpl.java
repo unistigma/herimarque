@@ -148,6 +148,7 @@ public class ContentServiceImpl implements ContentService {
 		}
 	}
 	
+	@Override
 	public boolean unlikeMap(String id, String mapKey)
 	{
 		boolean result = contentsDAO.unlikeMap(id, mapKey);
