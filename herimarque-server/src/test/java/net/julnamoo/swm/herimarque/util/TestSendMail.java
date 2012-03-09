@@ -1,4 +1,4 @@
-package net.julnamoo.swm.herimarque.service.user;
+package net.julnamoo.swm.herimarque.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,7 +29,7 @@ import com.sun.research.ws.wadl.Request;
 
 public class TestSendMail {
 
-	@Test
+//	@Test
 	public void setMD5() throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{
 		String a = "aaaaa";
@@ -58,6 +58,7 @@ public class TestSendMail {
 		Assert.assertEquals(s3.equals(s4), true);
 	}
 	
+//	@Test 
 	public void sendMail() throws IOException
 	{
 		/***** CHANGE THESE FOUR VARIABLE VALUES TO REFLECT YOUR ENVIRONMENT ******/  
@@ -112,5 +113,15 @@ public class TestSendMail {
 		{  
 			e.printStackTrace();  
 		}  
+	}
+	
+//	@Test
+	public void sendMail2()
+	{
+		MailSender ms = new MailSender();
+		ms.sendMail("netinamu42@naver.com", "test", "testKey");
+		ms.sendMail("kjulee114@gmail.com", "test", "testKey");
+		ms.sendMail("bjul@nate.com", "test", "testKey");
+		ms.sendMail("netinamu42@hanmail.net", "test", "testKey");
 	}
 }

@@ -13,6 +13,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,16 +46,18 @@ public class MailSender
         logger.debug("create email sender session for {}", toAddress);
 		
         //build the message
-        Message message = new MimeMessage(session);
+        MimeMessage message = new MimeMessage(session);
         try 
         {
-			message.setFrom(new InternetAddress(fromAddress));
+        	message.setFrom(new InternetAddress(fromAddress));
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
 			message.setSubject(subject);
-
+			
 			//get mail contents
 			String html = getContents(id, key, toAddress);
-			message.setText(html);
+			message.setText(html, "UTF-8", "html");
+//			message.setContent(html, "text/html");
+//			message.setText(html);
 			//send the mail
 			Transport.send(message);
 
@@ -83,8 +86,6 @@ public class MailSender
 	private String getContents(String id, String code, String mail) throws IOException
 	{
 		//check the email pattern then select the email-contents template
-		
-		
 		StringBuilder sb = new StringBuilder();
 		InputStream is = this.getClass().getResourceAsStream("/AuthUser.html");
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -99,7 +100,7 @@ public class MailSender
 
 		String html = sb.toString();
 		//build html containg user key
-		String targetURL = new StringBuilder().append("http://localhost:8080/herimarque/api/u/").append(code).append("?id=").append(id).toString();
+		String targetURL = new StringBuilder().append("http://61.43.139.110:8080/herimarque/api/u/").append(code).append("?id=").append(id).toString();
 		logger.debug("building authentication request url:{}", targetURL);
 		
 		html = html.replaceAll("url", targetURL);
