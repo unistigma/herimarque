@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.js"></script>
+<title>Herimarque DB management</title>
+</head>
+<body>
+<div class="checkNew">
+	<h2>checkNew</h2>
+	myVersion:<input type="text" id="myVersion" value="1">
+	<button id="checkNew">check</button>
+	<div class="checkNewResult"></div>
+</div>
+<div class="uploadDB">
+	<h2>upload new db</h2>
+	targetVersion:<input type="text" value="1.1" id="upVersion">
+	<!-- <form onsubmit="setAction(this)"> -->
+	dbfile:<input type="file" id="dbFile"><br>
+	<input type="button" id="uploadDB" value="upload" disabled="disabled"/>
+	<!-- <input type="submit" id="uploadDB" value="upload"/> -->
+	<!-- </form>  -->
+	<div class="uploadDBResult"></div>
+</div>
+<div class="downDB">
+	<h2>download db</h2>
+	version?<input type="text" id="downVersion">
+	<input type="button" id="downDB" value="download">
+</div>
+<button onclick="location.href='index.html'">home</button>
+</body>
+<script type="text/javascript">
+$("#checkNew").click(function(){
+	$.ajax({
+		type:'GET',
+		url:'api/db/itsnew/'+$("#myVersion").val(),
+		/* accepts:'json', */
+		success:function(data){
+			$(".checkNewResult").empty().append("its the newset version, " + data);
+		}
+	});
+});
+$("#uploadDB").click(function(){
+	$.ajax({
+		type:'POST',
+		url:"api/c/upload/map/" + $("#upVersion").val(),
+		beforeSend:function(xhr){
+			xhr.setRequestHeader("content-type","multipart/form-data");
+			xhr.setRequestHeader("admin", "julie");
+		},
+		data: $("#dbFile"),
+		status:{
+			403: function(){
+				$(".uploadDBResult").empty().append("Fail to upload the db file");
+			},
+			200: function(data){
+				$(".uploadDBResult").empty().append("Success to uplad the db version with"+data);
+			}
+		}
+	});
+});
+$("#downDB").click(function(){
+	$.ajax({
+		type:'GET',
+		url:'api/db/new/'+$("#downVersion").val(),
+		beforeSend:function(xhr){
+			xhr.setRequestHeader("user", "testId");
+		}
+	});
+});
+</script>
+</html>
