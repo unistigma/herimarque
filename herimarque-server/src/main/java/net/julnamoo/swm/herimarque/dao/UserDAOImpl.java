@@ -8,7 +8,10 @@ import net.julnamoo.swm.herimarque.model.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.BasicDBObject;
@@ -102,10 +105,34 @@ public class UserDAOImpl extends SimpleHerimarqueDAO implements UserDAO
 
 	public List<User> allUsers()
 	{
-//		setMongo();
 		MongoTemplate mt = new MongoTemplate(mongo, dbName);
 		List<User> allUsers = mt.findAll(User.class);
 		logger.debug("total user count is {}. return the list", allUsers.size());
 		return allUsers;
+	}
+	
+	@Override
+	public boolean isAuthenticated(String id) 
+	{
+		Query q = new Query();
+		q.addCriteria(new Criteria("user").is(id));
+		
+		User expUser = mongoTemplate.findOne(q, User.class, "user");
+		boolean result = expUser == null ? false : expUser.isAuth();
+		
+		logger.debug("return the autentication of the {}, {}", id, result);
+		return result;
+	}
+	
+	@Override
+	public boolean isAdmin(String admin) 
+	{
+		Query query = new Query();
+		query.addCriteria(new Criteria("user").is(admin));
+		
+		User adminUser = mongoTemplate.findOne(query, User.class);
+		boolean result = adminUser.getType().equals("admin");
+		logger.debug("admin check with {}, return {}", admin, result);
+		return result;
 	}
 }

@@ -42,4 +42,18 @@ public interface UserDAO {
 	 * @param email
 	 */
 	public void delUser(String id);
+	
+	/**
+	 * check the user is authenticated from the server
+	 * @param id - user id
+	 * @return true - if the user is authenticated
+	 */
+	public boolean isAuthenticated(String id);
+	
+	/**
+	 * check the user is admin for server
+	 * @param admin - admin user id
+	 * @return true - if the user is admin and authenticated
+	 */
+	public boolean isAdmin(String admin);
 }
