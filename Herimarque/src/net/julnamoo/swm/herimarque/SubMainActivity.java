@@ -1,99 +1,130 @@
 package net.julnamoo.swm.herimarque;
 
 import net.julnamoo.R;
-import net.julnamoo.swm.herimarque.fragment.ConfigMainFragment;
-import net.julnamoo.swm.herimarque.fragment.CreateMainFragment;
-import net.julnamoo.swm.herimarque.fragment.InfoMainFragment;
-import net.julnamoo.swm.herimarque.fragment.ShowMainFragment;
-import android.content.Intent;
+import net.julnamoo.swm.herimarque.util.ExitExecutor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 public class SubMainActivity extends FragmentActivity {
 
 	private String tag = SubMainActivity.class.getSimpleName();
+
+	private Button infoButt;
+	private Button createButt;
+	private Button showButt;
+	private Button configButt;
 	
+	private FrameLayout fragmentContainer;
+	
+	private ExitExecutor ee;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.submain);
 
-		findViewById(R.id.infoButt).setOnClickListener(flipper);
-		findViewById(R.id.createButt).setOnClickListener(flipper);
-		findViewById(R.id.showButt).setOnClickListener(flipper);
-		findViewById(R.id.configButt).setOnClickListener(flipper);
+		ee = new ExitExecutor(3000, 3000);
+		infoButt = (Button) findViewById(R.id.infoButt);
+		infoButt.setOnClickListener(flipper);
 
-		Intent intent = getIntent();
-		int menu = intent.getIntExtra("menu", 0);
+		createButt = (Button) findViewById(R.id.createButt); 
+		createButt.setOnClickListener(flipper);
 
-		changeView(menu);
-		
+		showButt = (Button) findViewById(R.id.showButt);
+		showButt.setOnClickListener(flipper);
+
+		configButt = (Button) findViewById(R.id.configButt);
+		configButt.setOnClickListener(flipper);
+
+		fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
+		//set tab button
+		int menu = getIntent().getIntExtra("menu", R.id.infoButt);
+		changeView(findViewById(menu));
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) 
+	{
+		if( keyCode == KeyEvent.KEYCODE_BACK )
+		{
+			Log.d(tag, "back : " + event.getRepeatCount());
+			
+			if(ee.isFinish()) 
+			{
+				Log.d(tag, "finish");
+				finish();
+			}else
+			{
+				Toast.makeText(getApplicationContext(), "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+				ee.start();
+				ee.setFinish(true);
+				return true;
+			}
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+	
 	OnClickListener flipper = new OnClickListener() {
 
 		@Override
-		public void onClick(View v) {
-
-			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			
-			switch (v.getId()) {
-			case R.id.infoButt:
-				Log.d(tag, "info pushed");
-				changeView(0);
-				break;
-			case R.id.createButt:
-				Log.d(tag, "create pushed");
-				changeView(1);
-				break;
-			case R.id.showButt:
-				Log.d(tag, "show pushed"); 
-				changeView(2);
-				break;
-			case R.id.configButt:
-				Log.d(tag, "config pushed");
-				changeView(3);
-				break;
-			default:
-				break;
-			}
-		}
+		public void onClick(View v) { changeView(v); }
 	};
 
-	private void changeView(int id)
+	private void changeView(View v)
 	{
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		infoButt.setTextColor(Color.BLACK);
+		createButt.setTextColor(Color.BLACK);
+		showButt.setTextColor(Color.BLACK);
+		configButt.setTextColor(Color.BLACK);
+
+		((Button) v).setTextColor(Color.RED);
+
+		for(int i = 0 ; i < fragmentContainer.getChildCount(); ++i)
+		{
+			View f = (View) fragmentContainer.getChildAt(i);
+			f.setVisibility(View.INVISIBLE);
+		}
 		
-		switch (id) {
-		case 0:
-			InfoMainFragment imf = new InfoMainFragment();
-			transaction.setTransition(android.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fragment_container, imf);
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//		ft.addToBackStack("main");
+		ft.setTransition(FragmentTransaction.TRANSIT_EXIT_MASK);
+
+//		Fragment f = null;
+		switch (v.getId()) {
+		case R.id.infoButt:
+			Log.d(tag, "info pushed");
+			findViewById(R.id.info_main).setVisibility(View.VISIBLE);
+//			f = new InfoMainFragment();
 			break;
-		case 1:
-			CreateMainFragment cmf = new CreateMainFragment();
-			transaction.setTransition(android.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fragment_container, cmf);
+		case R.id.createButt:
+			Log.d(tag, "create pushed");
+			findViewById(R.id.create_main).setVisibility(View.VISIBLE);
+//			f = new CreateMainFragment();
 			break;
-		case 2:
-			ShowMainFragment smf = new ShowMainFragment();
-			transaction.setTransition(android.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fragment_container, smf);
+		case R.id.showButt:
+			Log.d(tag, "show pushed"); 
+			findViewById(R.id.show_main).setVisibility(View.VISIBLE);
+//			f = new ShowMainFragment();
 			break;
-		case 3:
-			ConfigMainFragment cfmf = new ConfigMainFragment();
-			transaction.setTransition(android.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fragment_container, cfmf);
+		case R.id.configButt:
+			Log.d(tag, "config pushed");
+			findViewById(R.id.config_main).setVisibility(View.VISIBLE);
+//			f = new ConfigMainFragment();
 			break;
 		default:
 			break;
 		}
-		
-		transaction.commit();
+//		ft.replace(R.id.fragment_container, f);
+//		int val = ft.commitAllowingStateLoss();
 	}
 }
