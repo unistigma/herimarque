@@ -22,10 +22,6 @@ public interface ContentResource {
 	 * @return
 	 */
 	public Response uploadMap(@Context HttpServletRequest request, @PathParam("id")String user);
-	// For Up/Download maps
-//	public Response uploadMap();
-//	public Response uploadMap(String key); // upload
-//	public Response uploadMap(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String user, String area, String age, String kind);
 	
 	/**
 	 * retrieve my maps with comments of it

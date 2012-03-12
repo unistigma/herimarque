@@ -1,9 +1,12 @@
 package net.julnamoo.swm.herimarque.resource;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -72,6 +75,7 @@ public class ContentResourceImpl implements ContentResource {
 			
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(factory);
+			upload.setFileSizeMax(512*512);
 			List<FileItem> items = null;
 			
 			try 
@@ -129,7 +133,10 @@ public class ContentResourceImpl implements ContentResource {
 					try 
 					{
 						File target =new File(fpath); 
+						
+						//save the file
 						item.write(target);
+						
 					} catch (Exception e) 
 					{
 						logger.error("Fail to receive file {}", fpath);
@@ -165,6 +172,38 @@ public class ContentResourceImpl implements ContentResource {
 	{
 		String target = fname.substring(fname.lastIndexOf("\\")+1, fname.length());
 		return target;
+	}
+	
+	private void resizeImage(File imgFile) throws IOException
+	{
+		BufferedImage bi = ImageIO.read(imgFile);
+		int height = bi.getHeight();
+		int width = bi.getWidth();
+		
+		int newWidth = 0;
+		int newHeight = 0;
+		double ratioToResize = 0;
+		boolean resize = false;
+		if(width > 512 || height > 512)
+		{
+			resize = true;
+			if(width > height)
+			{
+				ratioToResize = Double.parseDouble(String.valueOf("512"))/Double.parseDouble(String.valueOf(height));
+			}else
+			{
+				ratioToResize = Double.parseDouble("512")/Double.parseDouble(String.valueOf(width));
+			}
+			
+			newWidth = width * Integer.valueOf(String.valueOf(ratioToResize));
+			newHeight = height *  Integer.valueOf(String.valueOf(ratioToResize));
+		}else
+		{
+			newWidth = width;
+			newHeight = height;
+		}
+		
+		
 	}
 
 	@GET

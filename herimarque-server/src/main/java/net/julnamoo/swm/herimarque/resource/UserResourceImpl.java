@@ -163,6 +163,7 @@ public class UserResourceImpl implements UserResource {
 		if(result)
 		{
 			logger.debug("admin user login, {}", user);
+			
 			return Response.ok().build();
 		}else
 		{

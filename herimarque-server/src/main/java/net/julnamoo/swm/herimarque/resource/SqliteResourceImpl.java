@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
 
 @Path("/db")
 @Component
-public class SqliteResourceImpl implements SqliteResource  {
+public class SqliteResourceImpl implements SqliteResource {
 
 	Logger logger = LoggerFactory.getLogger(SqliteResourceImpl.class.getSimpleName());
 	
@@ -46,6 +46,10 @@ public class SqliteResourceImpl implements SqliteResource  {
 	@Resource(name="userDAO")
 	UserDAO userDAO;
 	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.resource.SqliteResource#uploadNewDB(javax.servlet.http.HttpServletRequest, java.lang.String, java.lang.String)
+	 */
+	@Override
 	@POST
 	@Path("upload/{version}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -123,6 +127,10 @@ public class SqliteResourceImpl implements SqliteResource  {
 		return Response.status(Status.BAD_REQUEST).location(new URI("/db.html")).build();
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.resource.SqliteResource#isNewData(java.lang.String)
+	 */
+	@Override
 	@GET
 	@Path("/itsnew/{version}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -136,6 +144,10 @@ public class SqliteResourceImpl implements SqliteResource  {
 		return response;
 	}
 
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.resource.SqliteResource#getNewData(java.lang.String, java.lang.String)
+	 */
+	@Override
 	@GET
 	@Path("/new/{version}")
 	@Produces( {MediaType.APPLICATION_OCTET_STREAM} )
