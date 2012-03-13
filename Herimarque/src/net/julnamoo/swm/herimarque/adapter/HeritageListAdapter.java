@@ -1,6 +1,5 @@
 package net.julnamoo.swm.herimarque.adapter;
 
-import net.julnamoo.swm.herimarque.util.CursorToItem;
 import android.R;
 import android.content.Context;
 import android.database.Cursor;
