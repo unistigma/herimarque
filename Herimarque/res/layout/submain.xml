@@ -38,15 +38,34 @@
             android:text="@string/config_short" />
     </LinearLayout>
 
+    
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:background="@color/basic" >
 
         <!-- fragment -->
         <fragment
-            android:id="@+id/menu_main"
-            android:name="net.julnamoo.swm.herimarque.fragment.InfoMainFragment"
+            android:id="@+id/info_main"
+            android:name="net.julnamoo.swm.herimarque.info.InfoMainFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <fragment
+            android:id="@+id/create_main"
+            android:name="net.julnamoo.swm.herimarque.create.CreateMainFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        
+        <fragment
+            android:id="@+id/show_main"
+            android:name="net.julnamoo.swm.herimarque.show.ShowMainFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        
+        <fragment
+            android:id="@+id/config_main"
+            android:name="net.julnamoo.swm.herimarque.config.ConfigMainFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>

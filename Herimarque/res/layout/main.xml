@@ -1,86 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/maincontainer"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/main">
+    android:layout_height="wrap_content"
+    android:layout_margin="0dp"
+    android:orientation="vertical"
+    android:background="@color/basic"
+    android:gravity="center|bottom"
+    android:padding="0dp" >
 
     <Button
         android:id="@+id/info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/main_info_config" />
+        android:layout_width="120dip"
+        android:layout_height="140dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginBottom="20dip"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/main_info" />
 
     <Button
         android:id="@+id/create"
-        android:layout_width="230dp"
-        android:layout_height="390dp"
-        android:layout_gravity="bottom|left"
-        android:background="@drawable/main_create_config" />
-
-    <Button
-        android:id="@+id/config"
-        android:layout_width="212dp"
-        android:layout_height="136dp"
-        android:layout_gravity="bottom|right"
-        android:background="@drawable/main_config_config" />
-
-</FrameLayout> -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/maincontainer"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/main" 
-    android:padding="0dp"
-    android:layout_margin="0dp"
-    android:gravity="center">
-
-    <LinearLayout
-        android:id="@+id/container1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="top"
-        android:layout_margin="0dp"
-        android:padding="0dp"
-        android:weightSum="1">
-
-        <Button
-            android:id="@+id/info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.7"
-            android:text="@string/information" />
-
-        <Button
-            android:id="@+id/create"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.3"
-            android:text="@string/show" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/container2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/container1"
-        android:orientation="horizontal"
-        android:weightSum="1" >
-
-        <Button
-            android:id="@+id/show"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:text="@string/create" />
-
-        <Button
-            android:id="@+id/config"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:text="@string/config" />
-    </LinearLayout>
+        android:layout_width="120dip"
+        android:layout_height="140dip"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/info"
+        android:background="@drawable/main_create" />
 
 </RelativeLayout>
+<!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="0dp"
+    android:background="@drawable/main"
+    android:gravity="top"
+    android:orientation="vertical"
+    android:layout_gravity="bottom"
+    android:padding="0dp" >
+
+    <Button
+        android:id="@+id/info"
+        android:layout_width="104dp"
+        android:layout_height="182dp"
+        android:background="@drawable/info_on" />
+
+    <Button
+        android:id="@+id/create"
+        android:layout_width="134dp"
+        android:layout_height="146dp"
+        android:background="@drawable/create_on" />
+
+</LinearLayout> -->

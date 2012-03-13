@@ -2,7 +2,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/info_back"
     android:scrollbarStyle="insideOverlay"
     android:scrollbars="none" >
 
@@ -26,8 +25,9 @@
 
         <ImageView
             android:id="@+id/info_detail_img"
-            android:layout_width="match_parent"
-            android:layout_height="250dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:background="#FFCE84"
             android:contentDescription="@string/hello"
             android:scaleType="fitCenter"
