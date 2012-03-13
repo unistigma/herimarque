@@ -1,4 +1,4 @@
-package net.julnamoo.swm.herimarque;
+package net.julnamoo.swm.herimarque.temp;
 
 import android.app.Activity;
 import android.content.Intent;

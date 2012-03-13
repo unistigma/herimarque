@@ -1,7 +1,7 @@
-package net.julnamoo.swm.herimarque;
+package net.julnamoo.swm.herimarque.temp;
 
 import net.julnamoo.R;
-import net.julnamoo.swm.herimarque.adapter.InfoOurListAdapter;
+import net.julnamoo.swm.herimarque.adapter.HeritageListAdapter;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
 import net.julnamoo.swm.herimarque.model.Item;
 import net.julnamoo.swm.herimarque.util.Constants;
@@ -32,7 +32,7 @@ public class InfoOurHeritageListActivity extends Activity {
 	Cursor cursor;
 	String[] from = { Constants.itemFields[1], Constants.itemFields[4]}; //crltsNm, crltsNoNm
 	int[] to = {android.R.id.text1, android.R.id.text2};
-	InfoOurListAdapter adapter;
+	HeritageListAdapter adapter;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,21 +41,21 @@ public class InfoOurHeritageListActivity extends Activity {
 
 		select = getIntent().getIntExtra("select", 0);
 		bar = (TextView) findViewById(R.id.info_our_list_bar);
-		bar.setText(Constants.kindImgsCD[select]);
+//		bar.setText(Constants.kindImgsCD[select]);
 		
 		SQLiteDatabase db = new HeritageSQLiteHelper(InfoOurHeritageListActivity.this).getReadableDatabase();
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM ").append(Constants.TABLE_NAME);
-		sb.append(" WHERE ").append("itemCd").append("='").append(Constants.kindCode[select]).append("' ");
+//		sb.append(" WHERE ").append("itemCd").append("='").append(Constants.kindCode[select]).append("' ");
 		sb.append("ORDER BY crltsNo ASC").append(";");
 		
 		String sql = sb.toString();
 		cursor = db.rawQuery(sql, null);
-		Log.i(tag, "Retrieve " + Constants.kindImgsCD[select] + " items, total " + cursor.getCount());
+//		Log.i(tag, "Retrieve " + Constants.kindImgsCD[select] + " items, total " + cursor.getCount());
 		startManagingCursor(cursor);
 		
 		//set sqlite adapter
-		adapter = new InfoOurListAdapter(InfoOurHeritageListActivity.this, android.R.layout.simple_list_item_2, cursor, from, to);
+//		adapter = new HeritageListAdapter(InfoOurHeritageListActivity.this, android.R.layout.simple_list_item_2, cursor, from, to);
 		
 		list = (ListView) findViewById(R.id.info_our_list_view);
 		list.setAdapter(adapter);

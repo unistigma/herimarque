@@ -1,4 +1,4 @@
-package net.julnamoo.swm.herimarque;
+package net.julnamoo.swm.herimarque.temp;
 
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.adapter.KindImageAdapter;
@@ -18,9 +18,9 @@ public class InfoOurHeritageKindActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.info_our_category_kind);
+//		setContentView(R.layout.info_);
 		
-		GridView grid = (GridView) findViewById(R.id.info_our_category_kind_grid);
+		GridView grid = (GridView) findViewById(R.id.category_grid);
 		Log.d(tag, "Set grid view");
 		KindImageAdapter adapter = new KindImageAdapter(this);
 		grid.setAdapter(adapter);

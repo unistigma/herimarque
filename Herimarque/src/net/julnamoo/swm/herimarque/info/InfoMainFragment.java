@@ -1,16 +1,12 @@
-package net.julnamoo.swm.herimarque.fragment;
+package net.julnamoo.swm.herimarque.info;
 
 import net.julnamoo.R;
-import net.julnamoo.swm.herimarque.temp.InfoSubMainFragment;
-import net.julnamoo.swm.herimarque.util.ExitExecutor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -21,11 +17,6 @@ public class InfoMainFragment extends Fragment implements OnItemClickListener {
 
 	private String tag = InfoMainFragment.class.getSimpleName();
 
-//	Button kind;
-//	Button age;
-//	Button area;
-//	Button near;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
@@ -35,8 +26,8 @@ public class InfoMainFragment extends Fragment implements OnItemClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.info_main, container, false);
-		ListView l = (ListView) v.findViewById(R.id.info_menu_list);
+		View v = inflater.inflate(R.layout.list, container, false);
+		ListView l = (ListView) v.findViewById(R.id.list);
 		
 		//set menus
 		String[] menus = {"종목", "지역", "시대", "주변 문화유산 보기"};
@@ -46,49 +37,18 @@ public class InfoMainFragment extends Fragment implements OnItemClickListener {
 		l.setAdapter(infoMenuList);
 		l.setOnItemClickListener(this);
 		
-		v.setOnKeyListener(new OnKeyListener() {
-
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if( keyCode == KeyEvent.KEYCODE_BACK )
-				{
-					Log.d(tag, "back : " + event.getRepeatCount());
-					return true;
-				}
-				return v.onKeyDown(keyCode, event);
-			}
-		});
 		return v;
-
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View v, int selected, long id) 
 	{
 		Log.d(tag, "selcted " + selected);
-		
 		Fragment f = new InfoSubMainFragment(selected);
     	FragmentTransaction ft = getFragmentManager().beginTransaction();
-    	ft.addToBackStack("infoSub");
     	ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-    	ft.add(R.id.info_main, f, "infoSub");
-    	ft.hide(InfoMainFragment.this);
+    	ft.replace(R.id.info_main, f, "infoSub");
+    	ft.addToBackStack("infoSub");
     	ft.commit();
 	}
-	
-	@Override
-	public void onPause() 
-	{
-		// TODO Auto-generated method stub
-		super.onPause();
-	}
-//	@Override
-//	public boolean onKeyDown(int keyCode, KeyEvent event) 
-//	{
-//	    if (keyCode == KeyEvent.KEYCODE_BACK) {
-//	        moveTaskToBack(true);
-//	        return true;
-//	    }
-//	    return super.onKeyDown(keyCode, event);
-//	}
 }

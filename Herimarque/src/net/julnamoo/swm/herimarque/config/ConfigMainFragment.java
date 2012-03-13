@@ -1,4 +1,4 @@
-package net.julnamoo.swm.herimarque.fragment;
+package net.julnamoo.swm.herimarque.config;
 
 import net.julnamoo.R;
 import android.os.Bundle;

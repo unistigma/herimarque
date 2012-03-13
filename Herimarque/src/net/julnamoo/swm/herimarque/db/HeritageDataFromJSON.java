@@ -3,6 +3,7 @@ package net.julnamoo.swm.herimarque.db;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 
 import net.julnamoo.swm.herimarque.model.Item;
 import net.julnamoo.swm.herimarque.util.Constants;
@@ -48,7 +49,6 @@ public class HeritageDataFromJSON implements Runnable{
 		dataSource.open();
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		
 		try 
 		{
 			StringBuffer sb = new StringBuffer();

@@ -59,6 +59,12 @@ public class SubMainActivity extends FragmentActivity {
 		{
 			Log.d(tag, "back : " + event.getRepeatCount());
 			
+			if(getSupportFragmentManager().getBackStackEntryCount() > 0)
+			{
+				getSupportFragmentManager().popBackStackImmediate();
+				return true;
+			}
+			
 			if(ee.isFinish()) 
 			{
 				Log.d(tag, "finish");

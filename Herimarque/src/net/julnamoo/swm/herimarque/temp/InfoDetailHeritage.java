@@ -1,4 +1,4 @@
-package net.julnamoo.swm.herimarque;
+package net.julnamoo.swm.herimarque.temp;
 
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.model.Item;
