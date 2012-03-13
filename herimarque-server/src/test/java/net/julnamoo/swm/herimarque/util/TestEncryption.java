@@ -3,6 +3,7 @@ package net.julnamoo.swm.herimarque.util;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
+import org.eclipse.jetty.util.security.Credential.MD5;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ public class TestEncryption
 		pwd = "test";
 	}
 	
-	@Test
+//	@Test
 	public void test() throws Exception
 	{
 		MessageDigest md = MessageDigest.getInstance("MD5");
@@ -28,6 +29,11 @@ public class TestEncryption
 		BigInteger bi = new BigInteger(md.digest());
 		String key = bi.toString();
 		System.out.println("new key : " + key + ", length is " + key.length());
+	}
+	
+	@Test
+	public void encrypt(){
+		System.out.println(MD5.digest("somasoma"));
 	}
 
 }

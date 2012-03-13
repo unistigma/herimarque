@@ -3,6 +3,7 @@ package net.julnamoo.swm.herimarque.resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -27,7 +28,8 @@ public interface NoticeResource {
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	//	@Override
 	public abstract Response addNotice(@FormParam("title") String title,
-			@FormParam("content") String contents);
+			@FormParam("content") String contents,
+			@HeaderParam("admin") String admin);
 
 	/**
 	 * check there is new notices after the lastupdate

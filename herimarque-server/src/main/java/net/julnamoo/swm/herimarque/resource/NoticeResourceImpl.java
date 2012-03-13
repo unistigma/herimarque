@@ -3,9 +3,11 @@ package net.julnamoo.swm.herimarque.resource;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -14,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import net.julnamoo.swm.herimarque.dao.UserDAO;
 import net.julnamoo.swm.herimarque.service.NoticeService;
 
 import org.slf4j.Logger;
@@ -30,6 +33,9 @@ public class NoticeResourceImpl implements NoticeResource {
 	@Autowired
 	NoticeService noticeService;
 	
+	@Resource(name="userDAO")
+	UserDAO userDAO;
+	
 	/* (non-Javadoc)
 	 * @see net.julnamoo.swm.herimarque.resource.NoticeResource#addNotice(java.lang.String, java.lang.String)
 	 */
@@ -37,8 +43,13 @@ public class NoticeResourceImpl implements NoticeResource {
 	@Path("/")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Override
-	public Response addNotice(@FormParam("title") String title, @FormParam("content") String contents)
+	public Response addNotice(@FormParam("title") String title, @FormParam("content") String contents, @HeaderParam("admin") String admin)
 	{
+		if(!userDAO.isAdmin(admin))
+		{
+			logger.warn("non-admin user {} try to update the notice", admin);
+			return Response.status(Status.BAD_REQUEST).build();
+		}
 		try 
 		{
 			title = URLDecoder.decode(title, "UTF-8");

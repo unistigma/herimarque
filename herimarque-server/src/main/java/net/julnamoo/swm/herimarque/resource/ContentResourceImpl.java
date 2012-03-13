@@ -255,8 +255,8 @@ public class ContentResourceImpl implements ContentResource {
 		String msg = contentService.getMapsInPeriod(user, start, end);
 		if(msg == null)
 		{
-			logger.debug("Fail to load the map info with period, return 503");
-			return Response.status(Status.SERVICE_UNAVAILABLE).build();
+			logger.debug("Fail to load the map info with period, return 400");
+			return Response.status(Status.BAD_REQUEST).build();
 		}else
 		{
 			logger.debug("Success to get map list with perioid, return 200");
@@ -273,8 +273,8 @@ public class ContentResourceImpl implements ContentResource {
 		String msg = contentService.getMostHitMaps(user);
 		if(msg == null)
 		{
-			logger.debug("Cannot get most hit maps, return 503");
-			return Response.status(Status.SERVICE_UNAVAILABLE).build();
+			logger.debug("Cannot get most hit maps, return 400");
+			return Response.status(Status.BAD_REQUEST).build();
 		}else
 		{
 			logger.debug("Sucess to retrieve the most hit maps info list, return 200");
@@ -319,9 +319,9 @@ public class ContentResourceImpl implements ContentResource {
 			return Response.ok(result).build();
 		}else
 		{
-			logger.debug("Fail to add like to map {}, retrun 503", mapId);
+			logger.debug("Fail to add like to map {}, retrun 400", mapId);
 			
-			return Response.status(Status.SERVICE_UNAVAILABLE).build();
+			return Response.status(Status.BAD_REQUEST).build();
 		}
 	}
 	
