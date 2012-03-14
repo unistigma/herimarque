@@ -28,15 +28,16 @@ public class InfoMainFragment extends Fragment implements OnItemClickListener {
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.list, container, false);
 		ListView l = (ListView) v.findViewById(R.id.list);
-		
+
 		//set menus
-		String[] menus = {"종목", "지역", "시대", "주변 문화유산 보기"};
+		//		String[] menus = {"종목", "지역", "시대", "주변 문화유산 보기"};
+		String[] menus = {"종목", "지역", "주변 문화유산 보기"};
 		ArrayAdapter<String> infoMenuList = new ArrayAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1, menus);
-		
+
 		//attatch adapter
 		l.setAdapter(infoMenuList);
 		l.setOnItemClickListener(this);
-		
+
 		return v;
 	}
 
@@ -44,11 +45,19 @@ public class InfoMainFragment extends Fragment implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> arg0, View v, int selected, long id) 
 	{
 		Log.d(tag, "selcted " + selected);
-		Fragment f = new InfoSubMainFragment(selected);
-    	FragmentTransaction ft = getFragmentManager().beginTransaction();
-    	ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-    	ft.replace(R.id.info_main, f, "infoSub");
-    	ft.addToBackStack("infoSub");
-    	ft.commit();
+
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		Fragment f = null;
+		if(selected == 2)
+		{
+			f = new NearFragment(getActivity().getApplicationContext(), 5, 5);
+		}else
+		{
+			f = new InfoSubMainFragment(selected);
+		}
+		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		ft.replace(R.id.info_main, f, "infoSub");
+		ft.addToBackStack("infoSub");
+		ft.commit();
 	}
 }

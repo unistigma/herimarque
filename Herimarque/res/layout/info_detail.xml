@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbarStyle="insideOverlay"
-    android:scrollbars="none" >
+    android:scrollbars="none" 
+    android:background="@color/basic">
 
     <LinearLayout
         android:id="@+id/info_detail"

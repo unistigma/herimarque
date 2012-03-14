@@ -41,7 +41,7 @@ public class SplashActivity extends Activity {
 				startActivity(new Intent(SplashActivity.this, HerimarqueActivity.class));
 			}
 		};
-		handler.sendEmptyMessageDelayed(0, 5000);
+		handler.sendEmptyMessageDelayed(0, 2500);
 	}
 	
 	private void setupDB()

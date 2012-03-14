@@ -6,6 +6,8 @@
     <string name="app_name">Herimarque</string>
     <string name="company">Incredieble</string>
     
+    <string name="apiKey">0UyzqHINdFIG4Ims3IKo0B3ZnVnwfC-njU10P8g</string>
+    
     <!-- For Test -->
     <string name="info_detail_name">name</string>
     <string name="info_detail_code">code</string>

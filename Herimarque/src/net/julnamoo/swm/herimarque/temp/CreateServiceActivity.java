@@ -67,7 +67,7 @@ public class CreateServiceActivity extends MapActivity {
 			@Override
 			public void onStatusChanged(String provider, int status, Bundle extras) {
 				String msg = new String(new StringBuilder().append("Changed location provider").append(provider));
-				Log.d(provider, msg);
+				Log.d(tag, msg);
 			}
 
 			@Override
@@ -104,8 +104,9 @@ public class CreateServiceActivity extends MapActivity {
 	
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
 		locationManager.removeUpdates(locationListener);
+		locationManager.removeTestProvider(LocationManager.GPS_PROVIDER);
+		locationManager.removeTestProvider(LocationManager.NETWORK_PROVIDER);
 		Log.d(tag, "Remove all listener");
 		super.onPause();
 	}

@@ -42,7 +42,7 @@ public class HeritageSQLiteHelper extends SQLiteOpenHelper{
 			getReadableDatabase();
 			Log.i(tag, "copy database file");
 			copyDataBase();
-		}
+		} 
 	}
 	
 	private boolean checkDataBase()
@@ -55,6 +55,7 @@ public class HeritageSQLiteHelper extends SQLiteOpenHelper{
 			if(cursor.getCount() < 2)
 			{
 				Log.d(tag, "databases exist but empty table");
+				db.close();
 				db = null;
 			}
 		}catch (Exception e) {
@@ -70,7 +71,7 @@ public class HeritageSQLiteHelper extends SQLiteOpenHelper{
 		try 
 		{
 			Log.d(tag, "read the file then set the db");
-			InputStream is = context.getAssets().open("heritage.db");
+			InputStream is = context.getAssets().open("herimarque.db");
 			OutputStream os = new FileOutputStream(DB_PATH + DB_NAME);
 
 			byte[] buffer = new byte[1024];

@@ -1,7 +1,10 @@
 package net.julnamoo.swm.herimarque;
 
+import com.google.android.maps.MapView;
+
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.util.ExitExecutor;
+import net.julnamoo.swm.herimarque.util.MapContainer;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -29,7 +32,6 @@ public class SubMainActivity extends FragmentActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.submain);
 
@@ -50,6 +52,8 @@ public class SubMainActivity extends FragmentActivity {
 		//set tab button
 		int menu = getIntent().getIntExtra("menu", R.id.infoButt);
 		changeView(findViewById(menu));
+		
+		setMapView();
 	}
 
 	@Override
@@ -102,35 +106,40 @@ public class SubMainActivity extends FragmentActivity {
 		}
 		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//		ft.addToBackStack("main");
 		ft.setTransition(FragmentTransaction.TRANSIT_EXIT_MASK);
 
-//		Fragment f = null;
 		switch (v.getId()) {
 		case R.id.infoButt:
 			Log.d(tag, "info pushed");
 			findViewById(R.id.info_main).setVisibility(View.VISIBLE);
-//			f = new InfoMainFragment();
 			break;
 		case R.id.createButt:
 			Log.d(tag, "create pushed");
 			findViewById(R.id.create_main).setVisibility(View.VISIBLE);
-//			f = new CreateMainFragment();
 			break;
 		case R.id.showButt:
 			Log.d(tag, "show pushed"); 
 			findViewById(R.id.show_main).setVisibility(View.VISIBLE);
-//			f = new ShowMainFragment();
 			break;
 		case R.id.configButt:
 			Log.d(tag, "config pushed");
 			findViewById(R.id.config_main).setVisibility(View.VISIBLE);
-//			f = new ConfigMainFragment();
 			break;
 		default:
 			break;
 		}
-//		ft.replace(R.id.fragment_container, f);
-//		int val = ft.commitAllowingStateLoss();
+	}
+	
+	@Override
+	public boolean isRouteDisplayed() 
+	{
+		return false;
+	}
+	
+	private void setMapView()
+	{
+//		View mapContainer = getLayoutInflater().inflate(R.layout.map, fragmentContainer);
+//		MapContainer.mapView = (MapView) mapContainer.findViewById(R.id.map);
+		MapContainer.mapView = new MapView(SubMainActivity.this, this.getString(R.string.apiKey));
 	}
 }
