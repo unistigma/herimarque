@@ -1,22 +1,16 @@
 package net.julnamoo.swm.herimarque.info;
 
 import net.julnamoo.R;
-import net.julnamoo.swm.herimarque.adapter.MenuListAdapter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
 
-public class InfoMainFragment extends Fragment implements OnItemClickListener {
+public class InfoMainFragment extends Fragment {
 
 	private String tag = InfoMainFragment.class.getSimpleName();
 
@@ -29,40 +23,61 @@ public class InfoMainFragment extends Fragment implements OnItemClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.list, container, false);
-		ListView l = (ListView) v.findViewById(R.id.list);
-
-		//set menus
-		//		String[] menus = {"종목", "지역", "시대", "주변 문화유산 보기"};
-//		String[] menus = {"종목", "지역", "주변 문화유산 보기"};
-//		ArrayAdapter<String> infoMenuList = new ArrayAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1, menus);
-
-		int[] menus = {(int) R.drawable.kind_off, (int) R.drawable.area_off, (int) R.drawable.near_off};
-		MenuListAdapter infoMenuList = new MenuListAdapter(inflater.getContext(), menus);
-		//attatch adapter
-		l.setAdapter(infoMenuList);
-		l.setOnItemClickListener(this);
-
+		View v = inflater.inflate(R.layout.info_main, container, false);
+		v.findViewById(R.id.kind).setOnClickListener(clickListener);
+		v.findViewById(R.id.area).setOnClickListener(clickListener);
+		v.findViewById(R.id.near).setOnClickListener(clickListener);
 		return v;
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View v, int selected, long id) 
+	private void startKind()
 	{
-		Log.d(tag, "selcted " + selected);
-
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		Fragment f = null;
-		if(selected == 2)
-		{
-			f = new NearFragment(getActivity().getApplicationContext(), 5, 5);
-		}else
-		{
-			f = new InfoSubMainFragment(selected);
-		}
+		Fragment f = new InfoSubMainFragment(0);
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		ft.replace(R.id.info_main, f, "infoSub");
 		ft.addToBackStack("infoSub");
 		ft.commit();
 	}
+
+	private void startArea()
+	{
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		Fragment f = new InfoSubMainFragment(1);
+		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		ft.replace(R.id.info_main, f, "infoSub");
+		ft.addToBackStack("infoSub");
+		ft.commit();
+	}
+
+	private void startNear()
+	{
+
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		Fragment f = new NearFragment(getActivity().getApplicationContext(), 5, 5);
+		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		ft.replace(R.id.info_main, f, "infoSub");
+		ft.addToBackStack("infoSub");
+		ft.commit();
+	}
+
+	OnClickListener clickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			Log.d(tag, "selcted " + v.getId());
+
+			switch (v.getId()) {
+			case R.id.kind : startKind();
+			break;
+			case R.id.area : startArea();
+			break;
+			case R.id.near : startNear();
+			break;
+			default:
+				break;
+			}
+
+		}
+	};
 }

@@ -2,9 +2,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/basic"
     android:scrollbarStyle="insideOverlay"
-    android:scrollbars="none" 
-    android:background="@color/basic">
+    android:scrollbars="none" >
 
     <LinearLayout
         android:id="@+id/info_detail"
@@ -24,14 +24,16 @@
             android:text="@string/info_our_list"
             android:textSize="25dip" />
 
-        <ImageView
+        <net.julnamoo.swm.herimarque.view.HeritageImageView
             android:id="@+id/info_detail_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:adjustViewBounds="true"
             android:background="#FFCE84"
+            android:scaleType="center"
             android:contentDescription="@string/hello"
-            android:scaleType="fitCenter"
+            android:clickable="true"
             android:src="@drawable/ic_launcher" />
 
         <TextView

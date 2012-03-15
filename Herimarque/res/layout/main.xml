@@ -5,9 +5,9 @@
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
     android:orientation="vertical"
-    android:background="@color/basic"
+    android:background="@drawable/main"
     android:gravity="center|bottom"
-    android:padding="0dp" >
+    android:paddingBottom="30dp" >
 
     <Button
         android:id="@+id/info"

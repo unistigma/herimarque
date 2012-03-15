@@ -3,12 +3,13 @@ package net.julnamoo.swm.herimarque;
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.util.ExitExecutor;
 import net.julnamoo.swm.herimarque.util.MapContainer;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager.LayoutParams;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -106,7 +107,7 @@ public class SubMainActivity extends FragmentActivity {
 		}
 		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.setTransition(FragmentTransaction.TRANSIT_EXIT_MASK);
+		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
 		switch (v.getId()) {
 		case R.id.infoButt:
@@ -138,6 +139,8 @@ public class SubMainActivity extends FragmentActivity {
 	
 	private void setMapView()
 	{
+		AttributeSet attrSet = Xml.asAttributeSet(getResources().getXml(R.layout.map));
+		FrameLayout fl = new FrameLayout(SubMainActivity.this, attrSet);
 		MapContainer.mapView = new MapView(SubMainActivity.this, this.getString(R.string.apiKey));
 		MapContainer.mapView.setClickable(true);
 		MapContainer.mapView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));;

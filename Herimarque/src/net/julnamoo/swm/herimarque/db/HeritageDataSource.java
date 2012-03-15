@@ -27,12 +27,13 @@ public class HeritageDataSource {
 	
 	public void open()
 	{
-		db = dbHelper.getWritableDatabase();
+		db = dbHelper.getReadableDatabase();
 	}
 	
 	public void close()
 	{
 		dbHelper.close();
+		if(db != null) db.close();
 	}
 	
 	public void insert(Item item) throws IllegalArgumentException, IllegalAccessException
@@ -83,6 +84,9 @@ public class HeritageDataSource {
 		String sql = sb.toString();
 		Log.d(value, "select sql, " + sql);
 		Cursor cursor =  db.rawQuery(sql, null);
+		
+		if(cursor == null) return null;
+			
 		cursor.moveToFirst();
 		while(!cursor.isAfterLast())
 		{

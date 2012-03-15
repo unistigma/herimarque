@@ -1,49 +1,45 @@
 package net.julnamoo.swm.herimarque.info;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import net.julnamoo.R;
+import net.julnamoo.R.layout;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
 import net.julnamoo.swm.herimarque.model.Item;
 import net.julnamoo.swm.herimarque.util.Constants;
 import net.julnamoo.swm.herimarque.util.CursorToItem;
 import net.julnamoo.swm.herimarque.util.MapContainer;
-import net.julnamoo.swm.herimarque.widget.HeritageItemizedOverlay;
-import net.julnamoo.swm.herimarque.widget.LocationItemizedOverlay;
-import android.app.Activity;
+import net.julnamoo.swm.herimarque.view.HeritageItemizedOverlay;
+import net.julnamoo.swm.herimarque.view.LocationItemizedOverlay;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
-import android.os.AsyncTask.Status;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-public class NearFragment extends Fragment {
+public class NearFragment extends Fragment implements OnTouchListener{
 
 	private String tag = NearFragment.class.getSimpleName();
 
@@ -59,13 +55,18 @@ public class NearFragment extends Fragment {
 
 	private List<Overlay> mapOverlay;
 
+	//for detecting event
 	private boolean isCalled;
+	private int currZoom;
+	private GeoPoint currStart;
+	private Handler mHandler;
 
 	public NearFragment(Context mContext, long minTime, float minDistance) 
 	{
 		this.mContext = mContext;
 		this.minTime = minTime;
 		this.minDistance = minDistance;
+		mHandler = new Handler();
 		isCalled = false;
 	}
 
@@ -81,14 +82,8 @@ public class NearFragment extends Fragment {
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, locationListener);
 
-		heritageOverlay = new HeritageItemizedOverlay(getResources().getDrawable(R.drawable.greenpin), mContext);
-		locationOverlay = new LocationItemizedOverlay(getResources().getDrawable(R.drawable.yellowpin), mContext);
-	}
-
-	@Override
-	public void onAttach(Activity arg0) 
-	{
-		super.onAttach(arg0);
+		heritageOverlay = new HeritageItemizedOverlay(getResources().getDrawable(R.drawable.pin2), mContext, getFragmentManager());
+		locationOverlay = new LocationItemizedOverlay(getResources().getDrawable(R.drawable.pin1), mContext);
 	}
 
 	@Override
@@ -103,8 +98,11 @@ public class NearFragment extends Fragment {
 		{
 			vg.removeView(mapView);
 		}
+		//get heritages
+		currStart = mapView.getProjection().fromPixels(0, 0);
+		new LoadMapItems().execute();
 
-//		mapView.setOnTouchListener(touchLisnter);
+		mapView.setOnTouchListener(this);
 		mapView.setBuiltInZoomControls(false);
 		mapView.setSatellite(false);
 		mapView.setTraffic(false);
@@ -127,33 +125,45 @@ public class NearFragment extends Fragment {
 		Double lat = location.getLatitude() * 1E6;
 		Double lng = location.getLongitude() * 1E6;
 		GeoPoint point = new GeoPoint(lat.intValue(), lng.intValue());
-		setMyLocationOverlay(point);
-
-		mapController.animateTo(point);
 		mapController.setZoom(18);
-		getHeritages();
-
+		mapController.animateTo(point);
+		currZoom = 18;
+		setMyLocationOverlay(point);
+		//expect heritageOverlay is updated
+		mapOverlay.add(heritageOverlay);
+		
+		//add the Button for moving to the current location
+		Button getMyLoc = new Button(mContext);
+		getMyLoc.setBackgroundDrawable(getResources().getDrawable(R.drawable.myloc));
+		LayoutParams sizeParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.RIGHT | Gravity.TOP);
+		getMyLoc.setLayoutParams(sizeParam);
+		getMyLoc.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) 
+			{
+				//get user's location and move to the point
+				Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+				if(location == null)
+				{
+					location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+					if(location == null)
+					{
+						location = new Location(LocationManager.NETWORK_PROVIDER);
+						location.setLatitude(Double.valueOf("37.57273"));
+						location.setLongitude(Double.valueOf("126.9687"));
+					}
+				}
+				GeoPoint p = convertToGeoPoint(location);
+				setMyLocationOverlay(p);
+				mapController.animateTo(p);
+			}
+		});
+		
+		mapView.addView(getMyLoc);
 		mapView.invalidate();
-		//check near heritage
+		
 		return mapView;
 	}
-
-	OnTouchListener touchLisnter = new OnTouchListener() {
-
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			if(event.getAction() == MotionEvent.ACTION_UP)
-			{
-				Log.d(tag,event.getX()+ ","+event.getY());
-				LoadMapItems lmi = new LoadMapItems();
-				lmi.execute(0);
-				mapOverlay.add(heritageOverlay);
-				mapView.invalidate();
-				return true;
-			}
-			return false;
-		}
-	};
 
 	@Override
 	public void onPause() 
@@ -199,19 +209,14 @@ public class NearFragment extends Fragment {
 		public void onLocationChanged(Location location) 
 		{
 			Log.d(tag, "locationupdate : " + location.getLatitude() + "," + location.getLongitude());
-			int lat = (int) (location.getLatitude() * 1E6);
-			int lng = (int) (location.getLongitude() * 1E6);
 
-			GeoPoint point = new GeoPoint(lat, lng);
-			mapController.animateTo(point); 
+			GeoPoint point = convertToGeoPoint(location);
 			setMyLocationOverlay(point);
-//			getHeritages();
-			new LoadMapItems().execute(0);
-			mapOverlay.add(heritageOverlay);
 			mapView.invalidate();
 		}
 	};
 
+	/*
 	private void addMarker(GeoPoint p, String title, String subTitle)
 	{
 		OverlayItem overlayItem = new OverlayItem(p, title, subTitle);
@@ -220,18 +225,15 @@ public class NearFragment extends Fragment {
 			heritageOverlay.addOverlay(overlayItem);
 		} catch (Exception e) {	}
 
-		if(mapOverlay.size() == 1)
+		if(mapOverlay.size() < 2)
 		{
 			mapOverlay.add(heritageOverlay);
-		}else if(mapOverlay.size() == 2)
-		{
-			mapOverlay.set(1, heritageOverlay);
 		}else
 		{
-			mapOverlay.add(heritageOverlay);
+			mapOverlay.set(1, heritageOverlay);
 		}
 		mapView.invalidate();
-	}
+	}*/
 
 	private void setMyLocationOverlay(GeoPoint p)
 	{
@@ -251,6 +253,7 @@ public class NearFragment extends Fragment {
 		mapView.invalidate();
 	}
 
+	/*
 	private void getHeritages()
 	{
 		heritageOverlay.clear();
@@ -288,26 +291,13 @@ public class NearFragment extends Fragment {
 		}
 		db.close();
 		sqlHelper.close();
+	}*/
 
-	}
-
-	class LoadMapItems extends AsyncTask<Integer, Integer, Void>
+	class LoadMapItems extends AsyncTask<Void, Void, Void>
 	{
-		Cursor cursor;
-		boolean working;
-
-		@Override
-		protected void onPreExecute() 
-		{
-			isCalled = isCalled ? false : true;
-			working = isCalled;
-
-		}
-
 		@Override
 		protected Void doInBackground(
-				Integer... params) {
-			heritageOverlay.clear();
+				Void... params) {
 
 			GeoPoint topleft = mapView.getProjection().fromPixels(0, 0);
 			GeoPoint bottomright = mapView.getProjection().fromPixels(mapView.getWidth(), mapView.getHeight());
@@ -327,18 +317,21 @@ public class NearFragment extends Fragment {
 			query.append(" AND YCnts > ").append(bottomLeftLat).append(" AND YCnts < ").append(topRightLat);
 			query.append(" LIMIT 200;");
 			//get data
-			cursor = db.rawQuery(query.toString(), null);
+			Cursor cursor = db.rawQuery(query.toString(), null);
 			Log.d(tag, query.toString() + "query, total size : " + cursor.getCount());
 			db.close();
 			sqlHelper.close();
+			heritageOverlay.clear();
 			while(cursor.moveToNext())
 			{
-				if(isCalled != working) return null;
-
 				Item item = CursorToItem.cursor2Item(cursor);
 				double latitude = Double.valueOf(item.getXCnts()) * 1E6;
 				double longitude = Double.valueOf(item.getYCnts()) * 1E6;
 				GeoPoint point = new GeoPoint(Double.valueOf(longitude).intValue(), Double.valueOf(latitude).intValue());
+				
+				//check existence of the overla at the point
+				if(isExist(point)) continue;
+				
 				Log.d(tag, Double.valueOf(latitude).intValue()+ " ," +Double.valueOf(longitude).intValue());
 				String title = item.getCrltsNm();
 				String subTitle = item.getItemNm() +" " + item.getCrltsNoNm() + "호";
@@ -348,6 +341,7 @@ public class NearFragment extends Fragment {
 				{
 					heritageOverlay.addOverlay(overlay);
 				} catch (Exception e) {		}
+				
 			}
 			return null;
 		}
@@ -355,8 +349,127 @@ public class NearFragment extends Fragment {
 		@Override
 		protected void onPostExecute(Void result) 
 		{
-			//			mapView.getOverlays().add(heritageOverlay);
+			if(mapOverlay.size() == 1)
+			{
+				mapOverlay.add(heritageOverlay);
+			}else if(mapOverlay.size() == 2)
+			{
+				mapOverlay.set(1, heritageOverlay);
+			}else
+			{
+				mapOverlay.add(heritageOverlay);
+			}
+		}
+		
+		private boolean isExist(GeoPoint check)
+		{
+			for(int i = 0; i < heritageOverlay.size(); ++i)
+			{
+				GeoPoint point = heritageOverlay.getItem(i).getPoint();
+				if(point.getLatitudeE6() == check.getLatitudeE6() 
+						&& point.getLongitudeE6() == check.getLongitudeE6()) return true;
+			}
+			return false;
 		}
 
+	}
+//	class LoadMapItems implements Runnable
+//	{
+//		@Override
+//		public void run() 
+//		{
+//			heritageOverlay.clear();
+//
+//			GeoPoint topleft = mapView.getProjection().fromPixels(0, 0);
+//			GeoPoint bottomright = mapView.getProjection().fromPixels(mapView.getWidth(), mapView.getHeight());
+//
+//			double topRightLat = topleft.getLatitudeE6()/1E6;
+//			double bottomLeftLat = bottomright.getLatitudeE6()/1E6;
+//			double topRightLong = topleft.getLongitudeE6()/1E6;
+//			double bottomLeftLong = bottomright.getLongitudeE6()/1E6;
+//
+//			HeritageSQLiteHelper sqlHelper = new HeritageSQLiteHelper(mContext);
+//			SQLiteDatabase db = sqlHelper.getReadableDatabase();
+//
+//			//build query
+//			StringBuilder query = new StringBuilder("SELECT * FROM ");
+//			query.append(Constants.TABLE_NAME);
+//			query.append(" WHERE XCnts > ").append(topRightLong).append(" AND XCnts < ").append(bottomLeftLong);
+//			query.append(" AND YCnts > ").append(bottomLeftLat).append(" AND YCnts < ").append(topRightLat);
+//			query.append(" LIMIT 200;");
+//			//get data
+//			Cursor cursor = db.rawQuery(query.toString(), null);
+//			Log.d(tag, query.toString() + "query, total size : " + cursor.getCount());
+//			db.close();
+//			sqlHelper.close();
+//			while(cursor.moveToNext())
+//			{
+//				Item item = CursorToItem.cursor2Item(cursor);
+//				double latitude = Double.valueOf(item.getXCnts()) * 1E6;
+//				double longitude = Double.valueOf(item.getYCnts()) * 1E6;
+//				GeoPoint point = new GeoPoint(Double.valueOf(longitude).intValue(), Double.valueOf(latitude).intValue());
+//				Log.d(tag, Double.valueOf(latitude).intValue()+ " ," +Double.valueOf(longitude).intValue());
+//				String title = item.getCrltsNm();
+//				String subTitle = item.getItemNm() +" " + item.getCrltsNoNm() + "호";
+//
+//				OverlayItem overlay = new OverlayItem(point, title, subTitle);
+//				try 
+//				{
+//					heritageOverlay.addOverlay(overlay);
+//				} catch (Exception e) {		}
+//			}	
+//			
+////			mapOverlay.add(heritageOverlay);
+//			if(mapOverlay.size() == 1)
+//			{
+//				mapOverlay.add(heritageOverlay);
+//			}else if(mapOverlay.size() == 2)
+//			{
+//				mapOverlay.set(1, heritageOverlay);
+//			}else
+//			{
+//				mapOverlay.add(heritageOverlay);
+//			}
+//		}
+//	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) 
+	{
+		if(event.getAction() == MotionEvent.ACTION_UP)
+		{
+			GeoPoint edge = mapView.getProjection().fromPixels(0, 0);
+			if((mapView.getZoomLevel() != currZoom) || (edge != currStart))
+			{
+				new LoadMapItems().execute();
+				
+				if(mapOverlay.size() == 1)
+				{
+					mapOverlay.add(heritageOverlay);
+				}else if(mapOverlay.size() == 2)
+				{
+					mapOverlay.set(1, heritageOverlay);
+				}else
+				{
+					mapOverlay.add(heritageOverlay);
+				}
+//				getHeritages();
+				mapView.invalidate();
+				return false;
+			}
+		}
+		return false;
+	}
+
+	private GeoPoint getCenter(GeoPoint p1, GeoPoint p2)
+	{
+		GeoPoint center = new GeoPoint((p1.getLatitudeE6() + p2.getLatitudeE6())/2, (p1.getLongitudeE6() + p2.getLongitudeE6())/2);
+		return center;
+	}
+	
+	private GeoPoint convertToGeoPoint(Location location)
+	{
+		GeoPoint point = new GeoPoint((int) (location.getLatitude()*1E6), (int) (location.getLongitude()*1E6));
+		return point;
 	}
 }

@@ -1,4 +1,4 @@
-package net.julnamoo.swm.herimarque.widget;
+package net.julnamoo.swm.herimarque.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

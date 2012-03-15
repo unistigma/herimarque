@@ -54,6 +54,7 @@ public class InfoSubMainFragment extends Fragment {
 		//for area
 		case 1:
 			Log.d(tag, "set ctrdArrayAdapter");
+//			v = inflater.inflate(R.layout.area, container, false);
 			v = inflater.inflate(R.layout.list, container, false);
 			ListView l = (ListView) v.findViewById(R.id.list);
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,  Constants.ctrdName);

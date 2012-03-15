@@ -13,7 +13,7 @@
  * 
  */
 
-package net.julnamoo.swm.herimarque.widget;
+package net.julnamoo.swm.herimarque.view;
 
 import java.util.List;
 
@@ -98,7 +98,6 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 	 * @return true if you handled the tap, otherwise false.
 	 */
 	protected boolean onBalloonTap(int index, Item item) {
-		Log.d("ballon", "onBallonTap");
 		return false;
 	}
 	
@@ -116,13 +115,16 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 	@Override
 	//protected final boolean onTap(int index) {
 	public final boolean onTap(int index) {
-		Log.d("balloon", "onTap");
 		handler.removeCallbacks(finishBalloonInflation);
 		isInflating = true;
 		handler.postDelayed(finishBalloonInflation, BALLOON_INFLATION_TIME);
 		
 		currentFocusedIndex = index;
 		currentFocusedItem = createItem(index);
+		
+		//If the list is empty then finish
+		if(currentFocusedItem == null) return true;
+		
 		setLastFocusedIndex(index);
 		
 		onBalloonOpen(index);

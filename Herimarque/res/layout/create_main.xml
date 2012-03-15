@@ -39,7 +39,7 @@
             android:textSize="25sp"
             android:text="@string/create_desc2"/>
         
-        <net.julnamoo.swm.herimarque.widget.EditName 
+        <net.julnamoo.swm.herimarque.view.EditName 
             android:id="@+id/create_etxt_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

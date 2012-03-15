@@ -43,6 +43,8 @@ public class HeritageSQLiteHelper extends SQLiteOpenHelper{
 			Log.i(tag, "copy database file");
 			copyDataBase();
 		} 
+		
+		close();
 	}
 	
 	private boolean checkDataBase()
