@@ -14,7 +14,7 @@ public class CursorToItem {
 	{
 		Item item = new Item();
 		Field[] fs = Item.class.getDeclaredFields();
-		Log.d(tag, "cursor to item, cursor size is " + cursor.getColumnCount() + ", field size is " + fs.length);
+//		Log.d(tag, "cursor to item, cursor size is " + cursor.getColumnCount() + ", field size is " + fs.length);
 		for(int i = 0; i < cursor.getColumnCount(); ++i)
 		{
 			for(Field f : fs)
@@ -25,7 +25,6 @@ public class CursorToItem {
 					try 
 					{
 						f.set(item, cursor.getString(i));
-						Log.d(f.getName(), cursor.getString(i));
 					} catch (Exception e) 
 					{
 						Log.e(tag, "Cannot convert");
@@ -36,6 +35,7 @@ public class CursorToItem {
 			}
 		}
 		
+		Log.d(tag, item.getCrltsNm());
 		return item;
 	}
 }

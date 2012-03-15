@@ -1,7 +1,5 @@
 package net.julnamoo.swm.herimarque;
 
-import com.google.android.maps.MapView;
-
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.util.ExitExecutor;
 import net.julnamoo.swm.herimarque.util.MapContainer;
@@ -9,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager.LayoutParams;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,6 +15,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import com.google.android.maps.MapView;
 
 public class SubMainActivity extends FragmentActivity {
 
@@ -92,12 +93,11 @@ public class SubMainActivity extends FragmentActivity {
 
 	private void changeView(View v)
 	{
-		infoButt.setTextColor(Color.BLACK);
-		createButt.setTextColor(Color.BLACK);
-		showButt.setTextColor(Color.BLACK);
-		configButt.setTextColor(Color.BLACK);
-
-		((Button) v).setTextColor(Color.RED);
+		infoButt.setSelected(false);
+		createButt.setSelected(false);
+		showButt.setSelected(false);
+		configButt.setSelected(false);
+		v.setSelected(true);
 
 		for(int i = 0 ; i < fragmentContainer.getChildCount(); ++i)
 		{
@@ -138,8 +138,8 @@ public class SubMainActivity extends FragmentActivity {
 	
 	private void setMapView()
 	{
-//		View mapContainer = getLayoutInflater().inflate(R.layout.map, fragmentContainer);
-//		MapContainer.mapView = (MapView) mapContainer.findViewById(R.id.map);
 		MapContainer.mapView = new MapView(SubMainActivity.this, this.getString(R.string.apiKey));
+		MapContainer.mapView.setClickable(true);
+		MapContainer.mapView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));;
 	}
 }

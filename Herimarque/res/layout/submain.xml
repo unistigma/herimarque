@@ -6,45 +6,50 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="#483638"
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content"
+        android:background="@color/tabBackground"
+        android:orientation="horizontal"
+        android:padding="0px" >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
 
         <Button
             android:id="@+id/infoButt"
             android:layout_width="0dip"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0px"
+            android:layout_marginTop="0px"
             android:layout_weight="1"
-            android:text="@string/info_short"
-            />
-            <!-- android:background="@drawable/tab_info" --> 
+            android:background="@drawable/tab_info" />
 
         <Button
             android:id="@+id/createButt"
             android:layout_width="0dip"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0px"
+            android:layout_marginTop="0px"
             android:layout_weight="1"
-            android:text="@string/create_short"
-            />
-            <!-- android:background="@drawable/tab_create" -->
+            android:background="@drawable/tab_create" />
 
         <Button
             android:id="@+id/showButt"
             android:layout_width="0dip"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0px"
+            android:layout_marginTop="0px"
             android:layout_weight="1"
-            android:text="@string/show_short"
-             />
-            <!-- android:background="@drawable/tab_show" -->
+            android:background="@drawable/tab_show" />
 
         <Button
             android:id="@+id/configButt"
             android:layout_width="0dip"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0px"
+            android:layout_marginTop="0px"
             android:layout_weight="1"
-            android:text="@string/config_short"
-             />
-            <!-- android:background="@drawable/tab_config" -->
+            android:background="@drawable/tab_config" />
     </LinearLayout>
 
     <FrameLayout

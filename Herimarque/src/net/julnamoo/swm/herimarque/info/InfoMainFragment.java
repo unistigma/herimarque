@@ -1,6 +1,8 @@
 package net.julnamoo.swm.herimarque.info;
 
 import net.julnamoo.R;
+import net.julnamoo.swm.herimarque.adapter.MenuListAdapter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 public class InfoMainFragment extends Fragment implements OnItemClickListener {
@@ -31,9 +34,11 @@ public class InfoMainFragment extends Fragment implements OnItemClickListener {
 
 		//set menus
 		//		String[] menus = {"종목", "지역", "시대", "주변 문화유산 보기"};
-		String[] menus = {"종목", "지역", "주변 문화유산 보기"};
-		ArrayAdapter<String> infoMenuList = new ArrayAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1, menus);
+//		String[] menus = {"종목", "지역", "주변 문화유산 보기"};
+//		ArrayAdapter<String> infoMenuList = new ArrayAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1, menus);
 
+		int[] menus = {(int) R.drawable.kind_off, (int) R.drawable.area_off, (int) R.drawable.near_off};
+		MenuListAdapter infoMenuList = new MenuListAdapter(inflater.getContext(), menus);
 		//attatch adapter
 		l.setAdapter(infoMenuList);
 		l.setOnItemClickListener(this);
