@@ -2,6 +2,7 @@ package net.julnamoo.swm.herimarque.info;
 
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.adapter.KindImageAdapter;
+import net.julnamoo.swm.herimarque.adapter.StringArrayAdapter;
 import net.julnamoo.swm.herimarque.util.Constants;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,10 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ListView;
 
 public class InfoSubMainFragment extends Fragment {
@@ -45,20 +45,24 @@ public class InfoSubMainFragment extends Fragment {
 		switch (menu) {
 		//for kind
 		case 0:
-			View v = inflater.inflate(R.layout.grid, container, false);
-			Log.d(tag, "set kindImageAdapter");
-			GridView gv = (GridView) v.findViewById(R.id.category_grid);
-			gv.setAdapter(new KindImageAdapter(inflater.getContext()));
-			gv.setOnItemClickListener(kindItemClickListener);
-			return gv;
+//			View v = inflater.inflate(R.layout.grid, container, false);
+//			Log.d(tag, "set kindImageAdapter");
+//			GridView gv = (GridView) v.findViewById(R.id.category_grid);
+//			gv.setAdapter(new KindImageAdapter(inflater.getContext()));
+//			gv.setOnItemClickListener(kindItemClickListener);
+//			return gv;
+			View v = inflater.inflate(R.layout.list, container, false);
+			ListView list = (ListView) v.findViewById(R.id.list);
+			list.setAdapter(new KindImageAdapter(inflater.getContext()));
+			list.setOnItemClickListener(kindItemClickListener);
+			return v;
 		//for area
 		case 1:
 			Log.d(tag, "set ctrdArrayAdapter");
-//			v = inflater.inflate(R.layout.area, container, false);
 			v = inflater.inflate(R.layout.list, container, false);
 			ListView l = (ListView) v.findViewById(R.id.list);
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,  Constants.ctrdName);
-			l.setAdapter(adapter);
+//			ArrayAdapter<String> adapter = new ArrayAdapter<String>(inflater.getContext(), R.layout.list_item_1,  Constants.ctrdName);
+			l.setAdapter(new StringArrayAdapter(inflater.getContext(), R.layout.list_item_1, Constants.ctrdName));
 			l.setOnItemClickListener(ctrdClickListener);
 			return v;
 		}

@@ -10,14 +10,18 @@ public class ImageActivity extends Activity {
 
 	HeritageImageView imageView;
 
-	public ImageActivity(HeritageImageView imageView) 
-	{
-		this.imageView = imageView;
-	}
+//	public ImageActivity(HeritageImageView imageView) 
+//	{
+//		this.imageView = imageView;
+//	}
 
+	public ImageActivity()	{}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
+		imageView = (HeritageImageView) savedInstanceState.getSerializable("imageView");
+		
 		super.onCreate(savedInstanceState);
 		ViewGroup vg = (ViewGroup) imageView.getParent();
 		if( vg != null)

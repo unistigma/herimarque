@@ -2,6 +2,7 @@ package net.julnamoo.swm.herimarque;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,6 +28,7 @@ import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
@@ -36,7 +38,7 @@ public class DetailFragment extends Fragment {
 	private String tag = DetailFragment.class.getSimpleName();
 
 	private Item item;
-	private boolean isFinish;
+	private boolean isSet;
 
 	//for async task
 	private HeritageImageView image;
@@ -200,30 +202,31 @@ public class DetailFragment extends Fragment {
 		public void onClick(View v) 
 		{
 			Log.d(tag, "image clicked");
-			startActivity(new Intent(getActivity().getApplicationContext(), ImageActivity.class));
-//			Fragment f = new ImageFragment(image);
-//			FragmentTransaction ft = getFragmentManager().beginTransaction();
-//			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//			ft.replace(R.id.info_main, f);
-//			ft.addToBackStack("wholeImage");
-//			ft.commit();
+			//sol1 - fail
+//			Intent intent = new Intent(getActivity().getApplicationContext(), ImageActivity.class);
+//			intent.putExtra("imageView", (Serializable) v);
+//			startActivity(intent);
+			
+			//cannot do it.... because of back pressed
+//			ViewGroup vg = (ViewGroup) image.getParent();
+//			if( vg != null)
+//			{
+//				vg.removeView(image);
+//			}
+//			FrameLayout frameLayout = new FrameLayout(getActivity().getApplicationContext());
+//			frameLayout.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT, android.view.ViewGroup.LayoutParams.FILL_PARENT));
+//			frameLayout.addView(image);
+//			getActivity().setContentView(frameLayout);
+			if(getFragmentManager().findFragmentByTag("wholeImage") != null) return;
+			
+			// not successful but not bad
+			Fragment f = new ImageFragment(image);
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			ft.replace(R.id.info_main, f);
+			ft.addToBackStack("wholeImage");
+			ft.commit();
+			
 		}
 	};
-
-	private class ImageViewFragment extends Fragment
-	{
-		@Override
-		public void onCreate(Bundle arg0) 
-		{
-			super.onCreate(arg0);
-		}
-
-		public View onCreateView(android.view.LayoutInflater arg0, android.view.ViewGroup arg1, Bundle arg2) {
-			HeritageImageView wholeImage = new HeritageImageView(arg0.getContext());
-			wholeImage.setImageBitmap(image.getDrawingCache());
-			return wholeImage;
-		}
-	}
-	
-	
 }

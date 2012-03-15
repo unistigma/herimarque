@@ -4,12 +4,14 @@ import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.model.Kind;
 import android.content.Context;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class KindImageAdapter extends BaseAdapter {
@@ -46,26 +48,36 @@ public class KindImageAdapter extends BaseAdapter {
 	@Override
 	public View getView(int arg0, View arg1, ViewGroup arg2) 
 	{
-		LinearLayout view = new LinearLayout(mContext);
-		ImageView image= new ImageView(mContext);
-		TextView tv = new TextView(mContext);
-
-		view.setOrientation(LinearLayout.VERTICAL);
-		GridView.LayoutParams params = new GridView.LayoutParams(200, 240);
-		view.setLayoutParams(params);
-
-		image.setLayoutParams(new LinearLayout.LayoutParams(200,200));
-		image.setScaleType(ImageView.ScaleType.FIT_XY);
-		image.setPadding(5, 5, 5, 5);
-		image.setContentDescription(kindImgsCD[arg0]);
-		image.setId(arg0);
-		image.setImageResource(kindImgs[arg0]);
-
+//		LinearLayout view = new LinearLayout(mContext);
+//		ImageView image= new ImageView(mContext);
+//		TextView tv = new TextView(mContext);
+//
+//		view.setOrientation(LinearLayout.VERTICAL);
+//		GridView.LayoutParams params = new GridView.LayoutParams(200, 240);
+//		view.setLayoutParams(params);
+//
+//		image.setLayoutParams(new LinearLayout.LayoutParams(200,200));
+//		image.setScaleType(ImageView.ScaleType.FIT_XY);
+//		image.setPadding(5, 5, 5, 5);
+//		image.setContentDescription(kindImgsCD[arg0]);
+//		image.setId(arg0);
+//		image.setImageResource(kindImgs[arg0]);
+//
+//		tv.setText(kindImgsCD[arg0]);
+//		tv.setGravity(Gravity.CENTER);
+//
+//		view.addView(image);
+//		view.addView(tv);
+		
+		RelativeLayout view = (RelativeLayout) LayoutInflater.from(mContext).inflate(R.layout.list_image_item_1, arg2, false);
+		ImageView imageView = (ImageView) view.findViewById(R.id.image_item);
+		imageView.setContentDescription(kindImgsCD[arg0]);
+		imageView.setId(arg0);
+		imageView.setImageResource(kindImgs[arg0]);
+		
+		TextView tv = (TextView) view.findViewById(R.id.text_item);
 		tv.setText(kindImgsCD[arg0]);
-		tv.setGravity(Gravity.CENTER);
-
-		view.addView(image);
-		view.addView(tv);
+		
 		return view;
 	}
 

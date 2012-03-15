@@ -33,9 +33,6 @@ public class HerimarqueActivity extends Activity {
 
 		findViewById(R.id.info).setOnClickListener(selector);
 		findViewById(R.id.create).setOnClickListener(selector);
-
-		//setup db
-//		setupDB();
 	}
 
 
