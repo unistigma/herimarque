@@ -77,6 +77,8 @@ public class KindImageAdapter extends BaseAdapter {
 		
 		TextView tv = (TextView) view.findViewById(R.id.text_item);
 		tv.setText(kindImgsCD[arg0]);
+		tv.setGravity(Gravity.CENTER_VERTICAL);
+		tv.setPadding(90, 0, 0, 0);
 		
 		return view;
 	}

@@ -30,6 +30,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.Toast;
 
@@ -41,33 +42,30 @@ import com.google.android.maps.OverlayItem;
 
 public class NearFragment extends Fragment implements OnTouchListener{
 
-	private String tag = NearFragment.class.getSimpleName();
+	protected String tag = NearFragment.class.getSimpleName();
 
-	private Context mContext;
-	private MapView mapView;
-	private MapController mapController;
-	private HeritageItemizedOverlay heritageOverlay;
-	private LocationItemizedOverlay locationOverlay;
+	protected Context mContext;
+	protected MapView mapView;
+	protected MapController mapController;
+	protected HeritageItemizedOverlay heritageOverlay;
+	protected LocationItemizedOverlay locationOverlay;
 
-	private long minTime;
-	private float minDistance;
-	private LocationManager locationManager;
+	protected long minTime;
+	protected float minDistance;
+	protected LocationManager locationManager;
 
-	private List<Overlay> mapOverlay;
+	protected List<Overlay> mapOverlay;
 
 	//for detecting event
-	private boolean isCalled;
-	private int currZoom;
-	private GeoPoint currStart;
-	private Handler mHandler;
+	protected int currZoom;
+	protected GeoPoint currStart;
+	protected ImageView progress;
 
 	public NearFragment(Context mContext, long minTime, float minDistance) 
 	{
 		this.mContext = mContext;
 		this.minTime = minTime;
 		this.minDistance = minDistance;
-		mHandler = new Handler();
-		isCalled = false;
 	}
 
 	@Override
@@ -98,6 +96,12 @@ public class NearFragment extends Fragment implements OnTouchListener{
 		{
 			vg.removeView(mapView);
 		}
+		//set progress
+		progress = new ImageView(getActivity().getApplicationContext());
+		progress.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.progress));
+		progress.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL));
+		progress.setVisibility(View.INVISIBLE);
+		mapView.addView(progress);
 		//get heritages
 		currStart = mapView.getProjection().fromPixels(0, 0);
 		new LoadMapItems().execute();
@@ -131,7 +135,7 @@ public class NearFragment extends Fragment implements OnTouchListener{
 		setMyLocationOverlay(point);
 		//expect heritageOverlay is updated
 		mapOverlay.add(heritageOverlay);
-		
+
 		//add the Button for moving to the current location
 		Button getMyLoc = new Button(mContext);
 		getMyLoc.setBackgroundDrawable(getResources().getDrawable(R.drawable.myloc));
@@ -158,10 +162,10 @@ public class NearFragment extends Fragment implements OnTouchListener{
 				mapController.animateTo(p);
 			}
 		});
-		
+
 		mapView.addView(getMyLoc);
+
 		mapView.invalidate();
-		
 		return mapView;
 	}
 
@@ -296,6 +300,12 @@ public class NearFragment extends Fragment implements OnTouchListener{
 	class LoadMapItems extends AsyncTask<Void, Void, Void>
 	{
 		@Override
+		protected void onPreExecute() 
+		{
+			progress.setVisibility(View.VISIBLE);
+		}
+
+		@Override
 		protected Void doInBackground(
 				Void... params) {
 
@@ -328,10 +338,10 @@ public class NearFragment extends Fragment implements OnTouchListener{
 				double latitude = Double.valueOf(item.getXCnts()) * 1E6;
 				double longitude = Double.valueOf(item.getYCnts()) * 1E6;
 				GeoPoint point = new GeoPoint(Double.valueOf(longitude).intValue(), Double.valueOf(latitude).intValue());
-				
+
 				//check existence of the overla at the point
 				if(isExist(point)) continue;
-				
+
 				Log.d(tag, Double.valueOf(latitude).intValue()+ " ," +Double.valueOf(longitude).intValue());
 				String title = item.getCrltsNm();
 				String subTitle = item.getItemNm() +" " + item.getCrltsNoNm() + "호";
@@ -341,7 +351,7 @@ public class NearFragment extends Fragment implements OnTouchListener{
 				{
 					heritageOverlay.addOverlay(overlay);
 				} catch (Exception e) {		}
-				
+
 			}
 			return null;
 		}
@@ -359,8 +369,10 @@ public class NearFragment extends Fragment implements OnTouchListener{
 			{
 				mapOverlay.add(heritageOverlay);
 			}
+
+			progress.setVisibility(View.INVISIBLE);
 		}
-		
+
 		private boolean isExist(GeoPoint check)
 		{
 			for(int i = 0; i < heritageOverlay.size(); ++i)
@@ -373,65 +385,6 @@ public class NearFragment extends Fragment implements OnTouchListener{
 		}
 
 	}
-//	class LoadMapItems implements Runnable
-//	{
-//		@Override
-//		public void run() 
-//		{
-//			heritageOverlay.clear();
-//
-//			GeoPoint topleft = mapView.getProjection().fromPixels(0, 0);
-//			GeoPoint bottomright = mapView.getProjection().fromPixels(mapView.getWidth(), mapView.getHeight());
-//
-//			double topRightLat = topleft.getLatitudeE6()/1E6;
-//			double bottomLeftLat = bottomright.getLatitudeE6()/1E6;
-//			double topRightLong = topleft.getLongitudeE6()/1E6;
-//			double bottomLeftLong = bottomright.getLongitudeE6()/1E6;
-//
-//			HeritageSQLiteHelper sqlHelper = new HeritageSQLiteHelper(mContext);
-//			SQLiteDatabase db = sqlHelper.getReadableDatabase();
-//
-//			//build query
-//			StringBuilder query = new StringBuilder("SELECT * FROM ");
-//			query.append(Constants.TABLE_NAME);
-//			query.append(" WHERE XCnts > ").append(topRightLong).append(" AND XCnts < ").append(bottomLeftLong);
-//			query.append(" AND YCnts > ").append(bottomLeftLat).append(" AND YCnts < ").append(topRightLat);
-//			query.append(" LIMIT 200;");
-//			//get data
-//			Cursor cursor = db.rawQuery(query.toString(), null);
-//			Log.d(tag, query.toString() + "query, total size : " + cursor.getCount());
-//			db.close();
-//			sqlHelper.close();
-//			while(cursor.moveToNext())
-//			{
-//				Item item = CursorToItem.cursor2Item(cursor);
-//				double latitude = Double.valueOf(item.getXCnts()) * 1E6;
-//				double longitude = Double.valueOf(item.getYCnts()) * 1E6;
-//				GeoPoint point = new GeoPoint(Double.valueOf(longitude).intValue(), Double.valueOf(latitude).intValue());
-//				Log.d(tag, Double.valueOf(latitude).intValue()+ " ," +Double.valueOf(longitude).intValue());
-//				String title = item.getCrltsNm();
-//				String subTitle = item.getItemNm() +" " + item.getCrltsNoNm() + "호";
-//
-//				OverlayItem overlay = new OverlayItem(point, title, subTitle);
-//				try 
-//				{
-//					heritageOverlay.addOverlay(overlay);
-//				} catch (Exception e) {		}
-//			}	
-//			
-////			mapOverlay.add(heritageOverlay);
-//			if(mapOverlay.size() == 1)
-//			{
-//				mapOverlay.add(heritageOverlay);
-//			}else if(mapOverlay.size() == 2)
-//			{
-//				mapOverlay.set(1, heritageOverlay);
-//			}else
-//			{
-//				mapOverlay.add(heritageOverlay);
-//			}
-//		}
-//	}
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) 
@@ -442,7 +395,7 @@ public class NearFragment extends Fragment implements OnTouchListener{
 			if((mapView.getZoomLevel() != currZoom) || (edge != currStart))
 			{
 				new LoadMapItems().execute();
-				
+
 				if(mapOverlay.size() == 1)
 				{
 					mapOverlay.add(heritageOverlay);
@@ -453,7 +406,7 @@ public class NearFragment extends Fragment implements OnTouchListener{
 				{
 					mapOverlay.add(heritageOverlay);
 				}
-//				getHeritages();
+				//				getHeritages();
 				mapView.invalidate();
 				return false;
 			}
@@ -461,13 +414,13 @@ public class NearFragment extends Fragment implements OnTouchListener{
 		return false;
 	}
 
-	private GeoPoint getCenter(GeoPoint p1, GeoPoint p2)
+	public GeoPoint getCenter(GeoPoint p1, GeoPoint p2)
 	{
 		GeoPoint center = new GeoPoint((p1.getLatitudeE6() + p2.getLatitudeE6())/2, (p1.getLongitudeE6() + p2.getLongitudeE6())/2);
 		return center;
 	}
-	
-	private GeoPoint convertToGeoPoint(Location location)
+
+	public GeoPoint convertToGeoPoint(Location location)
 	{
 		GeoPoint point = new GeoPoint((int) (location.getLatitude()*1E6), (int) (location.getLongitude()*1E6));
 		return point;

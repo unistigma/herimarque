@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.GregorianCalendar;
 
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.model.Item;
@@ -30,6 +31,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
@@ -42,6 +45,7 @@ public class DetailFragment extends Fragment {
 
 	//for async task
 	private HeritageImageView image;
+	private ImageView progress;
 
 	public DetailFragment(Item item)
 	{
@@ -64,7 +68,25 @@ public class DetailFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) 
 	{
-		View v = inflater.inflate(R.layout.info_detail, container, false);
+		View v = (ScrollView) inflater.inflate(R.layout.info_detail, container, false);
+		
+		//set progress
+		LinearLayout layout = (LinearLayout) v.findViewById(R.id.info_detail);
+		progress = new ImageView(getActivity().getApplicationContext());
+		progress.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.progress));
+		progress.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL));
+		progress.setVisibility(View.INVISIBLE);
+		layout.addView(progress);
+		
+		//set Image
+		image = (HeritageImageView) v.findViewById(R.id.info_detail_img);
+		//// get the imageUrl
+		String imgUrl = item.getImageUrl();
+		if(imgUrl == null || imgUrl.length() == 0 || imgUrl.contains("default"))
+		{
+			imgUrl = item.getListImageUrl();
+		}
+		new GetImage(imgUrl).execute();
 
 		TextView tv;
 		String value;
@@ -130,17 +152,8 @@ public class DetailFragment extends Fragment {
 			tv.setText(value);
 		}
 
-		//set Image
-		image = (HeritageImageView) v.findViewById(R.id.info_detail_img);
-		//// get the imageUrl
-		String imgUrl = item.getImageUrl();
-		if(imgUrl == null || imgUrl.length() == 0 || imgUrl.contains("default"))
-		{
-			imgUrl = item.getListImageUrl();
-		}
-		new GetImage(imgUrl).execute();
 		image.setOnClickListener(imgeViewClickListener);
-		
+
 		return v;
 	}	
 
@@ -158,9 +171,16 @@ public class DetailFragment extends Fragment {
 		Bitmap bmImg;
 
 		int width;
+
 		public GetImage(String url) 
 		{
 			this.url = url;
+		}
+
+		@Override
+		protected void onPreExecute() 
+		{
+			progress.setVisibility(View.VISIBLE);
 		}
 
 		@Override
@@ -176,7 +196,6 @@ public class DetailFragment extends Fragment {
 				bmImg = BitmapFactory.decodeStream(is);
 				width = image.getWidth();
 				Log.d(tag, "before"+item.getCrltsNm()+" >>bitmap width :" + bmImg.getWidth() + ", imageview width : " + width);
-				
 			} catch (MalformedURLException e) 
 			{
 				e.printStackTrace();
@@ -187,12 +206,20 @@ public class DetailFragment extends Fragment {
 			return null;
 		}
 
+		@Override
+		protected void onProgressUpdate(Void... values) 
+		{
+			// TODO Auto-generated method stub
+			super.onProgressUpdate(values);
+		}
+
 		protected void onPostExecute(Void result) 
 		{
 			int height = width * bmImg.getHeight() / bmImg.getWidth();
 			Log.d(url, "get new width, height : " + width + "," + height);
 			bmImg = Bitmap.createScaledBitmap(bmImg, width, height, true);
 			image.setImageBitmap(bmImg);
+			progress.setVisibility(View.INVISIBLE);
 		}
 	}
 
@@ -203,22 +230,21 @@ public class DetailFragment extends Fragment {
 		{
 			Log.d(tag, "image clicked");
 			//sol1 - fail
-//			Intent intent = new Intent(getActivity().getApplicationContext(), ImageActivity.class);
-//			intent.putExtra("imageView", (Serializable) v);
-//			startActivity(intent);
-			
+			//			Intent intent = new Intent(getActivity().getApplicationContext(), ImageActivity.class);
+			//			intent.putExtra("imageView", (Serializable) v);
+			//			startActivity(intent);
+
 			//cannot do it.... because of back pressed
-//			ViewGroup vg = (ViewGroup) image.getParent();
-//			if( vg != null)
-//			{
-//				vg.removeView(image);
-//			}
-//			FrameLayout frameLayout = new FrameLayout(getActivity().getApplicationContext());
-//			frameLayout.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT, android.view.ViewGroup.LayoutParams.FILL_PARENT));
-//			frameLayout.addView(image);
-//			getActivity().setContentView(frameLayout);
-			if(getFragmentManager().findFragmentByTag("wholeImage") != null) return;
-			
+			//			ViewGroup vg = (ViewGroup) image.getParent();
+			//			if( vg != null)
+			//			{
+			//				vg.removeView(image);
+			//			}
+			//			FrameLayout frameLayout = new FrameLayout(getActivity().getApplicationContext());
+			//			frameLayout.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT, android.view.ViewGroup.LayoutParams.FILL_PARENT));
+			//			frameLayout.addView(image);
+			//			getActivity().setContentView(frameLayout);
+
 			// not successful but not bad
 			Fragment f = new ImageFragment(image);
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -226,7 +252,7 @@ public class DetailFragment extends Fragment {
 			ft.replace(R.id.info_main, f);
 			ft.addToBackStack("wholeImage");
 			ft.commit();
-			
+
 		}
 	};
 }

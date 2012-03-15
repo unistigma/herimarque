@@ -61,7 +61,6 @@ public class InfoSubMainFragment extends Fragment {
 			Log.d(tag, "set ctrdArrayAdapter");
 			v = inflater.inflate(R.layout.list, container, false);
 			ListView l = (ListView) v.findViewById(R.id.list);
-//			ArrayAdapter<String> adapter = new ArrayAdapter<String>(inflater.getContext(), R.layout.list_item_1,  Constants.ctrdName);
 			l.setAdapter(new StringArrayAdapter(inflater.getContext(), R.layout.list_item_1, Constants.ctrdName));
 			l.setOnItemClickListener(ctrdClickListener);
 			return v;

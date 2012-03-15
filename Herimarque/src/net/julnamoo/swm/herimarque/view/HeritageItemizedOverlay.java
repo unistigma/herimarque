@@ -113,4 +113,10 @@ public class HeritageItemizedOverlay extends BalloonItemizedOverlay {
 		setLastFocusedIndex(-1);
 		this.overlays.clear();
 	}
+	
+	@Override
+	protected int getIndexToDraw(int arg0) {
+		if(arg0 > overlays.size()) return 0;
+		else return super.getIndexToDraw(arg0);
+	}
 }

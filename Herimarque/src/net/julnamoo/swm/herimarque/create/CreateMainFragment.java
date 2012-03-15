@@ -1,6 +1,8 @@
 package net.julnamoo.swm.herimarque.create;
 
 import net.julnamoo.R;
+import net.julnamoo.swm.herimarque.info.NearFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
@@ -11,7 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
 
-public class CreateMainFragment extends Fragment {
+public class CreateMainFragment extends NearFragment {
+
+	public CreateMainFragment(Context mContext, long minTime, float minDistance) {
+		super(mContext, minTime, minDistance);
+	}
 
 	private String tag = CreateMainFragment.class.getName();
 
