@@ -42,7 +42,13 @@
         <activity
             android:name=".swm.herimarque.SubMainActivity"
             android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <meta-data android:name=".swm.herimarque.searchable"
+                android:resource="@xml/searchable"/>
         </activity>
+        
         <activity
             android:name=".swm.herimarque.ImageActivity"
             android:screenOrientation="portrait" >

@@ -14,7 +14,7 @@
         <Button
             android:id="@+id/infoButt"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0px"
             android:layout_weight="1"
             android:background="@drawable/tab_info" />
@@ -22,7 +22,7 @@
         <Button
             android:id="@+id/createButt"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0px"
             android:layout_weight="1"
             android:background="@drawable/tab_create" />
@@ -30,7 +30,7 @@
         <Button
             android:id="@+id/showButt"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0px"
             android:layout_weight="1"
             android:background="@drawable/tab_show" />
@@ -38,7 +38,7 @@
         <Button
             android:id="@+id/configButt"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0px"
             android:layout_weight="1"
             android:background="@drawable/tab_config" />

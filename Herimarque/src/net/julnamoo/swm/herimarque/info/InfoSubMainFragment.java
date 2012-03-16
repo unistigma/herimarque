@@ -55,6 +55,7 @@ public class InfoSubMainFragment extends Fragment {
 			ListView list = (ListView) v.findViewById(R.id.list);
 			list.setAdapter(new KindImageAdapter(inflater.getContext()));
 			list.setOnItemClickListener(kindItemClickListener);
+			list.setTextFilterEnabled(true);
 			return v;
 		//for area
 		case 1:
@@ -63,6 +64,7 @@ public class InfoSubMainFragment extends Fragment {
 			ListView l = (ListView) v.findViewById(R.id.list);
 			l.setAdapter(new StringArrayAdapter(inflater.getContext(), R.layout.list_item_1, Constants.ctrdName));
 			l.setOnItemClickListener(ctrdClickListener);
+			l.setTextFilterEnabled(true);
 			return v;
 		}
 		return super.onCreateView(inflater, container, savedInstanceState);

@@ -13,11 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
 
-public class CreateMainFragment extends NearFragment {
-
-	public CreateMainFragment(Context mContext, long minTime, float minDistance) {
-		super(mContext, minTime, minDistance);
-	}
+public class CreateMainFragment extends Fragment {
 
 	private String tag = CreateMainFragment.class.getName();
 

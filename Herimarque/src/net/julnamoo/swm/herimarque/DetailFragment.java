@@ -215,6 +215,8 @@ public class DetailFragment extends Fragment {
 
 		protected void onPostExecute(Void result) 
 		{
+			if(bmImg == null) return; //then set another image for empty
+			
 			int height = width * bmImg.getHeight() / bmImg.getWidth();
 			Log.d(url, "get new width, height : " + width + "," + height);
 			bmImg = Bitmap.createScaledBitmap(bmImg, width, height, true);

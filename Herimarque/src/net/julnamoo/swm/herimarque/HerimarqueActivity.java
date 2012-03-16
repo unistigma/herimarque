@@ -54,7 +54,6 @@ public class HerimarqueActivity extends Activity {
 			}
 			finishFromChild(activity);
 			startActivity(intent);
-
 		}
 	};
 

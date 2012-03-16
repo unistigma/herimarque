@@ -113,6 +113,7 @@ public class SubMainActivity extends FragmentActivity {
 		case R.id.infoButt:
 			Log.d(tag, "info pushed");
 			findViewById(R.id.info_main).setVisibility(View.VISIBLE);
+			onSearchRequested();
 			break;
 		case R.id.createButt:
 			Log.d(tag, "create pushed");
