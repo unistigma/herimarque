@@ -84,7 +84,6 @@ public class KindFragment extends Fragment {
 			tv.setText("해당 문화유산이 없습니다!");
 			tv.setTextSize((float) 30);
 			tv.setGravity(Gravity.CENTER | Gravity.TOP);
-//			tv.setTextColor(android.R.color.black);
 			
 			view.addView(tv);
 			return view;

@@ -7,16 +7,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import net.julnamoo.R;
+import net.julnamoo.swm.herimarque.info.LoadingFragment;
 import net.julnamoo.swm.herimarque.model.Item;
 import net.julnamoo.swm.herimarque.view.HeritageImageView;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -244,17 +242,4 @@ public class DetailFragment extends Fragment {
 		}
 	};
 	
-	class LoadingFragment extends DialogFragment
-	{
-		public LoadingFragment() {	}
-
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-            return new AlertDialog.Builder(getActivity())
-                    .setIcon(R.drawable.progress)
-                    .setTitle("Loading...")
-                    .create();
-        }
-	}
 }

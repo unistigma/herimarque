@@ -6,6 +6,7 @@
         android:background="@drawable/basic" >
         
     <net.julnamoo.swm.herimarque.view.SearchBar 
+        android:id="@+id/searchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     

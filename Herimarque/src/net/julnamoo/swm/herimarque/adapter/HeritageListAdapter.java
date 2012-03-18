@@ -33,8 +33,10 @@ public class HeritageListAdapter extends CursorAdapter {
 		target_name.setText(name);
 		
 		TextView target_code = (TextView) view.findViewById(R.id.text2);		
-		String codeNum = cursor.getString(getCursor().getColumnIndex("crltsNoNm")); 
+		String codeNum = cursor.getString(getCursor().getColumnIndex("crltsNoNm"));
+		String itemNm = cursor.getString(getCursor().getColumnIndex("itemNm"));
 		StringBuilder sb = new StringBuilder();
+		sb.append(itemNm).append(" ");
 		sb.append(codeNum).append("호");
 		String code = sb.toString();
 		target_code.setText(code);
@@ -47,4 +49,6 @@ public class HeritageListAdapter extends CursorAdapter {
 		View view = inflater.inflate(R.layout.list_item_2, arg2, false);
 		return view;
 	}
+	
+	
 }

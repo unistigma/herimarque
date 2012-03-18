@@ -100,8 +100,11 @@ public class HeritageDataSource {
 		return result;
 	}
 
-//	public List<Item> search(String query)
-//	{
-//		
-//	}
+	public Cursor search(String query)
+	{
+		StringBuilder queryBuilder = new StringBuilder("SELECT ");
+		Cursor cursor = null;
+		
+		return cursor;
+	}
 }

@@ -334,17 +334,19 @@ public class NearFragment extends Fragment implements OnTouchListener{
 			heritageOverlay.clear();
 			while(cursor.moveToNext())
 			{
-				Item item = CursorToItem.cursor2Item(cursor);
-				double latitude = Double.valueOf(item.getXCnts()) * 1E6;
-				double longitude = Double.valueOf(item.getYCnts()) * 1E6;
+//				Item item = CursorToItem.cursor2Item(cursor);
+//				double latitude = Double.valueOf(item.getXCnts()) * 1E6;
+//				double longitude = Double.valueOf(item.getYCnts()) * 1E6;
+				double latitude = Double.valueOf(cursor.getString(cursor.getColumnIndex("XCnts"))) * 1E6;
+				double longitude = Double.valueOf(cursor.getString(cursor.getColumnIndex("YCnts"))) * 1E6;
 				GeoPoint point = new GeoPoint(Double.valueOf(longitude).intValue(), Double.valueOf(latitude).intValue());
 
 				//check existence of the overla at the point
 				if(isExist(point)) continue;
 
 				Log.d(tag, Double.valueOf(latitude).intValue()+ " ," +Double.valueOf(longitude).intValue());
-				String title = item.getCrltsNm();
-				String subTitle = item.getItemNm() +" " + item.getCrltsNoNm() + "호";
+				String title = cursor.getString(cursor.getColumnIndex("crltsNm"));
+				String subTitle = cursor.getString(cursor.getColumnIndex("itemNm")) +" " + cursor.getString(cursor.getColumnIndex("crltsNoNm")) + "호";
 
 				OverlayItem overlay = new OverlayItem(point, title, subTitle);
 				try 
@@ -406,7 +408,6 @@ public class NearFragment extends Fragment implements OnTouchListener{
 				{
 					mapOverlay.add(heritageOverlay);
 				}
-				//				getHeritages();
 				mapView.invalidate();
 				return false;
 			}

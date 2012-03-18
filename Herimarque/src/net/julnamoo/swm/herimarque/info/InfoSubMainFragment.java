@@ -3,7 +3,9 @@ package net.julnamoo.swm.herimarque.info;
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.adapter.KindImageAdapter;
 import net.julnamoo.swm.herimarque.adapter.StringArrayAdapter;
+import net.julnamoo.swm.herimarque.info.listener.SearchKeyListener;
 import net.julnamoo.swm.herimarque.util.Constants;
+import net.julnamoo.swm.herimarque.view.SearchBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -56,6 +58,10 @@ public class InfoSubMainFragment extends Fragment {
 			list.setAdapter(new KindImageAdapter(inflater.getContext()));
 			list.setOnItemClickListener(kindItemClickListener);
 			list.setTextFilterEnabled(true);
+			//set searchbar listener
+			SearchBar searchBar = (SearchBar) v.findViewById(R.id.searchbar);
+			searchBar.getQueryStringView().setOnKeyListener(new SearchKeyListener(searchBar, getFragmentManager(), inflater.getContext()));
+			
 			return v;
 		//for area
 		case 1:
@@ -65,6 +71,9 @@ public class InfoSubMainFragment extends Fragment {
 			l.setAdapter(new StringArrayAdapter(inflater.getContext(), R.layout.list_item_1, Constants.ctrdName));
 			l.setOnItemClickListener(ctrdClickListener);
 			l.setTextFilterEnabled(true);
+			//set searchbar listener
+			searchBar = (SearchBar) v.findViewById(R.id.searchbar);
+			searchBar.getQueryStringView().setOnKeyListener(new SearchKeyListener(searchBar, getFragmentManager(), inflater.getContext()));
 			return v;
 		}
 		return super.onCreateView(inflater, container, savedInstanceState);

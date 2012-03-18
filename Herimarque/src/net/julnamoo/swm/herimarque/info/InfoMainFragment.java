@@ -1,6 +1,7 @@
 package net.julnamoo.swm.herimarque.info;
 
 import net.julnamoo.R;
+import net.julnamoo.swm.herimarque.info.listener.SearchKeyListener;
 import net.julnamoo.swm.herimarque.view.SearchBar;
 import android.content.Context;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ public class InfoMainFragment extends Fragment {
 		v.findViewById(R.id.near).setOnClickListener(tabClickListener);
 		
 		searchBar = (SearchBar) v.findViewById(R.id.search_infomain);
+		SearchKeyListener onKeyListener = new SearchKeyListener(searchBar, getFragmentManager(), inflater.getContext());
 		searchBar.getQueryStringView().setOnKeyListener(onKeyListener);
 		
 		v.setOnClickListener(new OnClickListener() {
@@ -96,28 +98,6 @@ public class InfoMainFragment extends Fragment {
 			default:
 				break;
 			}
-		}
-	};
-	
-	OnKeyListener onKeyListener = new OnKeyListener() {
-		
-		@Override
-		public boolean onKey(View v, int keyCode, KeyEvent event) 
-		{
-			if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
-			{
-				String query = searchBar.getQueryString();
-				//set result list fragment
-				FragmentTransaction ft = getFragmentManager().beginTransaction();
-				Fragment f = new SearchResultFragment(getActivity().getApplicationContext(), query);
-				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-				ft.replace(R.id.info_main, f, "info");
-				ft.addToBackStack("info");
-				ft.commit();
-				Log.d(tag, "start search : " + query);
-				return true;
-			}
-			return false;
 		}
 	};
 }
