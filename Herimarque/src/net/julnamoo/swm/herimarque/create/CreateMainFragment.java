@@ -27,18 +27,6 @@ public class CreateMainFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v =inflater.inflate(R.layout.create_main, container, false);
-		v.setOnKeyListener(new OnKeyListener() {
-
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if( keyCode == KeyEvent.KEYCODE_BACK )
-				{
-					Log.d(tag, "back : " + event.getRepeatCount());
-					return true;
-				}
-				return v.onKeyDown(keyCode, event);
-			}
-		});
 		return v;
 	}
 	

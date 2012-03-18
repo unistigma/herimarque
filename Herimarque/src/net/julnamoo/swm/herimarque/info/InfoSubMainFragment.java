@@ -124,8 +124,8 @@ public class InfoSubMainFragment extends Fragment {
 			Fragment f = new KindFragment(selected, getActivity().getApplicationContext());
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			ft.replace(R.id.info_main, f, "infoSubList");
-			ft.addToBackStack("infoSubList");
+			ft.replace(R.id.info_main, f, "info");
+			ft.addToBackStack("info");
 			ft.commit();
 		};
 	};
@@ -138,8 +138,8 @@ public class InfoSubMainFragment extends Fragment {
 			Fragment f = new AreaFragment(selected, getActivity().getApplicationContext());
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			ft.replace(R.id.info_main, f, "infoSubList");
-			ft.addToBackStack("infoSubList");
+			ft.replace(R.id.info_main, f, "info");
+			ft.addToBackStack("info");
 			ft.commit();
 		}
 	};
@@ -176,6 +176,8 @@ public class InfoSubMainFragment extends Fragment {
 			if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP)
 			{
 				getFragmentManager().popBackStackImmediate();
+				Log.d(tag, "from fragment");
+				return true;
 			}
 			return false;
 		}

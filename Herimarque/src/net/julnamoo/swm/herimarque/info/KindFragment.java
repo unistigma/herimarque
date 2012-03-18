@@ -15,9 +15,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -69,10 +71,10 @@ public class KindFragment extends Fragment {
 		//sql query
 		String sql = query.toString();
 		cursor = db.rawQuery(sql, null);
-		
+
 		Log.d(tag, "sql : " + sql);
 		Log.d(sql, "total count : " +cursor.getCount());
-		
+
 		getActivity().startManagingCursor(cursor);
 		db.close();
 
@@ -81,13 +83,15 @@ public class KindFragment extends Fragment {
 		{
 			LinearLayout view = new LinearLayout(inflater.getContext());
 			view.setBackgroundColor(net.julnamoo.R.color.basic);
-			
+
 			TextView tv = new TextView(mContext);
 			tv.setText("해당 문화유산이 없습니다!");
 			tv.setTextSize((float) 30);
 			tv.setGravity(Gravity.CENTER | Gravity.TOP);
-			
+
 			view.addView(tv);
+			//for manage fragment lifecycle
+			view.setOnKeyListener(onBackPressed);
 			return view;
 		}else
 		{
@@ -96,11 +100,12 @@ public class KindFragment extends Fragment {
 			view.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 			view.setAdapter(new HeritageListAdapter(mContext, cursor));
 			view.setOnItemClickListener(itemClickListener);
-			
+			//for manage fragment lifecycle
+			view.setOnKeyListener(onBackPressed);
 			return view;
 		}
 	}
-	
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) 
 	{
@@ -118,9 +123,24 @@ public class KindFragment extends Fragment {
 			DetailFragment f = new DetailFragment(item, mContext);
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	    	ft.replace(R.id.info_main, f, "infoDetail");
-	    	ft.addToBackStack("infoDetail");
-	    	ft.commit();
+			ft.replace(R.id.info_main, f, "info");
+			ft.addToBackStack("info");
+			ft.commit();
+		}
+	};
+
+	OnKeyListener onBackPressed = new OnKeyListener() {
+
+		@Override
+		public boolean onKey(View v, int keyCode, KeyEvent event) 
+		{
+			if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP)
+			{
+				getFragmentManager().popBackStackImmediate();
+				Log.d(tag, "from fragment");
+				return true;
+			}
+			return false;
 		}
 	};
 }

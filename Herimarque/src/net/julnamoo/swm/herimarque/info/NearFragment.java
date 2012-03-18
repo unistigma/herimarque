@@ -60,12 +60,15 @@ public class NearFragment extends Fragment implements OnTouchListener{
 	protected int currZoom;
 	protected GeoPoint currStart;
 	protected ImageView progress;
+	
+	protected int menu;
 
-	public NearFragment(Context mContext, long minTime, float minDistance) 
+	public NearFragment(Context mContext, long minTime, float minDistance, int menu) 
 	{
 		this.mContext = mContext;
 		this.minTime = minTime;
 		this.minDistance = minDistance;
+		this.menu = menu;
 	}
 
 	@Override
@@ -80,7 +83,7 @@ public class NearFragment extends Fragment implements OnTouchListener{
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, locationListener);
 
-		heritageOverlay = new HeritageItemizedOverlay(getResources().getDrawable(R.drawable.pin2), mContext, getFragmentManager());
+		heritageOverlay = new HeritageItemizedOverlay(getResources().getDrawable(R.drawable.pin2), mContext, getFragmentManager(), menu);
 		locationOverlay = new LocationItemizedOverlay(getResources().getDrawable(R.drawable.pin1), mContext);
 	}
 

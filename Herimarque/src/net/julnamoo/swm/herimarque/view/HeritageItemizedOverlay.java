@@ -28,28 +28,25 @@ public class HeritageItemizedOverlay extends BalloonItemizedOverlay {
 	private List<OverlayItem> overlays;
 	private Context mContext;
 	private int MAX = 600;
+	private String menu;
 
 	private FragmentManager fragmentManager;
-	
-//	public HeritageItemizedOverlay(Drawable defaultMarker) 
-//	{
-//		super(boundCenterBottom(defaultMarker), MapContainer.mapView);
-////		super(defaultMarker, MapContainer.mapView);
-//		int markerHeight = ((BitmapDrawable) defaultMarker).getBitmap().getHeight();
-//		setBalloonBottomOffset(markerHeight);
-//		overlays = new ArrayList<OverlayItem>();
-//		populate();
-//	}
 
-	public HeritageItemizedOverlay(Drawable defaultMarker, Context context, FragmentManager fragmentManager)
+	public HeritageItemizedOverlay(Drawable defaultMarker, Context context, FragmentManager fragmentManager, int menu)
 	{
 		super(boundCenterBottom(defaultMarker), MapContainer.mapView);
-//		super(defaultMarker, MapContainer.mapView);
 		overlays = new ArrayList<OverlayItem>();
 		int markerHeight = ((BitmapDrawable) defaultMarker).getBitmap().getHeight();
 		setBalloonBottomOffset(markerHeight);
 		this.mContext = context;
 		this.fragmentManager = fragmentManager;
+		switch(menu)
+		{
+		case 0: this.menu = "info"; break;
+		case 1: this.menu = "create"; break;
+		case 2: this.menu = "show"; break;
+		case 3: this.menu = "config"; break;
+		}
 		populate();
 	}
 
@@ -88,7 +85,7 @@ public class HeritageItemizedOverlay extends BalloonItemizedOverlay {
 			populate();
 		} else throw new Exception("OverlayItem list is full");
 	}
-	
+
 	@Override
 	protected boolean onBalloonTap(int index, OverlayItem item) 
 	{
@@ -101,19 +98,19 @@ public class HeritageItemizedOverlay extends BalloonItemizedOverlay {
 		FragmentTransaction ft = fragmentManager.beginTransaction();
 		Fragment f = new DetailFragment(heritage, mContext);
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		ft.replace(R.id.info_main, f, "nearDetail");
-		ft.addToBackStack("nearDetail");
+		ft.replace(R.id.info_main, f, menu);
+		ft.addToBackStack(menu);
 		ft.commit();
-		
+
 		return true;
 	}
-	
+
 	public void clear()
 	{
 		setLastFocusedIndex(-1);
 		this.overlays.clear();
 	}
-	
+
 	@Override
 	protected int getIndexToDraw(int arg0) {
 		if(arg0 > overlays.size()) return 0;

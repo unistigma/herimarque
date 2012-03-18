@@ -6,6 +6,7 @@ import net.julnamoo.swm.herimarque.util.MapContainer;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.view.ViewPager.LayoutParams;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -29,6 +30,7 @@ public class SubMainActivity extends FragmentActivity {
 	private Button configButt;
 	
 	private FrameLayout fragmentContainer;
+	private int currMenu;
 	
 	private ExitExecutor ee;
 
@@ -67,10 +69,42 @@ public class SubMainActivity extends FragmentActivity {
 			
 			if(getSupportFragmentManager().getBackStackEntryCount() > 0)
 			{
-				getSupportFragmentManager().popBackStackImmediate();
+				int count = getSupportFragmentManager().getBackStackEntryCount();
+				Log.d(tag, "current back stack entry count " + count);
+				BackStackEntry entry = getSupportFragmentManager().getBackStackEntryAt(count-1);
+				
+				switch (currMenu) {
+				case 0:
+					if(entry.getName() == "info")
+					{
+						getSupportFragmentManager().popBackStackImmediate();
+						Log.d(tag, "info poped");
+					}else
+					{
+						Log.d(tag, "at entry:"+entry.getName() + ", at info");
+					}
+					break;
+				case 1 :
+					if(entry.getName() == "create")
+					{
+						getSupportFragmentManager().popBackStackImmediate();
+						Log.d(tag, "create poped");
+					}else
+					{
+						Log.d(tag, "at entry:"+entry.getName() + ", at create");
+					}
+					break;
+				case 2 : 
+					break;
+				case 3 :
+					break;
+				default:
+					break;
+				}
 				return true;
 			}
 			
+			//finish the application
 			if(ee.isFinish()) 
 			{
 				Log.d(tag, "finish");
@@ -113,19 +147,22 @@ public class SubMainActivity extends FragmentActivity {
 		case R.id.infoButt:
 			Log.d(tag, "info pushed");
 			findViewById(R.id.info_main).setVisibility(View.VISIBLE);
-			onSearchRequested();
+			currMenu = 0;
 			break;
 		case R.id.createButt:
 			Log.d(tag, "create pushed");
 			findViewById(R.id.create_main).setVisibility(View.VISIBLE);
+			currMenu = 1;
 			break;
 		case R.id.showButt:
 			Log.d(tag, "show pushed"); 
 			findViewById(R.id.show_main).setVisibility(View.VISIBLE);
+			currMenu = 2;
 			break;
 		case R.id.configButt:
 			Log.d(tag, "config pushed");
 			findViewById(R.id.config_main).setVisibility(View.VISIBLE);
+			currMenu = 3;
 			break;
 		default:
 			break;

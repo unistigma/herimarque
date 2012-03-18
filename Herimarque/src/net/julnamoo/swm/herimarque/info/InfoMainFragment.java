@@ -9,11 +9,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -66,8 +64,8 @@ public class InfoMainFragment extends Fragment {
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		Fragment f = new InfoSubMainFragment(0);
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		ft.replace(R.id.info_main, f, "infoSub");
-		ft.addToBackStack("infoSub");
+		ft.replace(R.id.info_main, f, "info");
+		ft.addToBackStack("info");
 		ft.commit();
 	}
 
@@ -77,8 +75,8 @@ public class InfoMainFragment extends Fragment {
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		Fragment f = new InfoSubMainFragment(1);
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		ft.replace(R.id.info_main, f, "infoSub");
-		ft.addToBackStack("infoSub");
+		ft.replace(R.id.info_main, f, "info");
+		ft.addToBackStack("info");
 		ft.commit();
 	}
 
@@ -86,10 +84,10 @@ public class InfoMainFragment extends Fragment {
 	{
 		hideKeyboard();
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		Fragment f = new NearFragment(getActivity().getApplicationContext(), 5, 5);
+		Fragment f = new NearFragment(getActivity().getApplicationContext(), 5, 5, 0);
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		ft.replace(R.id.info_main, f, "infoSub");
-		ft.addToBackStack("infoSub");
+		ft.replace(R.id.info_main, f, "info");
+		ft.addToBackStack("info");
 		ft.commit();
 	}
 
