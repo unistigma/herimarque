@@ -114,7 +114,8 @@ public class AreaFragment extends Fragment{
 			Item item = CursorToItem.cursor2Item((Cursor) arg0.getItemAtPosition(selected));
 			Log.d(tag, "selected : " + item.getCrltsNm());
 			
-			DetailFragment f = new DetailFragment(item);
+//			DetailFragment f = new DetailFragment(item);
+			DetailFragment f = new DetailFragment(item, mContext);
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 	    	ft.replace(R.id.info_main, f, "infoDetail");

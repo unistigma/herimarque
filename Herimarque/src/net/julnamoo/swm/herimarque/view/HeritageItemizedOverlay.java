@@ -99,7 +99,7 @@ public class HeritageItemizedOverlay extends BalloonItemizedOverlay {
 		dataSource.close();
 		Item heritage = items.get(0);
 		FragmentTransaction ft = fragmentManager.beginTransaction();
-		Fragment f = new DetailFragment(heritage);
+		Fragment f = new DetailFragment(heritage, mContext);
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		ft.replace(R.id.info_main, f, "nearDetail");
 		ft.addToBackStack("nearDetail");

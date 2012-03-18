@@ -2,38 +2,30 @@ package net.julnamoo.swm.herimarque;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.GregorianCalendar;
 
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.model.Item;
 import net.julnamoo.swm.herimarque.view.HeritageImageView;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.FrameLayout.LayoutParams;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 public class DetailFragment extends Fragment {
@@ -41,15 +33,15 @@ public class DetailFragment extends Fragment {
 	private String tag = DetailFragment.class.getSimpleName();
 
 	private Item item;
-	private boolean isSet;
 
 	//for async task
 	private HeritageImageView image;
-	private ImageView progress;
+	private Context mContext;
 
-	public DetailFragment(Item item)
+	public DetailFragment(Item item, Context mContext)
 	{
 		this.item = item;
+		this.mContext = mContext;
 	}
 
 	@Override
@@ -69,14 +61,7 @@ public class DetailFragment extends Fragment {
 			Bundle savedInstanceState) 
 	{
 		View v = (ScrollView) inflater.inflate(R.layout.info_detail, container, false);
-		
-		//set progress
 		LinearLayout layout = (LinearLayout) v.findViewById(R.id.info_detail);
-		progress = new ImageView(getActivity().getApplicationContext());
-		progress.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.progress));
-		progress.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL));
-		progress.setVisibility(View.INVISIBLE);
-		layout.addView(progress);
 		
 		//set Image
 		image = (HeritageImageView) v.findViewById(R.id.info_detail_img);
@@ -171,6 +156,8 @@ public class DetailFragment extends Fragment {
 		Bitmap bmImg;
 
 		int width;
+		
+		LoadingFragment loadingFragment;
 
 		public GetImage(String url) 
 		{
@@ -180,7 +167,8 @@ public class DetailFragment extends Fragment {
 		@Override
 		protected void onPreExecute() 
 		{
-			progress.setVisibility(View.VISIBLE);
+			loadingFragment = new LoadingFragment();
+			loadingFragment.show(getFragmentManager(), "Loading...");
 		}
 
 		@Override
@@ -209,7 +197,6 @@ public class DetailFragment extends Fragment {
 		@Override
 		protected void onProgressUpdate(Void... values) 
 		{
-			// TODO Auto-generated method stub
 			super.onProgressUpdate(values);
 		}
 
@@ -221,7 +208,7 @@ public class DetailFragment extends Fragment {
 			Log.d(url, "get new width, height : " + width + "," + height);
 			bmImg = Bitmap.createScaledBitmap(bmImg, width, height, true);
 			image.setImageBitmap(bmImg);
-			progress.setVisibility(View.INVISIBLE);
+			loadingFragment.dismiss();
 		}
 	}
 
@@ -254,7 +241,20 @@ public class DetailFragment extends Fragment {
 			ft.replace(R.id.info_main, f);
 			ft.addToBackStack("wholeImage");
 			ft.commit();
-
 		}
 	};
+	
+	class LoadingFragment extends DialogFragment
+	{
+		public LoadingFragment() {	}
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            return new AlertDialog.Builder(getActivity())
+                    .setIcon(R.drawable.progress)
+                    .setTitle("Loading...")
+                    .create();
+        }
+	}
 }

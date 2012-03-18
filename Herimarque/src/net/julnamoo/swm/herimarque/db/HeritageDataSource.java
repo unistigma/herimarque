@@ -54,6 +54,7 @@ public class HeritageDataSource {
 		}
 		
 		db.insert(Constants.TABLE_NAME, null, values);
+//		db.insert(Constants.TABLE_NAME+"_fts", null, values);
 	}
 	
 	public List<Item> getAllItems()
@@ -98,5 +99,9 @@ public class HeritageDataSource {
 		
 		return result;
 	}
-	
+
+//	public List<Item> search(String query)
+//	{
+//		
+//	}
 }

@@ -104,9 +104,16 @@ public class InfoMainFragment extends Fragment {
 		@Override
 		public boolean onKey(View v, int keyCode, KeyEvent event) 
 		{
-			if(keyCode == KeyEvent.KEYCODE_ENTER)
+			if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
 			{
 				String query = searchBar.getQueryString();
+				//set result list fragment
+				FragmentTransaction ft = getFragmentManager().beginTransaction();
+				Fragment f = new SearchResultFragment(getActivity().getApplicationContext(), query);
+				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+				ft.replace(R.id.info_main, f, "info");
+				ft.addToBackStack("info");
+				ft.commit();
 				Log.d(tag, "start search : " + query);
 				return true;
 			}

@@ -39,7 +39,7 @@ public class HeritageSQLiteHelper extends SQLiteOpenHelper{
 	{
 		if(!checkDataBase())
 		{
-			getReadableDatabase();
+			getWritableDatabase();
 			Log.i(tag, "copy database file");
 			copyDataBase();
 		} 
@@ -91,29 +91,10 @@ public class HeritageSQLiteHelper extends SQLiteOpenHelper{
 		}
 	}
 	
-//	public SQLiteDatabase openDataBase()
-//	{
-//		this.createDataBase();
-//		myDb = this.getReadableDatabase();
-//		return myDb;
-//	}
-//	
 	@Override
 	public void onCreate(SQLiteDatabase db) 
 	{
-		Log.i(tag, "onCreate");
-        StringBuilder sb = new StringBuilder();
-        sb.append("CREATE TABLE IF NOT EXISTS ").append(Constants.TABLE_NAME);
-        sb.append("( _id INTEGER PRIMARY KEY AUTOINCREMENT ");
-        int i = 0;
-        for(i = 0; i < Constants.itemFields.length; ++i)
-        {
-                sb.append(", ").append(Constants.itemFields[i]).append(" TEXT ");
-        }
-        sb.append(");");
-        String sql = sb.toString();
-        Log.d(tag, "create shceme : " + sql);
-        db.execSQL(sql);
+		initTable(db);
 	}
 
 	@Override
@@ -127,4 +108,44 @@ public class HeritageSQLiteHelper extends SQLiteOpenHelper{
 		onCreate(db);
 	}
 	
+	private void initTable(SQLiteDatabase db)
+	{
+		Log.i(tag, "onCreate");
+		//crate heritage table
+        StringBuilder tableCreator = new StringBuilder();
+        tableCreator.append("CREATE TABLE IF NOT EXISTS ").append(Constants.TABLE_NAME);
+        tableCreator.append("( _id INTEGER PRIMARY KEY AUTOINCREMENT ");
+        for(int i = 0; i < Constants.itemFields.length; ++i)
+        {
+                tableCreator.append(", ").append(Constants.itemFields[i]).append(" TEXT ");
+        }
+        tableCreator.append(");");
+        String sql = tableCreator.toString();
+        Log.d(tag, "create shceme : " + sql);
+        db.execSQL(sql);
+        
+        //crate index with description of the itemCd field
+//        tableCreator = new StringBuilder("CREATE INDEX IF NOT EXISTS ");
+//        tableCreator.append(Constants.DB_NAME).append(".idx_heritage ON ");
+//        tableCreator.append(Constants.TABLE_NAME).append(" ( crltsNm )");
+//        sql = tableCreator.toString();
+//        Log.d(sql, "create index : " + sql);
+//        db.execSQL(sql);
+        
+        //creat FTS virtual table with index
+        /**
+         * db.execSQL("CREATE VIRTUAL TABLE " + TABLE_WORDS_FTS + " USING fts3(" + COL_ID + ", " + COL_KEY_LABEL + ", "
+                + COL_KEY_DESCRIPTION + " , " + COL_KEY_LANGUAGE + ", " + COL_KEY_TERM + " " + ");");
+         */
+//        StringBuilder vtableCreator = new StringBuilder("CREATE VIRTUAL TABLE ");
+//        vtableCreator.append(Constants.TABLE_NAME).append("_fts USING fts( _id");
+//        for(int i = 0; i < Constants.itemFields.length; ++i)
+//        {
+//        	vtableCreator.append(", ").append(Constants.itemFields[i]);
+//        }
+//        vtableCreator.append(");");
+//        String s = vtableCreator.toString();
+//        Log.d(tag, "create fts virtual table : " + s);
+//        db.execSQL(s);
+	}
 }
