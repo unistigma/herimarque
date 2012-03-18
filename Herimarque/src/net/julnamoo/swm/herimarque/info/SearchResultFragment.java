@@ -1,5 +1,7 @@
 package net.julnamoo.swm.herimarque.info;
 
+import org.apache.http.util.VersionInfo;
+
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.DetailFragment;
 import net.julnamoo.swm.herimarque.adapter.HeritageListAdapter;
@@ -11,6 +13,7 @@ import net.julnamoo.swm.herimarque.view.SearchBar;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -18,18 +21,27 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AbsListView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class SearchResultFragment extends Fragment {
 
 	private String tag = SearchResultFragment.class.getSimpleName();
 	private Context mContext;
 	private SearchBar searchBar;
+	private TextView emptyResultView;
+
 	private String query;
 	private HeritageSQLiteHelper sqlHelper;
 	private Cursor cursor;
@@ -56,21 +68,37 @@ public class SearchResultFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle arg2) 
 	{
-		//set basic list view
+		//if the result is more than 0
 		LinearLayout v = (LinearLayout) inflater.inflate(R.layout.list, parent, false);
+		//set basic list view
 		ListView list = (ListView) v.findViewById(R.id.list);
-//		HeritageListAdapter adapter = new HeritageListAdapter(inflater.getContext(), cursor);
 		adapter = new HeritageListAdapter(inflater.getContext(), cursor);
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(itemClickListener);
 		list.setTextFilterEnabled(true);
+		list.setOnScrollListener(scrollListener);
+
+		//set the view if there isn't result
+		emptyResultView = (TextView) v.findViewById(R.id.emptyresult);
 
 		//set queryString
 		searchBar = (SearchBar) v.findViewById(R.id.searchbar);
 		EditText queryText = (EditText) searchBar.findViewById(R.id.query);
 		queryText.setOnKeyListener(onKeyListener);
 		queryText.setHint(query);
+		searchBar.getSearchButton().setOnClickListener(onButtonListener);
 		sqlHelper.close();
+
+		//if no result
+		if(cursor.getCount() == 0)
+		{
+			list.setVisibility(View.INVISIBLE);
+			emptyResultView.setVisibility(View.VISIBLE);
+		}else
+		{
+			list.setVisibility(View.VISIBLE);
+			emptyResultView.setVisibility(View.INVISIBLE);
+		}
 		return v;
 	}
 
@@ -115,7 +143,7 @@ public class SearchResultFragment extends Fragment {
 	{
 		super.onPause();
 	}
-	
+
 	OnKeyListener onKeyListener = new OnKeyListener() {
 
 		@Override
@@ -123,25 +151,70 @@ public class SearchResultFragment extends Fragment {
 		{
 			if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
 			{
-				String queryText = searchBar.getQueryString();
-				query = queryText;
-				sqlHelper = new HeritageSQLiteHelper(mContext); 
-				SQLiteDatabase db = sqlHelper.getReadableDatabase();
-				StringBuilder queryBuilder = new StringBuilder("SELECT * FROM ");
-				queryBuilder.append(Constants.TABLE_NAME).append(" WHERE ( crltsDc like '%").append(query).append("%');");
-				String execSQL = queryBuilder.toString();
-				Cursor cursor2 = db.rawQuery(execSQL, null);
-				
-				ListView l = (ListView) getView().findViewById(R.id.list);
-				adapter = new HeritageListAdapter(mContext, cursor2);
-				l.setAdapter(adapter);
-				adapter.notifyDataSetChanged();
-				Log.d(tag, "setCursor2 : " + execSQL);
-				
+				updateAdapter();
+
 				return true;
 			}
 			return false;
 		}
-		
 	};
+
+	OnClickListener onButtonListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) 
+		{
+			updateAdapter();
+		}
+	};
+
+	private void updateAdapter()
+	{
+		String queryText = searchBar.getQueryString();
+		query = queryText;
+		sqlHelper = new HeritageSQLiteHelper(mContext); 
+		SQLiteDatabase db = sqlHelper.getReadableDatabase();
+		StringBuilder queryBuilder = new StringBuilder("SELECT * FROM ");
+		queryBuilder.append(Constants.TABLE_NAME).append(" WHERE ( crltsDc like '%").append(query).append("%');");
+		String execSQL = queryBuilder.toString();
+		Cursor cursor2 = db.rawQuery(execSQL, null);
+
+		ListView l = (ListView) getView().findViewById(R.id.list);
+		if(cursor2.getCount() > 0)
+		{
+			l.setVisibility(View.VISIBLE);
+			emptyResultView.setVisibility(View.INVISIBLE);
+			adapter = new HeritageListAdapter(mContext, cursor2);
+			l.setAdapter(adapter);
+			adapter.notifyDataSetChanged();
+		}else
+		{
+			l.setVisibility(View.INVISIBLE);
+			emptyResultView.setVisibility(View.VISIBLE);
+		}
+		Log.d(tag, "setCursor2 : " + execSQL);
+	}
+
+	OnScrollListener scrollListener = new OnScrollListener() {
+
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) 
+		{
+			if(scrollState == SCROLL_STATE_TOUCH_SCROLL)
+			{
+				hideKeyBoard();
+			}
+		}
+
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem,
+				int visibleItemCount, int totalItemCount) 
+		{}
+	};
+	private void hideKeyBoard()
+	{
+		EditText editText = searchBar.getQueryStringView();
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(editText.getApplicationWindowToken(), 0);
+	}
 }

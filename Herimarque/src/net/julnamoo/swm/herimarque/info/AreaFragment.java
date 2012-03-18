@@ -123,5 +123,4 @@ public class AreaFragment extends Fragment{
 	    	ft.commit();
 		}
 	};
-
 }

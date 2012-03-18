@@ -3,26 +3,36 @@ package net.julnamoo.swm.herimarque.info;
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.adapter.KindImageAdapter;
 import net.julnamoo.swm.herimarque.adapter.StringArrayAdapter;
+import net.julnamoo.swm.herimarque.info.listener.SearchButtonListener;
 import net.julnamoo.swm.herimarque.info.listener.SearchKeyListener;
 import net.julnamoo.swm.herimarque.util.Constants;
 import net.julnamoo.swm.herimarque.view.SearchBar;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnKeyListener;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ScrollView;
 
 public class InfoSubMainFragment extends Fragment {
 
 	private String tag = InfoSubMainFragment.class.getSimpleName();
 	
 	private int menu;
+	private SearchBar searchBar;
 	
 	public InfoSubMainFragment(int selected)
 	{
@@ -54,26 +64,39 @@ public class InfoSubMainFragment extends Fragment {
 //			gv.setOnItemClickListener(kindItemClickListener);
 //			return gv;
 			View v = inflater.inflate(R.layout.list, container, false);
+			//for manage fragment lifecycle
+			v.setOnKeyListener(onBackPressed);
+			
 			ListView list = (ListView) v.findViewById(R.id.list);
 			list.setAdapter(new KindImageAdapter(inflater.getContext()));
 			list.setOnItemClickListener(kindItemClickListener);
-			list.setTextFilterEnabled(true);
+			list.setOnScrollListener(scrollListener);
 			//set searchbar listener
-			SearchBar searchBar = (SearchBar) v.findViewById(R.id.searchbar);
-			searchBar.getQueryStringView().setOnKeyListener(new SearchKeyListener(searchBar, getFragmentManager(), inflater.getContext()));
+			searchBar = (SearchBar) v.findViewById(R.id.searchbar);
+			SearchKeyListener onKeyListener = new SearchKeyListener(searchBar, getFragmentManager(), inflater.getContext());
+			SearchButtonListener onButtonListener = new SearchButtonListener(searchBar, getFragmentManager(), inflater.getContext());
+			searchBar.getQueryStringView().setOnKeyListener(onKeyListener);
+			searchBar.getSearchButton().setOnClickListener(onButtonListener);
 			
 			return v;
 		//for area
 		case 1:
 			Log.d(tag, "set ctrdArrayAdapter");
 			v = inflater.inflate(R.layout.list, container, false);
+			//for manage fragment lifecycle
+			v.setOnKeyListener(onBackPressed);
+			
 			ListView l = (ListView) v.findViewById(R.id.list);
 			l.setAdapter(new StringArrayAdapter(inflater.getContext(), R.layout.list_item_1, Constants.ctrdName));
 			l.setOnItemClickListener(ctrdClickListener);
-			l.setTextFilterEnabled(true);
+			l.setOnScrollListener(scrollListener);
 			//set searchbar listener
 			searchBar = (SearchBar) v.findViewById(R.id.searchbar);
-			searchBar.getQueryStringView().setOnKeyListener(new SearchKeyListener(searchBar, getFragmentManager(), inflater.getContext()));
+			onKeyListener = new SearchKeyListener(searchBar, getFragmentManager(), inflater.getContext());
+			onButtonListener = new SearchButtonListener(searchBar, getFragmentManager(), inflater.getContext());
+			searchBar.getQueryStringView().setOnKeyListener(onKeyListener);
+			searchBar.getSearchButton().setOnClickListener(onButtonListener);
+			
 			return v;
 		}
 		return super.onCreateView(inflater, container, savedInstanceState);
@@ -87,9 +110,16 @@ public class InfoSubMainFragment extends Fragment {
 		outState.putInt("depth", 1);
 	}
 	
+	public void onPause() 
+	{
+		hideKeyBoard();
+		super.onPause();
+	}
+	
 	OnItemClickListener kindItemClickListener = new OnItemClickListener() 
 	{
-		public void onItemClick(android.widget.AdapterView<?> arg0, View view, int selected, long id) {
+		public void onItemClick(android.widget.AdapterView<?> arg0, View view, int selected, long id) 
+		{
 			Log.d(tag, "kind, selected : " + selected);
 			Fragment f = new KindFragment(selected, getActivity().getApplicationContext());
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -111,6 +141,43 @@ public class InfoSubMainFragment extends Fragment {
 			ft.replace(R.id.info_main, f, "infoSubList");
 			ft.addToBackStack("infoSubList");
 			ft.commit();
+		}
+	};
+	
+	OnScrollListener scrollListener = new OnScrollListener() {
+		
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) 
+		{
+			if(scrollState == SCROLL_STATE_TOUCH_SCROLL)
+			{
+				hideKeyBoard();
+			}
+		}
+		
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem,
+				int visibleItemCount, int totalItemCount) 
+		{}
+	};
+	
+	private void hideKeyBoard()
+	{
+		EditText editText = searchBar.getQueryStringView();
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(editText.getApplicationWindowToken(), 0);
+	}
+	
+	OnKeyListener onBackPressed = new OnKeyListener() {
+		
+		@Override
+		public boolean onKey(View v, int keyCode, KeyEvent event) 
+		{
+			if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP)
+			{
+				getFragmentManager().popBackStackImmediate();
+			}
+			return false;
 		}
 	};
 }

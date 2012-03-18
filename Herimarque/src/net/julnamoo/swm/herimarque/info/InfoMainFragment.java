@@ -1,6 +1,7 @@
 package net.julnamoo.swm.herimarque.info;
 
 import net.julnamoo.R;
+import net.julnamoo.swm.herimarque.info.listener.SearchButtonListener;
 import net.julnamoo.swm.herimarque.info.listener.SearchKeyListener;
 import net.julnamoo.swm.herimarque.view.SearchBar;
 import android.content.Context;
@@ -35,24 +36,33 @@ public class InfoMainFragment extends Fragment {
 		v.findViewById(R.id.kind).setOnClickListener(tabClickListener);
 		v.findViewById(R.id.area).setOnClickListener(tabClickListener);
 		v.findViewById(R.id.near).setOnClickListener(tabClickListener);
-		
+
 		searchBar = (SearchBar) v.findViewById(R.id.search_infomain);
 		SearchKeyListener onKeyListener = new SearchKeyListener(searchBar, getFragmentManager(), inflater.getContext());
+		SearchButtonListener onButtonListener = new SearchButtonListener(searchBar, getFragmentManager(), inflater.getContext());
 		searchBar.getQueryStringView().setOnKeyListener(onKeyListener);
-		
+		searchBar.getSearchButton().setOnClickListener(onButtonListener);
+
 		v.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) 
 			{
-				Log.w(tag, "infomain touched");
+				hideKeyboard();
 			}
 		});
 		return v;
 	}
 
+	@Override
+	public void onPause() 
+	{
+		hideKeyboard();
+		super.onPause();
+	}
 	private void startKind()
 	{
+		hideKeyboard();
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		Fragment f = new InfoSubMainFragment(0);
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -63,6 +73,7 @@ public class InfoMainFragment extends Fragment {
 
 	private void startArea()
 	{
+		hideKeyboard();
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		Fragment f = new InfoSubMainFragment(1);
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -73,7 +84,7 @@ public class InfoMainFragment extends Fragment {
 
 	private void startNear()
 	{
-
+		hideKeyboard();
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		Fragment f = new NearFragment(getActivity().getApplicationContext(), 5, 5);
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -82,6 +93,13 @@ public class InfoMainFragment extends Fragment {
 		ft.commit();
 	}
 
+	private void hideKeyboard()
+	{
+		EditText editText = searchBar.getQueryStringView();
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(editText.getApplicationWindowToken(), 0);
+	}
+	
 	OnClickListener tabClickListener = new OnClickListener() {
 
 		@Override

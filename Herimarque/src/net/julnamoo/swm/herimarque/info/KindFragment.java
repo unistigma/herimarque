@@ -19,8 +19,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -113,8 +115,6 @@ public class KindFragment extends Fragment {
 				long id) {
 			Item item = CursorToItem.cursor2Item((Cursor) arg0.getItemAtPosition(selected));
 			Log.d(tag, "selected : " + item.getCrltsNm());
-			
-//			DetailFragment f = new DetailFragment(item);
 			DetailFragment f = new DetailFragment(item, mContext);
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

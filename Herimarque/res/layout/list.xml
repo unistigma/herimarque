@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:background="@drawable/basic" >
-        
-    <net.julnamoo.swm.herimarque.view.SearchBar 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/basic"
+    android:orientation="vertical" >
+
+    <net.julnamoo.swm.herimarque.view.SearchBar
         android:id="@+id/searchbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    
-    <ListView 
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/basic"
-        android:id="@+id/list"></ListView>
+        android:layout_height="fill_parent"
+        android:background="@color/basic" >
+
+        <TextView
+            android:id="@+id/emptyresult"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="@string/emptyresult"
+            android:textColor="@color/brown"
+            android:textSize="20sp"
+            android:visibility="invisible" />
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/basic" >
+        </ListView>
+    </FrameLayout>
 
 </LinearLayout>

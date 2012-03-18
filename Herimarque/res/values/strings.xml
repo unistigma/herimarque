@@ -6,6 +6,7 @@
     <string name="app_name">Herimarque</string>
     <string name="company">Incredieble</string>
     <string name="search_hint">문화재 검색하기</string>
+    <string name="emptyresult">해당 검색결과가 없습니다!</string>
     
     <string name="apiKey">0UyzqHINdFIG4Ims3IKo0B3ZnVnwfC-njU10P8g</string>
     
