@@ -16,20 +16,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@drawable/kind" />
+        android:background="@drawable/kind_selector" />
 
     <Button
         android:id="@+id/area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@drawable/area" />
+        android:background="@drawable/area_selector" />
 
     <Button
         android:id="@+id/near"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@drawable/near" />
+        android:background="@drawable/near_selector" />
 
 </LinearLayout>

@@ -3,4 +3,6 @@
     <color name="basic">#EDF2C4</color>
     <color name="tabBackground">#F6BA62</color>
     <color name="brown">#A35100</color>
+    <color name="paper">#F0EAEB</color>
+    <color name="paper_border">#946A71</color>
 </resources>

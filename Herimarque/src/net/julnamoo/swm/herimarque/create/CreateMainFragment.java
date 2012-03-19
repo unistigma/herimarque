@@ -3,6 +3,7 @@ package net.julnamoo.swm.herimarque.create;
 import java.util.List;
 
 import net.julnamoo.R;
+import net.julnamoo.R.layout;
 import net.julnamoo.swm.herimarque.SubMainActivity;
 import net.julnamoo.swm.herimarque.common.TurnOnGPSFragment;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
@@ -17,21 +18,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout.LayoutParams;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapController;
@@ -39,7 +40,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-public class CreateMainFragment extends Fragment implements LocationListener, OnTouchListener{
+public class CreateMainFragment extends Fragment implements LocationListener {
 
 	private String tag = CreateMainFragment.class.getSimpleName();
 
@@ -55,12 +56,6 @@ public class CreateMainFragment extends Fragment implements LocationListener, On
 	private int minDistance = 5; //default value
 	private LocationManager locationManager;
 
-	//for detecting event
-	private int currZoom;
-	private GeoPoint currStart;
-	private ImageView progress;
-
-	private boolean turnOnHeritage; 
 	private TurnOnGPSFragment gpsStarter;
 
 	@Override
@@ -94,11 +89,13 @@ public class CreateMainFragment extends Fragment implements LocationListener, On
 			vg.removeView(mapView);
 		}
 
-		//get heritages
-		currStart = mapView.getProjection().fromPixels(0, 0);
-		new LoadMapItems().execute();
+		//set mapview container
+//		LinearLayout linearLayout = new LinearLayout(inflater.getContext());
+//		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+//		linearLayout.setLayoutParams(params);
+//		linearLayout.setOrientation(LinearLayout.VERTICAL);
+//		linearLayout.setWeightSum(1);
 
-		mapView.setOnTouchListener(this);
 		mapView.setBuiltInZoomControls(false);
 		mapView.setSatellite(false);
 		mapView.setTraffic(false);
@@ -123,22 +120,37 @@ public class CreateMainFragment extends Fragment implements LocationListener, On
 		GeoPoint point = new GeoPoint(lat.intValue(), lng.intValue());
 		mapController.setZoom(18);
 		mapController.animateTo(point);
-		currZoom = 18;
 		setMyLocationOverlay(point);
 
-		//add the Button for moving to the current location
-		Button getMyLoc = new Button(mContext);
+		FrameLayout icContainer = new FrameLayout(inflater.getContext());
+		FrameLayout.LayoutParams fParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.FILL_PARENT);
+		icContainer.setLayoutParams(fParams);
+		
+		//add the Button for moving to the current location to mapview
+		Button getMyLoc = new Button(inflater.getContext());
+		fParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.TOP|Gravity.LEFT); 
+		getMyLoc.setLayoutParams(fParams);
 		getMyLoc.setBackgroundDrawable(getResources().getDrawable(R.drawable.myloc));
-		LayoutParams sizeParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP);
-		getMyLoc.setLayoutParams(sizeParam);
 		getMyLoc.setOnClickListener(myLocButtonListener);
+		icContainer.addView(getMyLoc);
 
-		mapView.addView(getMyLoc);
+		// add getNearHeritage to mapview 
+		Button getNearHeritage = new Button(inflater.getContext());
+		fParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.TOP|Gravity.RIGHT);
+		getNearHeritage.setLayoutParams(fParams);
+		getNearHeritage.setBackgroundResource(R.drawable.main_info_selector);
+		getNearHeritage.setOnClickListener(nearHeritageButtonListener);
+		icContainer.addView(getNearHeritage);
+		
+		//add the near button
+		RelativeLayout menuView = (RelativeLayout) inflater.inflate(R.layout.create_main, container, false);
+//		fParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
+		fParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, 100, Gravity.RIGHT | Gravity.BOTTOM);
+		menuView.setLayoutParams(fParams);
+		icContainer.addView(menuView);
+		
+		mapView.addView(icContainer);
 		mapView.invalidate();
-		
-		//add the start button
-		
-		//add near heritage switch button
 		
 		return mapView;
 	}
@@ -167,11 +179,9 @@ public class CreateMainFragment extends Fragment implements LocationListener, On
 	@Override
 	public void onLocationChanged(Location location) 
 	{
-		setMyLocationOverlay(locationToGeoPoint(location));
-		if(turnOnHeritage)
-		{
-			new LoadMapItems().execute();
-		}
+		GeoPoint point = locationToGeoPoint(location);
+		setMyLocationOverlay(point);
+		mapController.animateTo(point);
 	}
 
 	@Override
@@ -193,33 +203,6 @@ public class CreateMainFragment extends Fragment implements LocationListener, On
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {	}
-
-	@Override
-	public boolean onTouch(View v, MotionEvent event) 
-	{
-		if(event.getAction() == MotionEvent.ACTION_UP)
-		{
-			GeoPoint edge = mapView.getProjection().fromPixels(0, 0);
-			if((mapView.getZoomLevel() != currZoom) || (edge != currStart))
-			{
-				new LoadMapItems().execute();
-
-				if(mapOverlay.size() == 1)
-				{
-					mapOverlay.add(heritageOverlay);
-				}else if(mapOverlay.size() == 2)
-				{
-					mapOverlay.set(1, heritageOverlay);
-				}else
-				{
-					mapOverlay.add(heritageOverlay);
-				}
-				mapView.invalidate();
-				return false;
-			}
-		}
-		return false;
-	}
 
 	class LoadMapItems extends AsyncTask<Void, Void, Void>
 	{
@@ -310,6 +293,7 @@ public class CreateMainFragment extends Fragment implements LocationListener, On
 		}
 	}
 
+	/** for update mapView **/
 	private void setMyLocationOverlay(GeoPoint p)
 	{
 		OverlayItem overlayItem = new OverlayItem(p, "현재 위치", "");
@@ -318,7 +302,7 @@ public class CreateMainFragment extends Fragment implements LocationListener, On
 			locationOverlay.clear();
 			locationOverlay.addOverlay(overlayItem);
 		} catch (Exception e) {	}
-		
+
 		if(mapOverlay.size() == 0)
 		{
 			mapOverlay.add(locationOverlay);
@@ -339,7 +323,8 @@ public class CreateMainFragment extends Fragment implements LocationListener, On
 	OnClickListener myLocButtonListener = new OnClickListener() 
 	{
 		@Override
-		public void onClick(View v) {
+		public void onClick(View v) 
+		{
 			//get user's location and move to the point
 			Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			if(location == null)
@@ -355,6 +340,15 @@ public class CreateMainFragment extends Fragment implements LocationListener, On
 			GeoPoint p = locationToGeoPoint(location);
 			setMyLocationOverlay(p);
 			mapController.animateTo(p);
+		}
+	};
+
+	OnClickListener nearHeritageButtonListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) 
+		{
+			new LoadMapItems().execute();
 		}
 	};
 }

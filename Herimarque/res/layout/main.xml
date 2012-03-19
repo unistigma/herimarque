@@ -16,7 +16,7 @@
         android:layout_marginRight="20dip"
         android:layout_marginBottom="20dip"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/main_info" />
+        android:background="@drawable/main_info_selector" />
 
     <Button
         android:id="@+id/create"
@@ -24,7 +24,7 @@
         android:layout_height="140dip"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/info"
-        android:background="@drawable/main_create" />
+        android:background="@drawable/main_create_selector" />
 
 </RelativeLayout>
 <!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

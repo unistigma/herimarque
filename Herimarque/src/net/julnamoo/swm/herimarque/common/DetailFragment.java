@@ -2,6 +2,7 @@ package net.julnamoo.swm.herimarque.common;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Target;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,15 +32,17 @@ public class DetailFragment extends Fragment {
 	private String tag = DetailFragment.class.getSimpleName();
 
 	private Item item;
+	private int targetFragment;
 
 	//for async task
 	private HeritageImageView image;
 	private Context mContext;
 
-	public DetailFragment(Item item, Context mContext)
+	public DetailFragment(Item item, Context mContext, int targetFragment)
 	{
 		this.item = item;
 		this.mContext = mContext;
+		this.targetFragment = targetFragment;
 	}
 
 	@Override
@@ -60,7 +63,7 @@ public class DetailFragment extends Fragment {
 	{
 		View v = (ScrollView) inflater.inflate(R.layout.info_detail, container, false);
 		LinearLayout layout = (LinearLayout) v.findViewById(R.id.info_detail);
-		
+
 		//set Image
 		image = (HeritageImageView) v.findViewById(R.id.info_detail_img);
 		//// get the imageUrl
@@ -154,7 +157,7 @@ public class DetailFragment extends Fragment {
 		Bitmap bmImg;
 
 		int width;
-		
+		boolean error;
 		LoadingFragment loadingFragment;
 
 		public GetImage(String url) 
@@ -167,6 +170,7 @@ public class DetailFragment extends Fragment {
 		{
 			loadingFragment = new LoadingFragment();
 			loadingFragment.show(getFragmentManager(), "Loading...");
+			error = false;
 		}
 
 		@Override
@@ -185,9 +189,11 @@ public class DetailFragment extends Fragment {
 			} catch (MalformedURLException e) 
 			{
 				e.printStackTrace();
+				error = true;
 			} catch (IOException e) 
 			{
 				e.printStackTrace();
+				error = true;
 			}
 			return null;
 		}
@@ -201,7 +207,11 @@ public class DetailFragment extends Fragment {
 		protected void onPostExecute(Void result) 
 		{
 			if(bmImg == null) return; //then set another image for empty
-			
+
+			if(error)
+			{
+				bmImg = BitmapFactory.decodeResource(getResources(), R.drawable.main_info_selector);
+			}
 			int height = width * bmImg.getHeight() / bmImg.getWidth();
 			Log.d(url, "get new width, height : " + width + "," + height);
 			bmImg = Bitmap.createScaledBitmap(bmImg, width, height, true);
@@ -236,10 +246,10 @@ public class DetailFragment extends Fragment {
 			Fragment f = new ImageFragment(image);
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			ft.replace(R.id.info_main, f);
+			ft.replace(targetFragment, f);
 			ft.addToBackStack("wholeImage");
 			ft.commit();
 		}
 	};
-	
+
 }

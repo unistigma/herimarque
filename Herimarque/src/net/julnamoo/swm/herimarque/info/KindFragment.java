@@ -120,7 +120,7 @@ public class KindFragment extends Fragment {
 				long id) {
 			Item item = CursorToItem.cursor2Item((Cursor) arg0.getItemAtPosition(selected));
 			Log.d(tag, "selected : " + item.getCrltsNm());
-			DetailFragment f = new DetailFragment(item, mContext);
+			DetailFragment f = new DetailFragment(item, mContext, R.id.info_main);
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			ft.replace(R.id.info_main, f, "info");

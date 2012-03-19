@@ -17,7 +17,7 @@
             android:layout_height="fill_parent"
             android:layout_margin="0px"
             android:layout_weight="1"
-            android:background="@drawable/tab_info" />
+            android:background="@drawable/tab_info_selector" />
 
         <Button
             android:id="@+id/createButt"
@@ -25,7 +25,7 @@
             android:layout_height="fill_parent"
             android:layout_margin="0px"
             android:layout_weight="1"
-            android:background="@drawable/tab_create" />
+            android:background="@drawable/tab_create_selector" />
 
         <Button
             android:id="@+id/showButt"
@@ -33,7 +33,7 @@
             android:layout_height="fill_parent"
             android:layout_margin="0px"
             android:layout_weight="1"
-            android:background="@drawable/tab_show" />
+            android:background="@drawable/tab_show_selector" />
 
         <Button
             android:id="@+id/configButt"
@@ -41,7 +41,7 @@
             android:layout_height="fill_parent"
             android:layout_margin="0px"
             android:layout_weight="1"
-            android:background="@drawable/tab_config" />
+            android:background="@drawable/tab_config_selector" />
     </LinearLayout>
 
     <FrameLayout

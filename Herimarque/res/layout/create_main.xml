@@ -1,57 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="100px"
+    android:gravity="right" >
 
-    <LinearLayout
-        android:id="@+id/layout_create_main"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/create_start"
+        android:layout_width="60dp"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible" >
+        android:layout_marginRight="10dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/start_shape"
+        android:text="@string/start"
+        android:textSize="18sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="23sp"
-            android:text="@string/create_desc1" />
-
-        <Button
-            android:id="@+id/butt_create_start"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="@string/create_start" />
-    </LinearLayout>
-    
-    <LinearLayout 
-        android:id="@+id/layout_create_infoin"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/create_car"
+        android:layout_width="70dp"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="invisible">
-        
-        <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:textSize="25sp"
-            android:text="@string/create_desc2"/>
-        
-        <net.julnamoo.swm.herimarque.view.EditName 
-            android:id="@+id/create_etxt_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:hint="@string/create_new_hint" />
-        
-        <Button 
-            android:id="@+id/butt_create_ok"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/start"/>
-    </LinearLayout>
+        android:layout_marginRight="0px"
+        android:layout_toRightOf="@id/create_start"
+        android:background="@drawable/start_shape"
+        android:layout_alignParentBottom="true"
+        android:text="@string/car"
+        android:textSize="18sp" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/create_bike"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="0px"
+        android:layout_marginRight="0px"
+        android:layout_toRightOf="@id/create_car"
+        android:background="@drawable/start_shape"
+        android:layout_alignParentBottom="true"
+        android:text="@string/bike"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/create_walk"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="0px"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@id/create_bike"
+        android:background="@drawable/start_shape"
+        android:layout_alignParentBottom="true"
+        android:text="@string/walk"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/create_main_menu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignBaseline="@+id/create_walk"
+        android:layout_toRightOf="@+id/create_walk"
+        android:background="@drawable/ic_menu"
+        android:gravity="center"
+        android:textSize="18sp" />
+
+</RelativeLayout>
