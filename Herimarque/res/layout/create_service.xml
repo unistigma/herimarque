@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:background="#FFFFFFFF"
-        android:hint="@string/create_new_hint" />
+        android:hint="@string/create_newtimeline" />
 
     <FrameLayout
         android:layout_width="match_parent"

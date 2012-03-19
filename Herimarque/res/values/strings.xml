@@ -83,7 +83,7 @@
     <string name="walk">도보</string>
 
     <string name="create">나만의 문화유산 만들기</string>
-    <string name="create_new_hint">나의 Herimarque</string>
+    <string name="create_newtimeline">체크인</string>
     <string name="finish">Finish</string>
     <string name="create_desc1">나만의 문화유산을\n만들어 봅시다!</string>
     <string name="create_desc2">이번 여행의 제목은 무엇인가요?</string>

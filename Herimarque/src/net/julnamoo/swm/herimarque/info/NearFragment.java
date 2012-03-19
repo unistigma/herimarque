@@ -32,6 +32,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ public class NearFragment extends Fragment implements OnTouchListener{
 	protected String tag = NearFragment.class.getSimpleName();
 
 	protected Context mContext;
+	private ViewGroup originMapContainer;
 	protected MapView mapView;
 	protected MapController mapController;
 	
@@ -101,10 +103,10 @@ public class NearFragment extends Fragment implements OnTouchListener{
 		mapView = MapContainer.mapView;
 
 		//set mapview parent
-		ViewGroup vg = (ViewGroup) mapView.getParent();
-		if(vg != null)
+		originMapContainer = (ViewGroup) mapView.getParent();
+		if(originMapContainer != null)
 		{
-			vg.removeView(mapView);
+			originMapContainer.removeView(mapView);
 		}
 		//get heritages
 		currStart = mapView.getProjection().fromPixels(0, 0);
@@ -168,13 +170,22 @@ public class NearFragment extends Fragment implements OnTouchListener{
 		mapView.addView(getMyLoc);
 
 		mapView.invalidate();
-		return mapView;
+	
+		//wrapping mapView
+		FrameLayout frameLayout = new FrameLayout(inflater.getContext());
+		frameLayout.addView(mapView);
+		return frameLayout;
 	}
 
 	@Override
 	public void onPause() 
 	{
 		locationManager.removeUpdates(locationListener);
+		((ViewGroup) mapView.getParent()).removeView(mapView);
+		if(originMapContainer != null)
+		{
+			originMapContainer.addView(mapView);
+		}
 		Log.d(tag, "Remove all listener");
 		super.onPause();
 	}
