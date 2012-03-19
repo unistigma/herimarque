@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.julnamoo.R;
-import net.julnamoo.swm.herimarque.DetailFragment;
+import net.julnamoo.swm.herimarque.common.DetailFragment;
 import net.julnamoo.swm.herimarque.db.HeritageDataSource;
 import net.julnamoo.swm.herimarque.model.Item;
 import net.julnamoo.swm.herimarque.util.MapContainer;
@@ -31,6 +31,7 @@ public class HeritageItemizedOverlay extends BalloonItemizedOverlay {
 	private String menu;
 
 	private FragmentManager fragmentManager;
+	private int targetFragmentContainer;
 
 	public HeritageItemizedOverlay(Drawable defaultMarker, Context context, FragmentManager fragmentManager, int menu)
 	{
@@ -42,10 +43,10 @@ public class HeritageItemizedOverlay extends BalloonItemizedOverlay {
 		this.fragmentManager = fragmentManager;
 		switch(menu)
 		{
-		case 0: this.menu = "info"; break;
-		case 1: this.menu = "create"; break;
-		case 2: this.menu = "show"; break;
-		case 3: this.menu = "config"; break;
+		case 0: this.menu = "info"; targetFragmentContainer = R.id.info_main; break;
+		case 1: this.menu = "create"; targetFragmentContainer = R.id.create_main; break;
+		case 2: this.menu = "show"; targetFragmentContainer = R.id.show_main; break;
+		case 3: this.menu = "config"; targetFragmentContainer = R.id.create_main; break;
 		}
 		populate();
 	}
@@ -98,7 +99,7 @@ public class HeritageItemizedOverlay extends BalloonItemizedOverlay {
 		FragmentTransaction ft = fragmentManager.beginTransaction();
 		Fragment f = new DetailFragment(heritage, mContext);
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		ft.replace(R.id.info_main, f, menu);
+		ft.replace(targetFragmentContainer, f, menu);
 		ft.addToBackStack(menu);
 		ft.commit();
 

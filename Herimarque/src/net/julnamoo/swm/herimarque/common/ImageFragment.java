@@ -1,4 +1,4 @@
-package net.julnamoo.swm.herimarque;
+package net.julnamoo.swm.herimarque.common;
 
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.view.HeritageImageView;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 
 public class ImageFragment extends Fragment {
 
@@ -41,7 +42,9 @@ public class ImageFragment extends Fragment {
 			}
 		});
 		FrameLayout frameLayout = new FrameLayout(inflater.getContext());
-		frameLayout.addView(imageView);
+		ScrollView scrollView = new ScrollView(inflater.getContext());
+		scrollView.addView(imageView);
+		frameLayout.addView(scrollView);
 		frameLayout.setBackgroundColor(getResources().getColor(R.color.basic));
 		
 		return frameLayout;

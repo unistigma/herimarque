@@ -24,7 +24,8 @@ public class LoadingFragment extends DialogFragment {
 		ProgressDialog dialog = new ProgressDialog(getActivity());
 		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		dialog.setMessage("Loading...");
+		dialog.setCancelable(true);
 		return dialog;
 	}
-
+	
 }

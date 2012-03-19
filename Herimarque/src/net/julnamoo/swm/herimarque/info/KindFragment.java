@@ -1,8 +1,8 @@
 package net.julnamoo.swm.herimarque.info;
 
 import net.julnamoo.R;
-import net.julnamoo.swm.herimarque.DetailFragment;
 import net.julnamoo.swm.herimarque.adapter.HeritageListAdapter;
+import net.julnamoo.swm.herimarque.common.DetailFragment;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
 import net.julnamoo.swm.herimarque.model.Item;
 import net.julnamoo.swm.herimarque.util.Constants;

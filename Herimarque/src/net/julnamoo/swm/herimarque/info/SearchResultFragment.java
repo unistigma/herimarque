@@ -1,8 +1,8 @@
 package net.julnamoo.swm.herimarque.info;
 
 import net.julnamoo.R;
-import net.julnamoo.swm.herimarque.DetailFragment;
 import net.julnamoo.swm.herimarque.adapter.HeritageListAdapter;
+import net.julnamoo.swm.herimarque.common.DetailFragment;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
 import net.julnamoo.swm.herimarque.model.Item;
 import net.julnamoo.swm.herimarque.util.Constants;
@@ -180,11 +180,11 @@ public class SearchResultFragment extends Fragment {
 		ListView l = (ListView) getView().findViewById(R.id.list);
 		if(cursor2.getCount() > 0)
 		{
-			l.setVisibility(View.VISIBLE);
-			emptyResultView.setVisibility(View.INVISIBLE);
 			adapter = new HeritageListAdapter(mContext, cursor2);
 			l.setAdapter(adapter);
 			adapter.notifyDataSetChanged();
+			emptyResultView.setVisibility(View.INVISIBLE);
+			l.setVisibility(View.VISIBLE);
 		}else
 		{
 			l.setVisibility(View.INVISIBLE);

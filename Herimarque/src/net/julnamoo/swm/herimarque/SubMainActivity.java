@@ -37,7 +37,10 @@ public class SubMainActivity extends FragmentActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
+		
+		setMapView();
 		setContentView(R.layout.submain);
 
 		ee = new ExitExecutor(3000, 3000);
@@ -58,8 +61,6 @@ public class SubMainActivity extends FragmentActivity {
 		//set tab button
 		int menu = getIntent().getIntExtra("menu", R.id.infoButt);
 		changeView(findViewById(menu));
-		
-		setMapView();
 	}
 
 	@Override
@@ -116,62 +117,6 @@ public class SubMainActivity extends FragmentActivity {
 		return super.onKeyDown(keyCode, event);
 	}
 	
-	OnKeyListener backListener = new OnKeyListener() {
-		
-		@Override
-		public boolean onKey(View v, int keyCode, KeyEvent event) {
-			if( keyCode == KeyEvent.KEYCODE_BACK )
-			{
-				Log.d(tag, "back : " + event.getRepeatCount());
-				
-//				if(getSupportFragmentManager().getBackStackEntryCount() > 0)
-//				{
-//					Log.d(tag, "curr menu : " + currMenu);
-//					Fragment target = null;
-//					switch (currMenu) {
-//					case 0:
-//						Log.d(tag, "at info, count " + getSupportFragmentManager().getBackStackEntryCount());
-//						target = getSupportFragmentManager().findFragmentById(R.id.info_main);
-//						getSupportFragmentManager().beginTransaction().remove(target);
-//						getSupportFragmentManager().beginTransaction().commitAllowingStateLoss();
-////						target.getFragmentManager().popBackStackImmediate();
-//						Log.d(tag, "at info, count " + getSupportFragmentManager().getBackStackEntryCount());
-//						break;
-//					case 1 :
-//						Log.d(tag, "at create, count " + getSupportFragmentManager().getBackStackEntryCount());
-//						target= getSupportFragmentManager().findFragmentById(R.id.create_main);
-//						getSupportFragmentManager().beginTransaction().remove(target);
-//						getSupportFragmentManager().beginTransaction().commitAllowingStateLoss();
-////						target.getFragmentManager().popBackStackImmediate();
-//						Log.d(tag, "at create, count " + getSupportFragmentManager().getBackStackEntryCount());
-//						break;
-//					case 2 : 
-//						break;
-//					case 3 :
-//						break;
-//					default:
-//						break;
-//					}
-//					return true;
-//				}
-				
-				//finish the application
-				if(ee.isFinish()) 
-				{
-					Log.d(tag, "finish");
-					finish();
-				}else
-				{
-					Toast.makeText(getApplicationContext(), "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
-					ee.start();
-					ee.setFinish(true);
-					return true;
-				}
-			}
-			return false;
-		}
-	};
-	
 	OnClickListener flipper = new OnClickListener() {
 
 		@Override
@@ -226,10 +171,16 @@ public class SubMainActivity extends FragmentActivity {
 	
 	private void setMapView()
 	{
-		AttributeSet attrSet = Xml.asAttributeSet(getResources().getXml(R.layout.map));
-		FrameLayout fl = new FrameLayout(SubMainActivity.this, attrSet);
+//		AttributeSet attrSet = Xml.asAttributeSet(getResources().getXml(R.layout.map));
+//		FrameLayout fl = new FrameLayout(SubMainActivity.this, attrSet);
 		MapContainer.mapView = new MapView(SubMainActivity.this, this.getString(R.string.apiKey));
 		MapContainer.mapView.setClickable(true);
 		MapContainer.mapView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));;
 	}
+
+	public int getCurrMenu() {
+		return currMenu;
+	}
+	
+	
 }

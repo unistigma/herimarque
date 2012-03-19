@@ -1,4 +1,4 @@
-package net.julnamoo.swm.herimarque;
+package net.julnamoo.swm.herimarque.common;
 
 import net.julnamoo.swm.herimarque.view.HeritageImageView;
 import android.app.Activity;

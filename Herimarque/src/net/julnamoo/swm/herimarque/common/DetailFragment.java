@@ -1,4 +1,4 @@
-package net.julnamoo.swm.herimarque;
+package net.julnamoo.swm.herimarque.common;
 
 import java.io.IOException;
 import java.io.InputStream;

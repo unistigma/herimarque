@@ -4,6 +4,8 @@ import java.util.List;
 
 import net.julnamoo.R;
 import net.julnamoo.R.layout;
+import net.julnamoo.swm.herimarque.SubMainActivity;
+import net.julnamoo.swm.herimarque.common.TurnOnGPSFragment;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
 import net.julnamoo.swm.herimarque.model.Item;
 import net.julnamoo.swm.herimarque.util.Constants;
@@ -47,21 +49,25 @@ public class NearFragment extends Fragment implements OnTouchListener{
 	protected Context mContext;
 	protected MapView mapView;
 	protected MapController mapController;
+	
+	//for overlay
+	protected List<Overlay> mapOverlay;
 	protected HeritageItemizedOverlay heritageOverlay;
 	protected LocationItemizedOverlay locationOverlay;
 
+	//for update location
 	protected long minTime;
 	protected float minDistance;
 	protected LocationManager locationManager;
 
-	protected List<Overlay> mapOverlay;
 
 	//for detecting event
 	protected int currZoom;
 	protected GeoPoint currStart;
-	protected ImageView progress;
 	
 	protected int menu;
+	
+	private TurnOnGPSFragment gpsStarter;
 
 	public NearFragment(Context mContext, long minTime, float minDistance, int menu) 
 	{
@@ -94,17 +100,12 @@ public class NearFragment extends Fragment implements OnTouchListener{
 		Log.d(tag, "create nearFragment view");
 		mapView = MapContainer.mapView;
 
+		//set mapview parent
 		ViewGroup vg = (ViewGroup) mapView.getParent();
 		if(vg != null)
 		{
 			vg.removeView(mapView);
 		}
-		//set progress
-		progress = new ImageView(getActivity().getApplicationContext());
-		progress.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.progress));
-		progress.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL));
-		progress.setVisibility(View.INVISIBLE);
-		mapView.addView(progress);
 		//get heritages
 		currStart = mapView.getProjection().fromPixels(0, 0);
 		new LoadMapItems().execute();
@@ -136,13 +137,11 @@ public class NearFragment extends Fragment implements OnTouchListener{
 		mapController.animateTo(point);
 		currZoom = 18;
 		setMyLocationOverlay(point);
-		//expect heritageOverlay is updated
-		mapOverlay.add(heritageOverlay);
 
 		//add the Button for moving to the current location
 		Button getMyLoc = new Button(mContext);
 		getMyLoc.setBackgroundDrawable(getResources().getDrawable(R.drawable.myloc));
-		LayoutParams sizeParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.RIGHT | Gravity.TOP);
+		LayoutParams sizeParam = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP);
 		getMyLoc.setLayoutParams(sizeParam);
 		getMyLoc.setOnClickListener(new OnClickListener() {
 			@Override
@@ -188,7 +187,7 @@ public class NearFragment extends Fragment implements OnTouchListener{
 		for(String provider : providers)
 		{
 			Log.d(tag, "Enroll the provider " + provider);
-			locationManager.requestLocationUpdates(provider, 5, 15, locationListener);
+			locationManager.requestLocationUpdates(provider, minTime, minDistance, locationListener);
 		}
 		super.onResume();
 	}
@@ -202,14 +201,19 @@ public class NearFragment extends Fragment implements OnTouchListener{
 		}
 
 		@Override
-		public void onProviderEnabled(String provider) {
-			Log.d(tag, "Enabled gps");
-		}
+		public void onProviderEnabled(String provider) {}
 
 		@Override
-		public void onProviderDisabled(String provider) {
+		public void onProviderDisabled(String provider) 
+		{
 			Log.d(provider, "Disabled gps");
-			Toast.makeText(mContext, "GPS를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
+			if(((SubMainActivity) getActivity()).getCurrMenu() == 1 && (provider.equals(LocationManager.GPS_PROVIDER) || provider.equals(LocationManager.NETWORK_PROVIDER )))
+			{
+				if(!gpsStarter.isVisible())
+				{
+					gpsStarter.show(getFragmentManager(), "");
+				}
+			}
 		}
 
 		@Override
@@ -302,10 +306,12 @@ public class NearFragment extends Fragment implements OnTouchListener{
 
 	class LoadMapItems extends AsyncTask<Void, Void, Void>
 	{
+		LoadingFragment loadingFragment;
 		@Override
 		protected void onPreExecute() 
 		{
-			progress.setVisibility(View.VISIBLE);
+			loadingFragment = new LoadingFragment();
+			loadingFragment.show(getFragmentManager(), "주변 문화유산을 찾는 중...");
 		}
 
 		@Override
@@ -374,8 +380,7 @@ public class NearFragment extends Fragment implements OnTouchListener{
 			{
 				mapOverlay.add(heritageOverlay);
 			}
-
-			progress.setVisibility(View.INVISIBLE);
+			loadingFragment.dismiss();
 		}
 
 		private boolean isExist(GeoPoint check)
