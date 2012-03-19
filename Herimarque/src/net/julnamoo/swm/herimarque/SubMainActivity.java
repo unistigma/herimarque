@@ -4,8 +4,8 @@ import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.util.ExitExecutor;
 import net.julnamoo.swm.herimarque.util.MapContainer;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.view.ViewPager.LayoutParams;
 import android.util.AttributeSet;
@@ -14,6 +14,7 @@ import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -53,6 +54,7 @@ public class SubMainActivity extends FragmentActivity {
 		configButt.setOnClickListener(flipper);
 
 		fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
+		
 		//set tab button
 		int menu = getIntent().getIntExtra("menu", R.id.infoButt);
 		changeView(findViewById(menu));
@@ -69,30 +71,24 @@ public class SubMainActivity extends FragmentActivity {
 			
 			if(getSupportFragmentManager().getBackStackEntryCount() > 0)
 			{
-				int count = getSupportFragmentManager().getBackStackEntryCount();
-				Log.d(tag, "current back stack entry count " + count);
-				BackStackEntry entry = getSupportFragmentManager().getBackStackEntryAt(count-1);
-				
+				Log.d(tag, "curr menu : " + currMenu);
+				Fragment target = null;
 				switch (currMenu) {
 				case 0:
-					if(entry.getName() == "info")
-					{
-						getSupportFragmentManager().popBackStackImmediate();
-						Log.d(tag, "info poped");
-					}else
-					{
-						Log.d(tag, "at entry:"+entry.getName() + ", at info");
-					}
+					Log.d(tag, "at info, count " + getSupportFragmentManager().getBackStackEntryCount());
+					target = getSupportFragmentManager().findFragmentById(R.id.info_main);
+//					getSupportFragmentManager().beginTransaction().remove(target);
+//					getSupportFragmentManager().beginTransaction().commitAllowingStateLoss();
+					target.getFragmentManager().popBackStackImmediate();
+					Log.d(tag, "at info, count " + getSupportFragmentManager().getBackStackEntryCount());
 					break;
 				case 1 :
-					if(entry.getName() == "create")
-					{
-						getSupportFragmentManager().popBackStackImmediate();
-						Log.d(tag, "create poped");
-					}else
-					{
-						Log.d(tag, "at entry:"+entry.getName() + ", at create");
-					}
+					Log.d(tag, "at create, count " + getSupportFragmentManager().getBackStackEntryCount());
+					target= getSupportFragmentManager().findFragmentById(R.id.create_main);
+//					getSupportFragmentManager().beginTransaction().remove(target);
+//					getSupportFragmentManager().beginTransaction().commitAllowingStateLoss();
+					target.getFragmentManager().popBackStackImmediate();
+					Log.d(tag, "at create, count " + getSupportFragmentManager().getBackStackEntryCount());
 					break;
 				case 2 : 
 					break;
@@ -120,6 +116,62 @@ public class SubMainActivity extends FragmentActivity {
 		return super.onKeyDown(keyCode, event);
 	}
 	
+	OnKeyListener backListener = new OnKeyListener() {
+		
+		@Override
+		public boolean onKey(View v, int keyCode, KeyEvent event) {
+			if( keyCode == KeyEvent.KEYCODE_BACK )
+			{
+				Log.d(tag, "back : " + event.getRepeatCount());
+				
+//				if(getSupportFragmentManager().getBackStackEntryCount() > 0)
+//				{
+//					Log.d(tag, "curr menu : " + currMenu);
+//					Fragment target = null;
+//					switch (currMenu) {
+//					case 0:
+//						Log.d(tag, "at info, count " + getSupportFragmentManager().getBackStackEntryCount());
+//						target = getSupportFragmentManager().findFragmentById(R.id.info_main);
+//						getSupportFragmentManager().beginTransaction().remove(target);
+//						getSupportFragmentManager().beginTransaction().commitAllowingStateLoss();
+////						target.getFragmentManager().popBackStackImmediate();
+//						Log.d(tag, "at info, count " + getSupportFragmentManager().getBackStackEntryCount());
+//						break;
+//					case 1 :
+//						Log.d(tag, "at create, count " + getSupportFragmentManager().getBackStackEntryCount());
+//						target= getSupportFragmentManager().findFragmentById(R.id.create_main);
+//						getSupportFragmentManager().beginTransaction().remove(target);
+//						getSupportFragmentManager().beginTransaction().commitAllowingStateLoss();
+////						target.getFragmentManager().popBackStackImmediate();
+//						Log.d(tag, "at create, count " + getSupportFragmentManager().getBackStackEntryCount());
+//						break;
+//					case 2 : 
+//						break;
+//					case 3 :
+//						break;
+//					default:
+//						break;
+//					}
+//					return true;
+//				}
+				
+				//finish the application
+				if(ee.isFinish()) 
+				{
+					Log.d(tag, "finish");
+					finish();
+				}else
+				{
+					Toast.makeText(getApplicationContext(), "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+					ee.start();
+					ee.setFinish(true);
+					return true;
+				}
+			}
+			return false;
+		}
+	};
+	
 	OnClickListener flipper = new OnClickListener() {
 
 		@Override
@@ -140,9 +192,6 @@ public class SubMainActivity extends FragmentActivity {
 			f.setVisibility(View.INVISIBLE);
 		}
 		
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-
 		switch (v.getId()) {
 		case R.id.infoButt:
 			Log.d(tag, "info pushed");

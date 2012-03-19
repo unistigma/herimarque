@@ -1,7 +1,5 @@
 package net.julnamoo.swm.herimarque.info;
 
-import org.apache.http.util.VersionInfo;
-
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.DetailFragment;
 import net.julnamoo.swm.herimarque.adapter.HeritageListAdapter;
@@ -13,7 +11,6 @@ import net.julnamoo.swm.herimarque.view.SearchBar;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -23,16 +20,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
-import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AbsListView;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class SearchResultFragment extends Fragment {
@@ -136,6 +131,7 @@ public class SearchResultFragment extends Fragment {
 		queryBuilder.append(Constants.TABLE_NAME).append(" WHERE ( crltsDc like '%").append(query).append("%');");
 		String execSQL = queryBuilder.toString();
 		cursor = db.rawQuery(execSQL, null);
+		getActivity().startManagingCursor(cursor);
 		Log.d(tag, "setCursor : " + execSQL);
 	}
 
@@ -178,7 +174,9 @@ public class SearchResultFragment extends Fragment {
 		queryBuilder.append(Constants.TABLE_NAME).append(" WHERE ( crltsDc like '%").append(query).append("%');");
 		String execSQL = queryBuilder.toString();
 		Cursor cursor2 = db.rawQuery(execSQL, null);
-
+		getActivity().startManagingCursor(cursor2);
+		sqlHelper.close();
+		
 		ListView l = (ListView) getView().findViewById(R.id.list);
 		if(cursor2.getCount() > 0)
 		{
