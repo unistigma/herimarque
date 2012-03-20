@@ -11,8 +11,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="10dp"
         android:layout_toLeftOf="@+id/create_main_menu"
-        android:background="@drawable/start_shape"
-        android:text="@string/start"
+        android:background="@drawable/create_menu_selector"
         android:textSize="18sp" />
 
     <Button
@@ -41,8 +40,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:layout_margin="0px"
-            android:background="@drawable/start_shape"
-            android:text="@string/car"
+            android:background="@drawable/ic_car2"
             android:textSize="18sp" />
 
         <Button
@@ -51,8 +49,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:layout_margin="0px"
-            android:background="@drawable/start_shape"
-            android:text="@string/bike"
+            android:background="@drawable/ic_bike2"
             android:textSize="18sp" />
 
         <Button
@@ -61,8 +58,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:layout_margin="0px"
-            android:background="@drawable/start_shape"
-            android:text="@string/walk"
+            android:background="@drawable/ic_walk2"
             android:textSize="18sp" />
 
         <Button
@@ -71,8 +67,18 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:layout_margin="0px"
-            android:background="@drawable/start_shape"
+            android:background="@drawable/create_menu_selector"
             android:text="@string/create_newtimeline"
+            android:textSize="18sp" />
+        
+          <Button
+            android:id="@+id/create_cancle"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_margin="0px"
+            android:background="@drawable/create_menu_selector"
+            android:text="@string/cancle"
             android:textSize="18sp" />
     </LinearLayout>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="basic">#EDF2C4</color>
+    <color name="basic">#FFFCDB</color>
     <color name="tabBackground">#F6BA62</color>
     <color name="brown">#A35100</color>
     <color name="paper">#F0EAEB</color>

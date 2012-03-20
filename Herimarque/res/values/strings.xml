@@ -77,14 +77,16 @@
     <string name="info_detail_sns">공유하기</string>
     
     <!-- For create Service -->
-    <string name="start">Start</string>
+    <string name="start">출발</string>
+    <string name="stop">쉬어가기</string>
+    <string name="cancle">그만두기</string>
+    <string name="finish">끝내기</string>
     <string name="car">자동차</string>
     <string name="bike">자전거</string>
     <string name="walk">도보</string>
 
     <string name="create">나만의 문화유산 만들기</string>
     <string name="create_newtimeline">체크인</string>
-    <string name="finish">Finish</string>
     <string name="create_desc1">나만의 문화유산을\n만들어 봅시다!</string>
     <string name="create_desc2">이번 여행의 제목은 무엇인가요?</string>
     

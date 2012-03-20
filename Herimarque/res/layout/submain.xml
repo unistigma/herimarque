@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@color/tabBackground"
         android:orientation="horizontal"
+        android:paddingBottom="5dp"
         android:paddingTop="0px" >
 
         <Button
