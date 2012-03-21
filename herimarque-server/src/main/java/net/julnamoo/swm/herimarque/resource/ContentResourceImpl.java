@@ -81,7 +81,7 @@ public class ContentResourceImpl implements ContentResource {
 			try 
 			{
 				items = upload.parseRequest(request);
-				logger.debug("Total img count is {}", items.size());
+				logger.debug("Total params count is {}", items.size());
 			} catch (FileUploadException e) 
 			{
 				e.printStackTrace();
@@ -98,7 +98,7 @@ public class ContentResourceImpl implements ContentResource {
 			
 			for(FileItem item : items)
 			{
-				logger.error("field name is {}, contentType is {}",item.getFieldName(), item.getContentType());
+				logger.debug("field name is {}, contentType is {}",item.getFieldName(), item.getContentType());
 				if(!item.isFormField() && item.getSize() > 0)
 				{
 					String fileName = processFileName(item.getName());
@@ -129,7 +129,7 @@ public class ContentResourceImpl implements ContentResource {
 						//set up final path
 						fpath = pathBuilder.append(fileName).toString();
 					}
-					logger.error("save the file {}", fpath);
+					logger.debug("save the file {}", fpath);
 					try 
 					{
 						File target =new File(fpath); 

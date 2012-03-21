@@ -33,7 +33,8 @@ public class TestEncryption
 	
 	@Test
 	public void encrypt(){
-		System.out.println(MD5.digest("somasoma"));
+		System.out.println(HerimarqueEncryptor.encryption("juliesmxlskan"));
+		System.out.println(HerimarqueEncryptor.encryption("tusersomasoma"));
 	}
 
 }
