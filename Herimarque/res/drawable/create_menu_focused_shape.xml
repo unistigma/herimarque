@@ -10,10 +10,10 @@
         android:right="6dp"
         android:top="6dp" />
 
-    <solid android:color="@color/brown" />
+    <solid android:color="@color/tabBackgroundfocused" />
 
     <stroke
-        android:width="5dp"
+        android:width="2dp"
         android:color="@color/paper_border" />
 
 </shape>

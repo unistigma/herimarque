@@ -84,6 +84,9 @@
     <string name="car">자동차</string>
     <string name="bike">자전거</string>
     <string name="walk">도보</string>
+    <string name="addcomment">코멘트를 추가해주세요</string>
+    <string name="ok">확인</string>
+    <string name="cancle2">취소</string>
 
     <string name="create">나만의 문화유산 만들기</string>
     <string name="create_newtimeline">체크인</string>

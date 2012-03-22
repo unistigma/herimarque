@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_margin="20dp"
         android:padding="5dip" >
 
         <TextView
@@ -18,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="3dip"
-            android:background="#FFCC00"
+            android:background="@drawable/list_item_container"
             android:gravity="center"
             android:padding="5dip"
             android:text="@string/info_our_list"
@@ -30,10 +31,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
-            android:background="#FFCE84"
-            android:scaleType="center"
-            android:contentDescription="@string/hello"
             android:clickable="true"
+            android:contentDescription="@string/hello"
+            android:scaleType="center"
             android:src="@drawable/ic_launcher" />
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="3dip"
-            android:background="#FFF8EF"
+            android:background="@drawable/list_item_container"
             android:gravity="center"
             android:padding="5dip"
             android:text="@string/info_our_list"
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="3dip"
-            android:background="#FFF8EF"
+            android:background="@drawable/list_item_container"
             android:gravity="center"
             android:padding="5dip"
             android:text="@string/info_our_list"
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="3dip"
-            android:background="#FFF8EF"
+            android:background="@drawable/list_item_container"
             android:gravity="center"
             android:padding="5dip"
             android:text="@string/info_our_list"
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="3dip"
-            android:background="#FFF8EF"
+            android:background="@drawable/list_item_container"
             android:padding="5dip" />
     </LinearLayout>
 

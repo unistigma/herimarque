@@ -13,7 +13,7 @@
     <solid android:color="@color/basic" />
 
     <stroke
-        android:width="5dp"
+        android:width="2dp"
         android:color="@color/paper_border" />
 
 </shape>

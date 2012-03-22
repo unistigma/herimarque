@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/myphoto"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:layout_gravity="center"
+        android:background="@drawable/list_item_container"
+        android:scaleType="center" />
+
+    <EditText
+        android:id="@+id/myphotocomment"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="@string/addcomment"
+        android:maxLines="3" />
+
+    <Button
+        android:id="@+id/create_comment_ok"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/create_menu_selector"
+        android:textSize="20sp"
+        android:text="@string/ok" />
+
+</LinearLayout>

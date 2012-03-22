@@ -1,7 +1,7 @@
 package net.julnamoo.swm.herimarque.temp;
 
 import net.julnamoo.R;
-import net.julnamoo.swm.herimarque.model.Item;
+import net.julnamoo.swm.herimarque.model.Heritage;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +15,7 @@ public class InfoDetailHeritage extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.info_detail);
 		
-		Item item = (Item) getIntent().getSerializableExtra("item");
+		Heritage item = (Heritage) getIntent().getSerializableExtra("item");
 		setDetail(item);
 		
 		//for test 
@@ -24,7 +24,7 @@ public class InfoDetailHeritage extends Activity {
 		
 	}
 	
-	private void setDetail(Item item)
+	private void setDetail(Heritage item)
 	{
 		TextView tv;
 		String value;

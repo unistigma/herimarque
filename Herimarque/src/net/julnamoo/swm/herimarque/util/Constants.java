@@ -51,5 +51,6 @@ public class Constants {
 
 	public static final String DB_NAME = "heritage";
 	public static final int DB_VERSION = 1;
-	public static final String TABLE_NAME = "heritage";
+	public static final String HERITAGE_TABLE_NAME = "heritage";
+	public static final String TRACKING_TABLE_LANE = "herimarque";
 }

@@ -2,27 +2,29 @@ package net.julnamoo.swm.herimarque.common;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.annotation.Target;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.info.LoadingFragment;
-import net.julnamoo.swm.herimarque.model.Item;
+import net.julnamoo.swm.herimarque.model.Heritage;
 import net.julnamoo.swm.herimarque.view.HeritageImageView;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -31,14 +33,14 @@ public class DetailFragment extends Fragment {
 
 	private String tag = DetailFragment.class.getSimpleName();
 
-	private Item item;
+	private Heritage item;
 	private int targetFragment;
 
 	//for async task
 	private HeritageImageView image;
 	private Context mContext;
 
-	public DetailFragment(Item item, Context mContext, int targetFragment)
+	public DetailFragment(Heritage item, Context mContext, int targetFragment)
 	{
 		this.item = item;
 		this.mContext = mContext;
@@ -53,7 +55,7 @@ public class DetailFragment extends Fragment {
 		if(savedInstanceState != null)
 		{
 			Log.d(tag, "check the savedInstanceState, itemCd:" + item.getItemCd());
-			item = (Item) savedInstanceState.get("item");
+			item = (Heritage) savedInstanceState.get("item");
 		}
 	}
 
@@ -184,7 +186,8 @@ public class DetailFragment extends Fragment {
 				conn.connect();
 				InputStream is = conn.getInputStream();
 				bmImg = BitmapFactory.decodeStream(is);
-				width = image.getWidth();
+				Display display = ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+				width = display.getWidth() * 4/5;
 				Log.d(tag, "before"+item.getCrltsNm()+" >>bitmap width :" + bmImg.getWidth() + ", imageview width : " + width);
 			} catch (MalformedURLException e) 
 			{
@@ -206,11 +209,9 @@ public class DetailFragment extends Fragment {
 
 		protected void onPostExecute(Void result) 
 		{
-			if(bmImg == null) return; //then set another image for empty
-
-			if(error)
+			if(error || bmImg == null) 
 			{
-				bmImg = BitmapFactory.decodeResource(getResources(), R.drawable.main_info_selector);
+				bmImg = BitmapFactory.decodeResource(getResources(), R.drawable.spare_image);
 			}
 			int height = width * bmImg.getHeight() / bmImg.getWidth();
 			Log.d(url, "get new width, height : " + width + "," + height);

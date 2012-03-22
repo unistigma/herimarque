@@ -7,9 +7,9 @@ import net.julnamoo.R.layout;
 import net.julnamoo.swm.herimarque.SubMainActivity;
 import net.julnamoo.swm.herimarque.common.TurnOnGPSFragment;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
-import net.julnamoo.swm.herimarque.model.Item;
+import net.julnamoo.swm.herimarque.model.Heritage;
 import net.julnamoo.swm.herimarque.util.Constants;
-import net.julnamoo.swm.herimarque.util.CursorToItem;
+import net.julnamoo.swm.herimarque.util.CursorToHeritage;
 import net.julnamoo.swm.herimarque.util.MapContainer;
 import net.julnamoo.swm.herimarque.view.HeritageItemizedOverlay;
 import net.julnamoo.swm.herimarque.view.LocationItemizedOverlay;
@@ -342,7 +342,7 @@ public class NearFragment extends Fragment implements OnTouchListener{
 
 			//build query
 			StringBuilder query = new StringBuilder("SELECT * FROM ");
-			query.append(Constants.TABLE_NAME);
+			query.append(Constants.HERITAGE_TABLE_NAME);
 			query.append(" WHERE XCnts > ").append(topRightLong).append(" AND XCnts < ").append(bottomLeftLong);
 			query.append(" AND YCnts > ").append(bottomLeftLat).append(" AND YCnts < ").append(topRightLat);
 			query.append(" LIMIT 200;");

@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Julie_air
  *
  */
-public class Item implements Serializable{
+public class Heritage implements Serializable{
 
 	//17 fields
 	String crltsDc;
@@ -28,6 +28,10 @@ public class Item implements Serializable{
 	String signguNm;
 	String XCnts;
 	String YCnts;
+	String sin_x_rad;
+	String cos_x_rad;
+	String sin_y_rad;
+	String cos_y_rad;
 	
 	public String getCrltsDc() {
 		return crltsDc;
@@ -132,6 +136,30 @@ public class Item implements Serializable{
 		YCnts = yCnts;
 	}
 	
+	public String getSin_x_rad() {
+		return sin_x_rad;
+	}
+	public void setSin_x_rad(String sin_x_rad) {
+		this.sin_x_rad = sin_x_rad;
+	}
+	public String getCos_x_rad() {
+		return cos_x_rad;
+	}
+	public void setCos_x_rad(String cos_x_rad) {
+		this.cos_x_rad = cos_x_rad;
+	}
+	public String getSin_y_rad() {
+		return sin_y_rad;
+	}
+	public void setSin_y_rad(String sin_y_rad) {
+		this.sin_y_rad = sin_y_rad;
+	}
+	public String getCos_y_rad() {
+		return cos_y_rad;
+	}
+	public void setCos_y_rad(String cos_y_rad) {
+		this.cos_y_rad = cos_y_rad;
+	}
 	@Override
 	public String toString() {
 		return crltsNm;

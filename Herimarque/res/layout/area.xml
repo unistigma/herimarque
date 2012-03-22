@@ -1,38 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/area"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="@color/basic"
-    android:id="@+id/area">
-    
-    <ImageView 
-        android:id="@+id/territory"
-        android:src="@drawable/map"
+    android:layout_height="match_parent"
+    android:background="@color/areaback"
+    android:orientation="vertical" >
+
+    <net.julnamoo.swm.herimarque.view.SearchBar
+        android:id="@+id/searchbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:contentDescription="전국지도"/>
+        android:layout_height="fill_parent" >
 
-    <Button
-        android:id="@+id/seoul"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="71dp"
-        android:layout_marginTop="90dp"
-        android:background="@drawable/seoul" />
+        <ImageView
+            android:id="@+id/territory"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="bottom"
+            android:contentDescription="전국지도"
+            android:src="@drawable/map" />
 
-    <Button
-        android:id="@+id/kyeongki"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="95dp"
-        android:layout_marginTop="70dp"
-        android:background="@drawable/kyeongki" />
-      <Button
-        android:id="@+id/incheon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/incheon" />
+        <ImageView
+            android:id="@+id/jejuisland"
+            android:layout_width="124dp"
+            android:layout_height="91dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/jejumap" />
 
-</FrameLayout>
+        <Button
+            android:id="@+id/incheon"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="130dp"
+            android:background="@drawable/incheon"
+            android:tag="23" />
+
+        <Button
+            android:id="@+id/seoul"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignBottom="@+id/incheon"
+            android:layout_marginBottom="30dp"
+            android:layout_toRightOf="@+id/incheon"
+            android:background="@drawable/seoul"
+            android:tag="11" />
+
+        <Button
+            android:id="@+id/kyeongki"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_above="@+id/seoul"
+            android:layout_alignRight="@+id/seoul"
+            android:layout_marginRight="19dp"
+            android:background="@drawable/kyeongki"
+            android:tag="31" />
+
+        <Button
+            android:id="@+id/kangwon"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@+id/kyeongki"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/kangwon"
+            android:tag="32" />
+
+        <Button
+            android:id="@+id/chungnam"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/incheon"
+            android:layout_marginLeft="14dp"
+            android:background="@drawable/chungnam"
+            android:tag="34" />
+
+        <Button
+            android:id="@+id/daejeon"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignLeft="@+id/kyeongki"
+            android:layout_centerVertical="true"
+            android:background="@drawable/daejeon"
+            android:tag="25" />
+
+        <Button
+            android:id="@+id/chungbuk"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/seoul"
+            android:layout_toLeftOf="@+id/kangwon"
+            android:background="@drawable/chungbuk"
+            android:tag="33" />
+
+        <Button
+            android:id="@+id/kyeongbuk"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignLeft="@+id/kangwon"
+            android:layout_alignTop="@+id/chungbuk"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/kyeongbuk"
+            android:tag="37" />
+
+        <Button
+            android:id="@+id/daegu"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/kyeongbuk"
+            android:layout_marginTop="11dp"
+            android:layout_toLeftOf="@+id/jejuisland"
+            android:background="@drawable/daegu"
+            android:tag="22" />
+
+        <Button
+            android:id="@+id/cheonbuk"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/daegu"
+            android:layout_marginTop="50dp"
+            android:layout_toRightOf="@+id/incheon"
+            android:background="@drawable/cheonbuk"
+            android:tag="35" />
+
+        <Button
+            android:id="@+id/cheonnam"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_above="@+id/jejuisland"
+            android:layout_alignLeft="@+id/chungnam"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/cheonnam"
+            android:tag="36" />
+
+        <Button
+            android:id="@+id/kwangju"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_above="@+id/cheonnam"
+            android:layout_toRightOf="@+id/incheon"
+            android:background="@drawable/kwangju"
+            android:tag="24" />
+
+        <Button
+            android:id="@+id/kyeongnam"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignBottom="@+id/kwangju"
+            android:layout_marginBottom="26dp"
+            android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@+id/cheonbuk"
+            android:background="@drawable/kyeongnam"
+            android:tag="38" />
+
+        <Button
+            android:id="@+id/pusan"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/cheonbuk"
+            android:layout_toRightOf="@+id/kangwon"
+            android:background="@drawable/pusan"
+            android:tag="21" />
+
+        <Button
+            android:id="@+id/jeju"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@+id/jejuisland"
+            android:layout_marginTop="14dp"
+            android:layout_toRightOf="@+id/pusan"
+            android:background="@drawable/jaeju"
+            android:tag="39" />
+    </RelativeLayout>
+
+</LinearLayout>

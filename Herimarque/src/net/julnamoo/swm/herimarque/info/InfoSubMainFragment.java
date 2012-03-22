@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView.OnScrollListener;
@@ -57,12 +58,6 @@ public class InfoSubMainFragment extends Fragment {
 		switch (menu) {
 		//for kind
 		case 0:
-//			View v = inflater.inflate(R.layout.grid, container, false);
-//			Log.d(tag, "set kindImageAdapter");
-//			GridView gv = (GridView) v.findViewById(R.id.category_grid);
-//			gv.setAdapter(new KindImageAdapter(inflater.getContext()));
-//			gv.setOnItemClickListener(kindItemClickListener);
-//			return gv;
 			View v = inflater.inflate(R.layout.list, container, false);
 			//for manage fragment lifecycle
 			v.setOnKeyListener(onBackPressed);
@@ -82,15 +77,25 @@ public class InfoSubMainFragment extends Fragment {
 		//for area
 		case 1:
 			Log.d(tag, "set ctrdArrayAdapter");
-			v = inflater.inflate(R.layout.list, container, false);
+			v = inflater.inflate(R.layout.area, container, false);
 			//for manage fragment lifecycle
 			v.setOnKeyListener(onBackPressed);
+			v.findViewById(R.id.seoul).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.incheon).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.kyeongki).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.kangwon).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.chungnam).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.chungbuk).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.daejeon).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.cheonbuk).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.cheonnam).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.kwangju).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.kyeongbuk).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.kyeongnam).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.daegu).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.pusan).setOnClickListener(areaButtonClickListener);
+			v.findViewById(R.id.jeju).setOnClickListener(areaButtonClickListener);
 			
-			ListView l = (ListView) v.findViewById(R.id.list);
-			l.setAdapter(new StringArrayAdapter(inflater.getContext(), R.layout.list_item_1, Constants.ctrdName));
-			l.setOnItemClickListener(ctrdClickListener);
-			l.setOnScrollListener(scrollListener);
-			//set searchbar listener
 			searchBar = (SearchBar) v.findViewById(R.id.searchbar);
 			onKeyListener = new SearchKeyListener(searchBar, getFragmentManager(), inflater.getContext());
 			onButtonListener = new SearchButtonListener(searchBar, getFragmentManager(), inflater.getContext());
@@ -160,7 +165,6 @@ public class InfoSubMainFragment extends Fragment {
 				int visibleItemCount, int totalItemCount) 
 		{}
 	};
-	
 	private void hideKeyBoard()
 	{
 		EditText editText = searchBar.getQueryStringView();
@@ -168,6 +172,20 @@ public class InfoSubMainFragment extends Fragment {
 		imm.hideSoftInputFromWindow(editText.getApplicationWindowToken(), 0);
 	}
 	
+	OnClickListener areaButtonClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) 
+		{
+			Log.d(tag, "area, selected : "+v.getTag());
+			Fragment f = new AreaFragment(Integer.valueOf((String) v.getTag()), getActivity().getApplicationContext());
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			ft.replace(R.id.info_main, f, "info");
+			ft.addToBackStack("info");
+			ft.commit();
+		}
+	};
 	OnKeyListener onBackPressed = new OnKeyListener() {
 		
 		@Override

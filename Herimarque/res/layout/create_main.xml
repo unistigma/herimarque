@@ -7,79 +7,81 @@
     <Button
         android:id="@+id/create_start"
         android:layout_width="80dp"
-        android:layout_height="53dp"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="10dp"
         android:layout_toLeftOf="@+id/create_main_menu"
-        android:background="@drawable/create_menu_selector"
-        android:textSize="18sp" />
+        android:background="@drawable/create_start_selector" />
 
     <Button
         android:id="@id/create_main_menu"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignBaseline="@id/create_start"
         android:layout_alignParentRight="true"
         android:background="@drawable/ic_menu"
-        android:gravity="center"
-        android:textSize="18sp" />
+        android:gravity="center" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/create_main_submenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="190dp"
+        android:layout_height="130dp"
         android:layout_above="@id/create_start"
-        android:layout_marginBottom="20dp"
+        android:layout_alignRight="@id/create_main_menu"
+        android:layout_marginBottom="10dp"
         android:layout_marginRight="5dp"
-        android:orientation="vertical"
+        android:background="@drawable/create_menu_unfocused_shape"
         android:visibility="invisible" >
 
         <Button
             android:id="@+id/create_car"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_margin="0px"
-            android:background="@drawable/ic_car2"
+            android:layout_toLeftOf="@+id/create_bike"
+            android:background="@drawable/ic_car_selector" />
+
+        <Button
+            android:id="@id/create_bike"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_above="@+id/create_cancle"
+            android:layout_margin="0px"
+            android:layout_toLeftOf="@+id/create_walk"
+            android:background="@drawable/ic_bike_selector"
             android:textSize="18sp" />
 
         <Button
-            android:id="@+id/create_bike"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
+            android:id="@id/create_walk"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_above="@+id/newtimeline"
+            android:layout_alignParentRight="true"
             android:layout_margin="0px"
-            android:background="@drawable/ic_bike2"
+            android:background="@drawable/ic_walk_selector"
             android:textSize="18sp" />
 
         <Button
-            android:id="@+id/create_walk"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
+            android:id="@+id/create_turnoffgps"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
             android:layout_gravity="right"
             android:layout_margin="0px"
-            android:background="@drawable/ic_walk2"
-            android:textSize="18sp" />
+            android:layout_toLeftOf="@+id/newtimeline"
+            android:background="@drawable/ic_rest_selector"
+            android:textSize="18sp"
+            android:visibility="invisible" />
 
         <Button
-            android:id="@+id/newtimeline"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
+            android:id="@id/newtimeline"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_margin="0px"
-            android:background="@drawable/create_menu_selector"
-            android:text="@string/create_newtimeline"
+            android:background="@drawable/ic_checkin_selector"
             android:textSize="18sp" />
-        
-          <Button
-            android:id="@+id/create_cancle"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:layout_margin="0px"
-            android:background="@drawable/create_menu_selector"
-            android:text="@string/cancle"
-            android:textSize="18sp" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

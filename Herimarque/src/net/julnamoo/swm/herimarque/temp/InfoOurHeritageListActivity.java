@@ -3,9 +3,9 @@ package net.julnamoo.swm.herimarque.temp;
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.adapter.HeritageListAdapter;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
-import net.julnamoo.swm.herimarque.model.Item;
+import net.julnamoo.swm.herimarque.model.Heritage;
 import net.julnamoo.swm.herimarque.util.Constants;
-import net.julnamoo.swm.herimarque.util.CursorToItem;
+import net.julnamoo.swm.herimarque.util.CursorToHeritage;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -45,7 +45,7 @@ public class InfoOurHeritageListActivity extends Activity {
 		
 		SQLiteDatabase db = new HeritageSQLiteHelper(InfoOurHeritageListActivity.this).getReadableDatabase();
 		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT * FROM ").append(Constants.TABLE_NAME);
+		sb.append("SELECT * FROM ").append(Constants.HERITAGE_TABLE_NAME);
 //		sb.append(" WHERE ").append("itemCd").append("='").append(Constants.kindCode[select]).append("' ");
 		sb.append("ORDER BY crltsNo ASC").append(";");
 		
@@ -76,7 +76,7 @@ public class InfoOurHeritageListActivity extends Activity {
 			
 			//connect the tuple to item and pass it with intent
 			Intent intent = new Intent(InfoOurHeritageListActivity.this, InfoDetailHeritage.class);
-			Item item = CursorToItem.cursor2Item(cursor);
+			Heritage item = CursorToHeritage.cursor2heritage(cursor);
 			intent.putExtra("item", item);
 			Log.d(tag, "Set intent extra with " + item.getCrltsNm());
 			startActivity(intent);

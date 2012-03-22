@@ -1,20 +1,24 @@
 package net.julnamoo.swm.herimarque;
 
+import java.io.File;
+
 import net.julnamoo.R;
+import net.julnamoo.swm.herimarque.create.CancleDialogFragment;
+import net.julnamoo.swm.herimarque.create.CheckInFragment;
 import net.julnamoo.swm.herimarque.util.ExitExecutor;
 import net.julnamoo.swm.herimarque.util.MapContainer;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.view.ViewPager.LayoutParams;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -140,11 +144,13 @@ public class SubMainActivity extends FragmentActivity {
 		switch (v.getId()) {
 		case R.id.infoButt:
 			Log.d(tag, "info pushed");
+			hideMapChilderen();
 			findViewById(R.id.info_main).setVisibility(View.VISIBLE);
 			currMenu = 0;
 			break;
 		case R.id.createButt:
 			Log.d(tag, "create pushed");
+			showMapChildren();
 			findViewById(R.id.create_main).setVisibility(View.VISIBLE);
 			currMenu = 1;
 			break;
@@ -163,6 +169,25 @@ public class SubMainActivity extends FragmentActivity {
 		}
 	}
 	
+	private void hideMapChilderen()
+	{
+		MapView map = MapContainer.mapView;
+		for(int i = 0; i < map.getChildCount(); ++i)
+		{
+			View view = map.getChildAt(i);
+			view.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	private void showMapChildren()
+	{
+		MapView map = MapContainer.mapView;
+		for(int i = 0; i < map.getChildCount(); ++i)
+		{
+			View view = map.getChildAt(i);
+			view.setVisibility(View.VISIBLE);
+		}
+	}
 	@Override
 	public boolean isRouteDisplayed() 
 	{
@@ -182,5 +207,52 @@ public class SubMainActivity extends FragmentActivity {
 		return currMenu;
 	}
 	
-	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		//TODO
+//		if(resultCode == Activity.RESULT_OK)
+//		{
+//			switch (requestCode) 
+//			{
+//			case CheckInFragment.PICK_FROM_CAMERA : //from camera
+//				Log.d(tag, "from camera");
+//				break;
+//			case CheckInFragment.PICK_FROM_ALBUM : //from gallery
+//				Log.d(tag, "from album");
+//				break;
+//			default:
+//				break;
+//			}
+//			
+//			Uri fileUri = data.getData();
+//			Bundle extras = data.getExtras();
+//			if(extras != null)
+//			{
+//				Bitmap photo = extras.getParcelable("data");
+//			}
+//
+//			// delete temp file
+//			File f = new File(fileUri.getPath());
+//			if(f.exists())
+//			{
+//				f.delete();
+//			}
+//			
+//		}else
+//		{
+//			Log.d(tag, "action cancled, open cancle dialog");
+//			new CancleDialogFragment(SubMainActivity.this).show(getSupportFragmentManager(), null);
+//		}
+//		super.onActivityResult(requestCode, resultCode, data);
+		Log.d(tag, "called : " + requestCode + "," + resultCode);
+		getSupportFragmentManager().findFragmentById(R.id.create_main).onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	protected void onResume() 
+	{
+		// TODO Auto-generated method stub
+		super.onResume();
+	}
 }

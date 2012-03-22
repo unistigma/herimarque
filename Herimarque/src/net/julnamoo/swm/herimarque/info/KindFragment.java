@@ -4,9 +4,9 @@ import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.adapter.HeritageListAdapter;
 import net.julnamoo.swm.herimarque.common.DetailFragment;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
-import net.julnamoo.swm.herimarque.model.Item;
+import net.julnamoo.swm.herimarque.model.Heritage;
 import net.julnamoo.swm.herimarque.util.Constants;
-import net.julnamoo.swm.herimarque.util.CursorToItem;
+import net.julnamoo.swm.herimarque.util.CursorToHeritage;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -65,7 +65,7 @@ public class KindFragment extends Fragment {
 
 		//build query
 		StringBuilder query = new StringBuilder();
-		query.append("SELECT * FROM ").append(Constants.TABLE_NAME);
+		query.append("SELECT * FROM ").append(Constants.HERITAGE_TABLE_NAME);
 		query.append(" WHERE ").append("itemCd = '").append(Constants.kindCode[kindCd]).append("' ");
 		query.append("ORDER BY crltsNo ASC").append(";");
 		//sql query
@@ -118,7 +118,7 @@ public class KindFragment extends Fragment {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View view, int selected,
 				long id) {
-			Item item = CursorToItem.cursor2Item((Cursor) arg0.getItemAtPosition(selected));
+			Heritage item = CursorToHeritage.cursor2heritage((Cursor) arg0.getItemAtPosition(selected));
 			Log.d(tag, "selected : " + item.getCrltsNm());
 			DetailFragment f = new DetailFragment(item, mContext, R.id.info_main);
 			FragmentTransaction ft = getFragmentManager().beginTransaction();

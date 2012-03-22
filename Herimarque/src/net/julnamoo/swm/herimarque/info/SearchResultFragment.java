@@ -4,9 +4,9 @@ import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.adapter.HeritageListAdapter;
 import net.julnamoo.swm.herimarque.common.DetailFragment;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
-import net.julnamoo.swm.herimarque.model.Item;
+import net.julnamoo.swm.herimarque.model.Heritage;
 import net.julnamoo.swm.herimarque.util.Constants;
-import net.julnamoo.swm.herimarque.util.CursorToItem;
+import net.julnamoo.swm.herimarque.util.CursorToHeritage;
 import net.julnamoo.swm.herimarque.view.SearchBar;
 import android.content.Context;
 import android.database.Cursor;
@@ -109,7 +109,7 @@ public class SearchResultFragment extends Fragment {
 		public void onItemClick(android.widget.AdapterView<?> arg0, View view, int selected, long id) {
 			Log.d(tag, "search list, selected : " + selected);
 
-			Item item = CursorToItem.cursor2Item((Cursor) arg0.getItemAtPosition(selected));
+			Heritage item = CursorToHeritage.cursor2heritage((Cursor) arg0.getItemAtPosition(selected));
 			Fragment f = new DetailFragment(item, mContext, R.id.info_main);
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -128,7 +128,7 @@ public class SearchResultFragment extends Fragment {
 		sqlHelper = new HeritageSQLiteHelper(mContext); 
 		SQLiteDatabase db = sqlHelper.getReadableDatabase();
 		StringBuilder queryBuilder = new StringBuilder("SELECT * FROM ");
-		queryBuilder.append(Constants.TABLE_NAME).append(" WHERE ( crltsDc like '%").append(query).append("%');");
+		queryBuilder.append(Constants.HERITAGE_TABLE_NAME).append(" WHERE ( crltsDc like '%").append(query).append("%');");
 		String execSQL = queryBuilder.toString();
 		cursor = db.rawQuery(execSQL, null);
 		getActivity().startManagingCursor(cursor);
@@ -171,7 +171,7 @@ public class SearchResultFragment extends Fragment {
 		sqlHelper = new HeritageSQLiteHelper(mContext); 
 		SQLiteDatabase db = sqlHelper.getReadableDatabase();
 		StringBuilder queryBuilder = new StringBuilder("SELECT * FROM ");
-		queryBuilder.append(Constants.TABLE_NAME).append(" WHERE ( crltsDc like '%").append(query).append("%');");
+		queryBuilder.append(Constants.HERITAGE_TABLE_NAME).append(" WHERE ( crltsDc like '%").append(query).append("%');");
 		String execSQL = queryBuilder.toString();
 		Cursor cursor2 = db.rawQuery(execSQL, null);
 		getActivity().startManagingCursor(cursor2);

@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import net.julnamoo.swm.herimarque.model.Item;
+import net.julnamoo.swm.herimarque.model.Heritage;
 import net.julnamoo.swm.herimarque.util.Constants;
 import android.content.Context;
 import android.database.Cursor;
@@ -70,7 +70,7 @@ public class HeritageDataFromJSON implements Runnable{
 			Gson gson = new Gson();
 			for(JsonElement je : jsonArray)
 			{
-				Item item = gson.fromJson(je, Item.class);
+				Heritage item = gson.fromJson(je, Heritage.class);
 				Log.d(tag, "insert " + item.getCrltsNm());
 				dataSource.insert(item);
 			}
@@ -83,7 +83,7 @@ public class HeritageDataFromJSON implements Runnable{
 		
 		Log.d(tag, "Finish to import");
 		
-//		getSQLFile();
+		getSQLFile();
 	}
 	
 	private boolean isTableExist()
@@ -94,7 +94,7 @@ public class HeritageDataFromJSON implements Runnable{
 		
 		//this is always true because called after calling onCreate in HeritageSQLHelper
 //		Cursor cursor = db.rawQuery("SELECT COUNT() FROM sqlite_master WHERE name ='" + Constants.TABLE_NAME+"';", null);
-		Cursor cursor = db.rawQuery("SELECT * FROM " + Constants.TABLE_NAME, null);
+		Cursor cursor = db.rawQuery("SELECT * FROM " + Constants.HERITAGE_TABLE_NAME, null);
 		Log.d(tag, "current tuple size : " + cursor.getCount()); 
 		//It needs sufficient test logic whether data is there.
 		exist = cursor != null && cursor.getCount() > 10 ? true : false;
@@ -123,7 +123,7 @@ public class HeritageDataFromJSON implements Runnable{
 			while((read = fis.read(buff)) > 0)
 			{
 				fos.write(buff, 0, read);
-				Log.d(tag, "write");
+//				Log.d(tag, "write");
 			}
 			fos.flush();
 			fos.close();

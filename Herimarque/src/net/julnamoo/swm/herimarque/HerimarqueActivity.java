@@ -57,4 +57,7 @@ public class HerimarqueActivity extends Activity {
 		}
 	};
 
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d(tag, "onActionResult");
+	}
 }

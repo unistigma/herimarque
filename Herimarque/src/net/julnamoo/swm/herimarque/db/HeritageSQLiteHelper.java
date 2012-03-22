@@ -53,7 +53,7 @@ public class HeritageSQLiteHelper extends SQLiteOpenHelper{
 		try
 		{
 			db =SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READONLY);
-			Cursor cursor = db.rawQuery("SELECT * FROM " + Constants.TABLE_NAME + ";", null);
+			Cursor cursor = db.rawQuery("SELECT * FROM " + Constants.HERITAGE_TABLE_NAME + ";", null);
 			if(cursor.getCount() < 2)
 			{
 				Log.d(tag, "databases exist but empty table");
@@ -73,7 +73,7 @@ public class HeritageSQLiteHelper extends SQLiteOpenHelper{
 		try 
 		{
 			Log.d(tag, "read the file then set the db");
-			InputStream is = context.getAssets().open("herimarque.db");
+			InputStream is = context.getAssets().open("herimarque2.db");
 			OutputStream os = new FileOutputStream(DB_PATH + DB_NAME);
 
 			byte[] buffer = new byte[1024];
@@ -104,7 +104,7 @@ public class HeritageSQLiteHelper extends SQLiteOpenHelper{
 //				+ newVersion + ", which will destroy all old data");
 //
 		Log.d(tag, "sqlHelper, upgrade");
-		db.execSQL("DROP TABLE IF EXISTS " + Constants.TABLE_NAME);
+		db.execSQL("DROP TABLE IF EXISTS " + Constants.HERITAGE_TABLE_NAME);
 		onCreate(db);
 	}
 	
@@ -113,17 +113,17 @@ public class HeritageSQLiteHelper extends SQLiteOpenHelper{
 		Log.i(tag, "onCreate");
 		//crate heritage table
         StringBuilder tableCreator = new StringBuilder();
-        tableCreator.append("CREATE TABLE IF NOT EXISTS ").append(Constants.TABLE_NAME);
+        tableCreator.append("CREATE TABLE IF NOT EXISTS ").append(Constants.HERITAGE_TABLE_NAME);
         tableCreator.append("( _id INTEGER PRIMARY KEY AUTOINCREMENT ");
         for(int i = 0; i < Constants.itemFields.length; ++i)
         {
                 tableCreator.append(", ").append(Constants.itemFields[i]).append(" TEXT ");
         }
-        tableCreator.append(");");
+        tableCreator.append(", sin_x_rad TEXT, cos_x_rad TEXT, sin_y_rad TEXT, cos_y_rad TEXT);");
         String sql = tableCreator.toString();
         Log.d(tag, "create shceme : " + sql);
         db.execSQL(sql);
-        
+
         //crate index with description of the itemCd field
 //        tableCreator = new StringBuilder("CREATE INDEX IF NOT EXISTS ");
 //        tableCreator.append(Constants.DB_NAME).append(".idx_heritage ON ");

@@ -1,25 +1,41 @@
 package net.julnamoo.swm.herimarque.create;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.SubMainActivity;
 import net.julnamoo.swm.herimarque.common.TurnOnGPSFragment;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
+import net.julnamoo.swm.herimarque.db.TrackingDataSource;
 import net.julnamoo.swm.herimarque.info.LoadingFragment;
 import net.julnamoo.swm.herimarque.util.Constants;
 import net.julnamoo.swm.herimarque.util.MapContainer;
 import net.julnamoo.swm.herimarque.view.HeritageItemizedOverlay;
 import net.julnamoo.swm.herimarque.view.LocationItemizedOverlay;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
 import android.view.Gravity;
@@ -27,12 +43,14 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapController;
@@ -66,8 +84,15 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 	private Location lastLocation;
 
 	private TurnOnGPSFragment gpsStarter;
+
+	/** for heritage marking meta information **/
+	private TrackingDataSource trackingTable;
 	private boolean isTracking;
 	private int transferType; //0-car, 1-bike, 2-walk
+	private String PREF_NAME = "checkin";
+	private String tableName;
+	private List<String> areaCodes;
+	public int PHOTO_COMMENT_ACTION = 2;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -138,7 +163,7 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 		Button getMyLoc = new Button(inflater.getContext());
 		fParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.TOP|Gravity.LEFT); 
 		getMyLoc.setLayoutParams(fParams);
-		getMyLoc.setPadding(10, 10, 0, 0);
+		getMyLoc.layout(10, 10, 0, 0);
 		getMyLoc.setBackgroundDrawable(getResources().getDrawable(R.drawable.myloc));
 		getMyLoc.setOnClickListener(myLocButtonListener);
 		icContainer.addView(getMyLoc);
@@ -169,15 +194,39 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) 
 	{
 		MenuItem item;
-		item = menu.add(Menu.NONE, 0, 0, "");
+		item = menu.add(Menu.NONE, 0, 0, null);
 		item.setIcon(R.drawable.ic_car);
-		MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+		item.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) 
+			{
+				setLocationManagerParams(0);
+				return true;
+			}
+		});
+		MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 		item = menu.add(Menu.NONE, 1, 1, "");
 		item.setIcon(R.drawable.ic_bike);
-		MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+		item.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) 
+			{
+				setLocationManagerParams(1);
+				return true;
+			}
+		});
+		MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 		item = menu.add(Menu.NONE, 2, 2, "");
 		item.setIcon(R.drawable.ic_walk);
-		MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+		item.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) 
+			{
+				setLocationManagerParams(2);
+				return true;
+			}
+		});
+		MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
 		super.onCreateOptionsMenu(menu, menuInflater);
 	}
@@ -186,7 +235,7 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 	public void onPause() 
 	{
 		locationManager.removeUpdates(this);
-		((ViewGroup) mapView.getParent()).removeView(mapView);
+		//		((ViewGroup) mapView.getParent()).removeView(mapView);
 		if(originMapContainer != null)
 		{
 			originMapContainer.addView(mapView);
@@ -211,10 +260,15 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 	@Override
 	public void onLocationChanged(Location location) 
 	{
+		//real service
 		if(isBetterLocation(location, lastLocation))
 		{
 			lastLocation = location;
 		}
+
+		//for test
+		//lastLocation = location;
+
 		GeoPoint point = locationToGeoPoint(lastLocation);
 		setMyLocationOverlay(point);
 		mapController.animateTo(point);
@@ -268,7 +322,7 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 
 			//build query
 			StringBuilder query = new StringBuilder("SELECT * FROM ");
-			query.append(Constants.TABLE_NAME);
+			query.append(Constants.HERITAGE_TABLE_NAME);
 			query.append(" WHERE XCnts > ").append(topRightLong).append(" AND XCnts < ").append(bottomLeftLong);
 			query.append(" AND YCnts > ").append(bottomLeftLat).append(" AND YCnts < ").append(topRightLat);
 			query.append(" LIMIT 200;");
@@ -333,11 +387,14 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 	private void setMyLocationOverlay(GeoPoint p)
 	{
 		OverlayItem overlayItem = new OverlayItem(p, "현재 위치", "");
+		
+		//test/////////////////////////////////////////
 		try 
 		{
 			if(!isTracking)	locationOverlay.clear();
 			locationOverlay.addOverlay(overlayItem);
 		} catch (Exception e) {	}
+		///////////////////////////////////////////////
 
 		if(mapOverlay.size() == 0)
 		{
@@ -420,34 +477,35 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 				Log.d(tag, "startClicked");
 				if(isTracking)
 				{
-					((Button) v).setText(R.string.stop);
-					isTracking = false;
+					//stop listener
+					new FinishConfirmFragment().show(getFragmentManager(), null);
+
 				}else
 				{
-					((Button) v).setText(R.string.start);
+					//start listener
+					((Button) v).setBackgroundResource(R.drawable.create_stop_selector);
 					isTracking = true;
+					Toast.makeText(mContext, "Heritage Mark를 시작합니다.", Toast.LENGTH_SHORT).show();
 
-					//set locationmanager for default for getting my location
-					minTime = TWO_MINUTES;
-					minDistance = 3;
+					//setup sqlite table with start time
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+					tableName = "T" + sdf.format(new Date()) + "_";
+					Log.d(tag, "tableName:"+tableName);
+
+					trackingTable = new TrackingDataSource(mContext, tableName);
+					trackingTable.addCheckIn(TrackingDataSource.TRACKING, lastLocation, null, null);
 				}
-				/*
-				//test to send the data to server
-				File file = new File( Environment.getExternalStorageDirectory()+"/net.julnamoo/file1.jpg");
-			    Uri outputFileUri = Uri.fromFile( file );
-
-			    Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE );
-			    intent.putExtra( MediaStore.EXTRA_OUTPUT, outputFileUri );
-
-			    startActivityForResult( intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE );
-				 */
 			}
 		});
-		
+
+		//transfer type
 		menuView.findViewById(R.id.create_car).setOnClickListener(transferTypeClickListener);
 		menuView.findViewById(R.id.create_bike).setOnClickListener(transferTypeClickListener);
 		menuView.findViewById(R.id.create_walk).setOnClickListener(transferTypeClickListener);
 
+		//checkin
+		menuView.findViewById(R.id.newtimeline).setOnClickListener(checkInClickListener);
+		//need to connect location service with create_turnoffgps button in menuview
 	}
 
 	OnClickListener transferTypeClickListener = new OnClickListener() 
@@ -460,25 +518,59 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 			menuView.findViewById(R.id.create_walk).setPressed(false);
 			((Button) v).setPressed(true);
 			Log.d(tag, ((Button) v).getText() + " clicked");
-
 			//set trasferType
 			switch (v.getId()) 
 			{
-			case R.id.create_car:
-				transferType = 0;
-				minTime = TEN_MINUTES * 3 / 2 ; //15mins
-				minDistance = 20;
-				break;
-			case R.id.create_bike:
-				transferType = 1;
-				minTime = TEN_MINUTES;
-				minDistance = 10;
-				break;
-			case R.id.create_walk:
-				minTime = TWO_MINUTES;
-				transferType = 2;
-				break;
+			case R.id.create_car: setLocationManagerParams(0);	break;
+			case R.id.create_bike:setLocationManagerParams(1);	break;
+			case R.id.create_walk: setLocationManagerParams(2);	break;
 			}
+		}
+	};
+
+	private void setLocationManagerParams(int id)
+	{
+		//set trasferType
+		switch (id) 
+		{
+		case 0:
+			transferType = 0;
+			minTime = TEN_MINUTES * 3 / 2 ; //15mins
+			minDistance = 20;
+			Toast.makeText(mContext, "자동차로 여행중입니다", Toast.LENGTH_SHORT).show();
+			break;
+		case 1:
+			transferType = 1;
+			minTime = TEN_MINUTES;
+			minDistance = 10;
+			Toast.makeText(mContext, "자전거로 여행중입니다", Toast.LENGTH_SHORT).show();
+			break;
+		case 2:
+			//			minTime = TWO_MINUTES;
+			//			minDistance = 3;
+			//			transferType = 2;
+
+			minTime = 0;
+			minDistance = 2;
+			Toast.makeText(mContext, "걸으며 여행중입니다", Toast.LENGTH_SHORT).show();
+			break;
+		}
+	}
+
+	OnClickListener checkInClickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			Log.d(tag, "checkin clicked");
+
+			if(!isTracking)
+			{
+				Toast.makeText(mContext, "출발을 해주세요!", Toast.LENGTH_SHORT).show();
+				return;
+			}
+
+			locationManager.removeUpdates(CreateMainFragment.this);
+			new CheckInFragment(mContext, lastLocation, tableName).show(getFragmentManager(), null);
 		}
 	};
 	//	private void sendTestData()
@@ -543,131 +635,123 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 	//
 	//	}
 
-	//	@Override
-	//	public void onActivityResult(int requestCode, int resultCode, Intent data) 
-	//	{
-	////		super.onActivityResult(arg0, arg1, arg2);
-	//		
-	//		if(requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE)
-	//		{
-	//			Toast.makeText(getActivity(), "Image saved to:\n" +
-	//                    data.getData(), Toast.LENGTH_LONG).show();
-	//		}
-	//		Log.d(tag, "capture the screen");
-	//		View v1 = getView().getRootView();
-	//		v1.setDrawingCacheEnabled(true);
-	//		Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
-	//		v1.setDrawingCacheEnabled(false);
-	////		String boundary =  "*****";
-	////		String twoHyphens = "--";
-	////		String sendingBoundary = "--*****";
-	////		String lineEnd = "\r\n";
-	////		try 
-	////		{
-	////			URL url = new URL("http://localhost:8080/herimarque/api/c/upload/map/testId");
-	////			HttpURLConnection httpURLCon = (HttpURLConnection) url.openConnection();
-	////
-	////			httpURLCon.setDefaultUseCaches(false);
-	////			httpURLCon.setDoInput(true);
-	////			httpURLCon.setDoOutput(true);
-	////			httpURLCon.setRequestMethod("POST");
-	////			httpURLCon.setRequestProperty("content-type", "multipart/form-data; boundary="+boundary);
-	////
-	////			/**
-	////			 * ------WebKitFormBoundarysAPbx0Jb5UuEDXNf
-	////			Content-Disposition: form-data; name="id"
-	////
-	////			testId
-	////
-	////
-	////
-	////			Content-Disposition: form-data; name="map"; filename=""
-	////			Content-Type: application/octet-stream
-	////
-	////			 */
-	////			DataOutputStream dos = new DataOutputStream(httpURLCon.getOutputStream());
-	////			
-	////			//set the first param
-	////			dos.writeBytes(sendingBoundary);
-	////			dos.writeBytes("Content-Disposition: form-data; name='id'");
-	////			dos.writeBytes(lineEnd);
-	////			dos.writeBytes("testId");
-	////			dos.writeBytes(lineEnd);
-	////			
-	////			//set the second param
-	////			dos.writeBytes(sendingBoundary);
-	////			dos.writeBytes("Content-Disposition: form-data; name='map'; filename=''");
-	////			dos.writeBytes("Content-Type: application/octet-stream");
-	////			dos.writeBytes(lineEnd);
-	//////			dos.writeBytes("testId"); //write bytes
-	////			dos.writeBytes(lineEnd);
-	////			
-	////			dos.writeBytes(sendingBoundary);
-	////			dos.writeBytes("Content-Disposition: form-data; name='file1'; filename=''");
-	////			dos.writeBytes("Content-Type: application/octet-stream");
-	////			dos.writeBytes(lineEnd);
-	//////			dos.writeBytes("testId"); //write bytes
-	////			dos.writeBytes(lineEnd);
-	////			
-	////		} catch (MalformedURLException e) 
-	////		{
-	////			e.printStackTrace();
-	////		} catch (IOException e) {
-	////			e.printStackTrace();
-	////		}
-	//	}
 
 	/** Determines whether one Location reading is better than the current Location fix
-	  * @param location  The new Location that you want to evaluate
-	  * @param currentBestLocation  The current Location fix, to which you want to compare the new one
-	  */
+	 * @param location  The new Location that you want to evaluate
+	 * @param currentBestLocation  The current Location fix, to which you want to compare the new one
+	 */
 	protected boolean isBetterLocation(Location location, Location currentBestLocation) {
-	    if (currentBestLocation == null) {
-	        // A new location is always better than no location
-	        return true;
-	    }
+		if (currentBestLocation == null) {
+			// A new location is always better than no location
+			return true;
+		}
 
-	    // Check whether the new location fix is newer or older
-	    long timeDelta = location.getTime() - currentBestLocation.getTime();
-	    boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
-	    boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
-	    boolean isNewer = timeDelta > 0;
+		// Check whether the new location fix is newer or older
+		long timeDelta = location.getTime() - currentBestLocation.getTime();
+		boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
+		boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
+		boolean isNewer = timeDelta > 0;
 
-	    // If it's been more than two minutes since the current location, use the new location
-	    // because the user has likely moved
-	    if (isSignificantlyNewer) {
-	        return true;
-	    // If the new location is more than two minutes older, it must be worse
-	    } else if (isSignificantlyOlder) {
-	        return false;
-	    }
+		// If it's been more than two minutes since the current location, use the new location
+		// because the user has likely moved
+		if (isSignificantlyNewer) {
+			return true;
+			// If the new location is more than two minutes older, it must be worse
+		} else if (isSignificantlyOlder) {
+			return false;
+		}
 
-	    // Check whether the new location fix is more or less accurate
-	    int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
-	    boolean isLessAccurate = accuracyDelta > 0;
-	    boolean isMoreAccurate = accuracyDelta < 0;
-	    boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+		// Check whether the new location fix is more or less accurate
+		int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+		boolean isLessAccurate = accuracyDelta > 0;
+		boolean isMoreAccurate = accuracyDelta < 0;
+		boolean isSignificantlyLessAccurate = accuracyDelta > 200;
 
-	    // Check if the old and new location are from the same provider
-	    boolean isFromSameProvider = isSameProvider(location.getProvider(),
-	            currentBestLocation.getProvider());
+		// Check if the old and new location are from the same provider
+		boolean isFromSameProvider = isSameProvider(location.getProvider(),
+				currentBestLocation.getProvider());
 
-	    // Determine location quality using a combination of timeliness and accuracy
-	    if (isMoreAccurate) {
-	        return true;
-	    } else if (isNewer && !isLessAccurate) {
-	        return true;
-	    } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
-	        return true;
-	    }
-	    return false;
+		// Determine location quality using a combination of timeliness and accuracy
+		if (isMoreAccurate) {
+			return true;
+		} else if (isNewer && !isLessAccurate) {
+			return true;
+		} else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+			return true;
+		}
+		return false;
 	}
 
 	/** Checks whether two providers are the same */
 	private boolean isSameProvider(String provider1, String provider2) {
-	    if (provider1 == null) {
-	      return provider2 == null;
-	    }
-	    return provider1.equals(provider2);
+		if (provider1 == null) {
+			return provider2 == null;
+		}
+		return provider1.equals(provider2);
+	}
+
+	/** Dialog Fragment for confirm finish **/
+	class FinishConfirmFragment extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(mContext)
+			.setTitle("Heritage Mark 마치기")
+			.setMessage("여행이 모두 끝나셨나요?")
+			.setPositiveButton("예", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) 
+				{
+					Log.d(tag, "프래그먼트 넘어가면서 타이틀, 전체커멘트, 지역정보 수정으로 ");
+					menuView.findViewById(R.id.create_start).setBackgroundResource(R.drawable.create_start_selector);
+					isTracking = false;
+					transferType = 2;
+					// TODO 
+				}
+			})
+			.setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) 
+				{
+					Toast.makeText(mContext, "Heritage Mark를 계속합니다", Toast.LENGTH_SHORT).show();
+				}
+			})
+			.create();
+		}
+
+	}
+
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		//TODO
+		Log.d(tag, "called : " + requestCode + "," + resultCode);
+		Bundle extras = data.getExtras();
+		if(extras != null)
+		{
+			//			Bitmap photo = extras.getParcelable("data");
+			if(extras.containsKey("photo"))
+			{
+				Log.d(tag, "from addckecin : " + extras.getString("photo") + "," + extras.getString("content"));
+
+				new CheckInFragment(mContext, lastLocation, tableName).onActivityResult(CheckInFragment.CHECKIN_PHOTO, Activity.RESULT_OK, data);
+			}else
+			{
+				Log.d(tag, "get bitmap image from camera. save it to external storage. call addcheckin" );
+				//				File dir = new File(Environment.getExternalStorageDirectory(), "herimarque");
+				//				dir.mkdirs();
+				//				String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+				//				File mediaFile = new File(dir, timeStamp + ".png");
+
+				Intent intent = new Intent(mContext, AddCheckInActivity.class);
+				intent.putExtras(data);
+				intent.putExtra("tablename", tableName);
+				startActivityForResult(intent, CheckInFragment.CHECKIN_PHOTO);
+			}
+
+		}
 	}
 }
