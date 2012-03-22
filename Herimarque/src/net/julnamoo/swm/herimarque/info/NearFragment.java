@@ -4,13 +4,13 @@ import java.util.List;
 
 import net.julnamoo.R;
 import net.julnamoo.R.layout;
+import net.julnamoo.swm.herimarque.MapContainer;
 import net.julnamoo.swm.herimarque.SubMainActivity;
 import net.julnamoo.swm.herimarque.common.TurnOnGPSFragment;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
 import net.julnamoo.swm.herimarque.model.Heritage;
 import net.julnamoo.swm.herimarque.util.Constants;
 import net.julnamoo.swm.herimarque.util.CursorToHeritage;
-import net.julnamoo.swm.herimarque.util.MapContainer;
 import net.julnamoo.swm.herimarque.view.HeritageItemizedOverlay;
 import net.julnamoo.swm.herimarque.view.LocationItemizedOverlay;
 import android.content.Context;

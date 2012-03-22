@@ -87,11 +87,9 @@
     <string name="addcomment">코멘트를 추가해주세요</string>
     <string name="ok">확인</string>
     <string name="cancle2">취소</string>
-
-    <string name="create">나만의 문화유산 만들기</string>
-    <string name="create_newtimeline">체크인</string>
-    <string name="create_desc1">나만의 문화유산을\n만들어 봅시다!</string>
-    <string name="create_desc2">이번 여행의 제목은 무엇인가요?</string>
+    <string name="create">나의 Heritage Mark</string>
+    <string name="confirm">완성하기</string>
+    <string name="areaselect">지역선택하기</string>
     
     <!-- For show Service -->
     <string name="show">나의 문화유산</string>

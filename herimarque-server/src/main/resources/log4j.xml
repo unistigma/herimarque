@@ -12,7 +12,8 @@
 	</appender>
 	<appender name="dailyRollingFile" class="org.apache.log4j.DailyRollingFileAppender">
 		<!-- 로그 파일명 정의를 위한 parameter -->
-		<param name="File" value="/Users/Julie_air/logs/tomcat/log" />
+		<!-- <param name="File" value="/Users/Julie_air/logs/tomcat/log" /> -->
+		<param name="File" value="/herimarque/logs/server/log" />
 		<!-- 로그 파일을 Rolling하기 위한 날짜 조건을 정의하기 위한 parameter -->
 		<param name="DatePattern" value=".yyyy-MM-dd-HH" />
 		<layout class="org.apache.log4j.PatternLayout">

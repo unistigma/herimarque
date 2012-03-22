@@ -3,11 +3,11 @@ package net.julnamoo.swm.herimarque.create;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import net.julnamoo.swm.herimarque.MapContainer;
 import net.julnamoo.swm.herimarque.adapter.HeritageListAdapter;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
 import net.julnamoo.swm.herimarque.db.TrackingDataSource;
 import net.julnamoo.swm.herimarque.util.Constants;
-import net.julnamoo.swm.herimarque.util.MapContainer;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -265,19 +265,14 @@ public class CheckInFragment extends DialogFragment{
 						//call the camera activity for taking picture
 						Log.d(tag, "taking picture");
 						//TODO
-//					    ContentValues values = new ContentValues();
-//					    values.put(MediaStore.Images.Media.TITLE, "temp.png");
-//						Uri value = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 						Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//						intent.putExtra(MediaStore.EXTRA_OUTPUT, value);
 						startActivityForResult(intent, PICK_FROM_CAMERA);
 						Toast.makeText(mContext, "camera", Toast.LENGTH_SHORT).show();
 						break;
 					case 2:
 						//call the gallery activity for selecting a picture
 						Log.d(tag, "using gallery");
-						intent = new Intent(Intent.ACTION_PICK);
-						intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+ 						intent = new Intent(mContext, GalleryActivity.class);
 						startActivityForResult(intent, PICK_FROM_ALBUM);
 						Toast.makeText(mContext, "gallery", Toast.LENGTH_SHORT).show();
 						break;
@@ -325,8 +320,6 @@ public class CheckInFragment extends DialogFragment{
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
-		//TODO
-		Log.d(tag, "called with");
 		//save the data to sharedpreference
 		SharedPreferences sp = mContext.getSharedPreferences(PREF_NAME, Context.MODE_MULTI_PROCESS);
 		SharedPreferences.Editor editor = sp.edit();
@@ -335,32 +328,11 @@ public class CheckInFragment extends DialogFragment{
 		
 		String content = data.getStringExtra("content");
 		String image = data.getStringExtra("image");
+		Log.d(tag, "called with " + content + ", " + image);
 		editor.putString("content", content);
 		editor.putString("image", image);
 		
 		finishMarking();
-//		if(resultCode == Activity.RESULT_OK)
-//		{
-//			Uri fileUri = data.getData();
-//			Bundle extras = data.getExtras();
-//			if(extras != null)
-//			{
-//				Bitmap photo = extras.getParcelable("data");
-//			}
-//
-//			// delete temp file
-//			File f = new File(fileUri.getPath());
-//			if(f.exists())
-//			{
-//				f.delete();
-//			}
-//			
-//			
-//		}else
-//		{
-//			Log.d(tag, "action cancled, open cancle dialog");
-//			new CancleDialogFragment(mContext).show(getFragmentManager(), null);
-//		}
 	}
 
 	/** cancle dialog for dismiss all information **/

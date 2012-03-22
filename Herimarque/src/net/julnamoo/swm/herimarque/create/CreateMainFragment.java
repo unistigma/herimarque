@@ -1,41 +1,38 @@
 package net.julnamoo.swm.herimarque.create;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import net.julnamoo.R;
+import net.julnamoo.swm.herimarque.MapContainer;
 import net.julnamoo.swm.herimarque.SubMainActivity;
 import net.julnamoo.swm.herimarque.common.TurnOnGPSFragment;
 import net.julnamoo.swm.herimarque.db.HeritageSQLiteHelper;
 import net.julnamoo.swm.herimarque.db.TrackingDataSource;
 import net.julnamoo.swm.herimarque.info.LoadingFragment;
 import net.julnamoo.swm.herimarque.util.Constants;
-import net.julnamoo.swm.herimarque.util.MapContainer;
 import net.julnamoo.swm.herimarque.view.HeritageItemizedOverlay;
 import net.julnamoo.swm.herimarque.view.LocationItemizedOverlay;
+import net.julnamoo.swm.herimarque.view.RouteOverlay;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
 import android.view.Gravity;
@@ -70,6 +67,7 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 	private List<Overlay> mapOverlay;
 	private HeritageItemizedOverlay heritageOverlay;
 	private LocationItemizedOverlay locationOverlay;
+	private List<GeoPoint> myRoute;
 
 	//for menu
 	private RelativeLayout menuView;
@@ -108,6 +106,7 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 		//set overlay
 		heritageOverlay = new HeritageItemizedOverlay(getResources().getDrawable(R.drawable.pin2), mContext, getFragmentManager(), 1);
 		locationOverlay = new LocationItemizedOverlay(getResources().getDrawable(R.drawable.pin1), mContext);
+		myRoute = new ArrayList<GeoPoint>();
 		//set gps switcher
 		gpsStarter = new TurnOnGPSFragment();
 		isTracking = false;
@@ -264,6 +263,11 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 		if(isBetterLocation(location, lastLocation))
 		{
 			lastLocation = location;
+			
+			if(isTracking)
+			{
+				myRoute.add(convertToGeoPoint(lastLocation));
+			}
 		}
 
 		//for test
@@ -272,6 +276,8 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 		GeoPoint point = locationToGeoPoint(lastLocation);
 		setMyLocationOverlay(point);
 		mapController.animateTo(point);
+		drawPath(myRoute, getResources().getColor(R.color.brown));
+		mapView.invalidate();
 	}
 
 	@Override
@@ -387,7 +393,8 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 	private void setMyLocationOverlay(GeoPoint p)
 	{
 		OverlayItem overlayItem = new OverlayItem(p, "현재 위치", "");
-		
+
+		//TODO
 		//test/////////////////////////////////////////
 		try 
 		{
@@ -703,11 +710,34 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 				@Override
 				public void onClick(DialogInterface dialog, int which) 
 				{
-					Log.d(tag, "프래그먼트 넘어가면서 타이틀, 전체커멘트, 지역정보 수정으로 ");
 					menuView.findViewById(R.id.create_start).setBackgroundResource(R.drawable.create_start_selector);
 					isTracking = false;
-					transferType = 2;
+					Log.d(tag, "changing the trasfer type to walk");
+					transferTypeClickListener.onClick(menuView.findViewById(R.id.create_walk));
+
+					//capture the map
+					MapContainer.hideMapChilderen();
+					mapView.setDrawingCacheEnabled(true);
+					Bitmap origin = mapView.getDrawingCache();
+					int width = origin.getWidth();
+					int height = origin.getHeight();
+					Bitmap bitmap = Bitmap.createScaledBitmap(origin, width, height, true);
+					mapView.setDrawingCacheEnabled(false);
+					MapContainer.showMapChildren();
+
+					String mappath = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, "map_" + tableName + ".jpg", tableName);
+					Log.d(tag, mappath + " map created");
+
+					Log.d(tag, "프래그먼트 넘어가면서 타이틀, 전체커멘트, 지역정보 수정으로 ");
+					Intent intent = new Intent(mContext, TimeLineActivity.class);
+					intent.putExtra("mappath", mappath);
+					intent.putExtra("tablename", tableName);
+					startActivity(intent);
+
 					// TODO 
+					Log.d(tag, "turn on location listener");
+					locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, CreateMainFragment.this);
+					locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, CreateMainFragment.this);
 				}
 			})
 			.setNegativeButton("아니요", new DialogInterface.OnClickListener() {
@@ -723,7 +753,6 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 
 	}
 
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
@@ -732,7 +761,6 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 		Bundle extras = data.getExtras();
 		if(extras != null)
 		{
-			//			Bitmap photo = extras.getParcelable("data");
 			if(extras.containsKey("photo"))
 			{
 				Log.d(tag, "from addckecin : " + extras.getString("photo") + "," + extras.getString("content"));
@@ -741,17 +769,25 @@ public class CreateMainFragment extends Fragment implements LocationListener {
 			}else
 			{
 				Log.d(tag, "get bitmap image from camera. save it to external storage. call addcheckin" );
-				//				File dir = new File(Environment.getExternalStorageDirectory(), "herimarque");
-				//				dir.mkdirs();
-				//				String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-				//				File mediaFile = new File(dir, timeStamp + ".png");
 
-				Intent intent = new Intent(mContext, AddCheckInActivity.class);
+				Intent intent = new Intent(mContext, AddPhotoAndCommentActivity.class);
 				intent.putExtras(data);
 				intent.putExtra("tablename", tableName);
 				startActivityForResult(intent, CheckInFragment.CHECKIN_PHOTO);
 			}
 
 		}
+	}
+
+	private void drawPath(List geoPoints, int color) {
+		
+		for (int i = 1; i < geoPoints.size(); i++) {
+			mapOverlay.add(new RouteOverlay((GeoPoint)geoPoints.get(i - 1),(GeoPoint) geoPoints.get(i), color));
+		}
+	}
+	public GeoPoint convertToGeoPoint(Location location)
+	{
+		GeoPoint point = new GeoPoint((int) (location.getLatitude()*1E6), (int) (location.getLongitude()*1E6));
+		return point;
 	}
 }

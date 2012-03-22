@@ -18,9 +18,8 @@ public class InfoOurHeritageKindActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.info_);
 		
-		GridView grid = (GridView) findViewById(R.id.category_grid);
+		GridView grid = (GridView) findViewById(R.id.grid);
 		Log.d(tag, "Set grid view");
 		KindImageAdapter adapter = new KindImageAdapter(this);
 		grid.setAdapter(adapter);

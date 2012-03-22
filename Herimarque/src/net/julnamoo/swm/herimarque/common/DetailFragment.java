@@ -213,9 +213,15 @@ public class DetailFragment extends Fragment {
 			{
 				bmImg = BitmapFactory.decodeResource(getResources(), R.drawable.spare_image);
 			}
-			int height = width * bmImg.getHeight() / bmImg.getWidth();
-			Log.d(url, "get new width, height : " + width + "," + height);
-			bmImg = Bitmap.createScaledBitmap(bmImg, width, height, true);
+			try
+			{
+				int height = width * bmImg.getHeight() / bmImg.getWidth();
+				Log.d(url, "get new width, height : " + width + "," + height);
+				bmImg = Bitmap.createScaledBitmap(bmImg, width, height, true);
+			}catch (Exception e) 
+			{
+				bmImg = BitmapFactory.decodeResource(getResources(), R.drawable.spare_image);
+			}
 			image.setImageBitmap(bmImg);
 			loadingFragment.dismiss();
 		}

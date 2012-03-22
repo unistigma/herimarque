@@ -7,6 +7,7 @@
     <color name="tabBackgroundfocused">#867A66</color>
     <color name="areaback">#555656</color>
     <color name="brown">#A35100</color>
-    
-    <color name="paper_border">#BC6A00</color>
+
+    <color name="create_board">#FFFEF4</color>
+    <color name="create_border">#BC6A00</color>
 </resources>

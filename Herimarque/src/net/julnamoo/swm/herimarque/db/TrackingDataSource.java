@@ -88,7 +88,7 @@ public class TrackingDataSource {
 	 * convert checkin data to json array
 	 * @return formatted json
 	 */
-	public String getAllCheckIn()
+	public List<TimeLineItem> getAllCheckIn()
 	{
 		SQLiteDatabase db = mContext.openOrCreateDatabase(Constants.DB_NAME, 0, null);
 		String sql = "SELECT * FROM " + tableName + ";";
@@ -101,10 +101,9 @@ public class TrackingDataSource {
 			TimeLineItem timeLine = cursorToItem(cursor);
 			timeline.add(timeLine);
 		}
-		String json = new Gson().toJson(timeline);
-		Log.d(tag, "converted json :" + json);
+		
 		db.close();
-		return json;
+		return timeline;
 	}
 	
 	private TimeLineItem cursorToItem(Cursor cursor)

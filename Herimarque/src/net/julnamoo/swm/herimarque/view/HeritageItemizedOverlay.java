@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.julnamoo.R;
+import net.julnamoo.swm.herimarque.MapContainer;
 import net.julnamoo.swm.herimarque.common.DetailFragment;
 import net.julnamoo.swm.herimarque.db.HeritageDataSource;
 import net.julnamoo.swm.herimarque.model.Heritage;
-import net.julnamoo.swm.herimarque.util.MapContainer;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;

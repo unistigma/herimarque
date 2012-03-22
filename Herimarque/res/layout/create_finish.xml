@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <net.julnamoo.swm.herimarque.view.EditName
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/create_menu_unfocused_shape"
+        android:gravity="center"
+        android:hint="여행의 제목을 지어주세요:)"
+        android:textSize="23sp" />
+
+    <ImageView
+        android:id="@+id/mymap"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/create_menu_unfocused_shape"
+        android:contentDescription="myTimeLineMap"
+        android:padding="5dp"
+        android:src="@drawable/spare_image" />
+
+    <Button
+        android:id="@+id/areaselect"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/create_menu_selector"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/areaselect"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/comment"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/create_menu_unfocused_shape"
+        android:hint="이번 여행에서 가장 기억에 남는 글귀는 무엇인가요?:)"
+        android:lines="3" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/create"
+        android:textSize="20sp" />
+
+    <ListView
+        android:id="@+id/timeline"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp" />
+
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/create_menu_selector"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/confirm"
+        android:textSize="20sp" />
+
+</LinearLayout>
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/submain"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="none" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <net.julnamoo.swm.herimarque.view.EditName
+            android:id="@+id/title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/create_menu_unfocused_shape"
+            android:gravity="center"
+            android:hint="여행의 제목을 지어주세요:)"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textSize="23sp" />
+
+        <ImageView
+            android:id="@+id/mymap"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/create_menu_unfocused_shape"
+            android:contentDescription="myTimeLineMap"
+            android:padding="5dp"
+            android:src="@drawable/spare_image" />
+
+        <Button
+            android:id="@+id/areaselect"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/create_menu_selector"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/areaselect"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/comment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/create_menu_unfocused_shape"
+            android:hint="이번 여행에서 가장 기억에 남는 글귀는 무엇인가요?:)"
+            android:lines="3" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/create"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/ok"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/create_menu_selector"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/confirm"
+            android:textSize="20sp" />
+
+        <ListView
+            android:id="@+id/timeline"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp" />
+        
+    </LinearLayout>
+
+</ScrollView>

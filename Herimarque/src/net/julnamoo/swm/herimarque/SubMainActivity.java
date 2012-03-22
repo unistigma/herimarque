@@ -6,7 +6,6 @@ import net.julnamoo.R;
 import net.julnamoo.swm.herimarque.create.CancleDialogFragment;
 import net.julnamoo.swm.herimarque.create.CheckInFragment;
 import net.julnamoo.swm.herimarque.util.ExitExecutor;
-import net.julnamoo.swm.herimarque.util.MapContainer;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -144,13 +143,13 @@ public class SubMainActivity extends FragmentActivity {
 		switch (v.getId()) {
 		case R.id.infoButt:
 			Log.d(tag, "info pushed");
-			hideMapChilderen();
+			MapContainer.hideMapChilderen();
 			findViewById(R.id.info_main).setVisibility(View.VISIBLE);
 			currMenu = 0;
 			break;
 		case R.id.createButt:
 			Log.d(tag, "create pushed");
-			showMapChildren();
+			MapContainer.showMapChildren();
 			findViewById(R.id.create_main).setVisibility(View.VISIBLE);
 			currMenu = 1;
 			break;
@@ -169,25 +168,6 @@ public class SubMainActivity extends FragmentActivity {
 		}
 	}
 	
-	private void hideMapChilderen()
-	{
-		MapView map = MapContainer.mapView;
-		for(int i = 0; i < map.getChildCount(); ++i)
-		{
-			View view = map.getChildAt(i);
-			view.setVisibility(View.INVISIBLE);
-		}
-	}
-	
-	private void showMapChildren()
-	{
-		MapView map = MapContainer.mapView;
-		for(int i = 0; i < map.getChildCount(); ++i)
-		{
-			View view = map.getChildAt(i);
-			view.setVisibility(View.VISIBLE);
-		}
-	}
 	@Override
 	public boolean isRouteDisplayed() 
 	{
