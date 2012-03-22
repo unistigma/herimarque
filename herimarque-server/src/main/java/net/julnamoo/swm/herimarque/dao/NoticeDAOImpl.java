@@ -13,18 +13,22 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository(value="noticeDAO")
-public class NoticeDAOImpl extends SimpleHerimarqueDAO{
+public class NoticeDAOImpl extends SimpleHerimarqueDAO implements NoticeDAO{
 
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.dao.NoticeDAO#setCollectionName()
+	 */
+	@Override
 	@PostConstruct
 	public void setCollectionName() 
 	{
 		collectionName = "notices";
 	}
 	
-	/**
-	 * add notice object to mongo
-	 * @param newNotice
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.dao.NoticeDAO#addNotice(net.julnamoo.swm.herimarque.model.Notice)
 	 */
+	@Override
 	public Notice addNotice(Notice newNotice)
 	{
 		MongoTemplate mt = new MongoTemplate(mongo, dbName);
@@ -33,10 +37,10 @@ public class NoticeDAOImpl extends SimpleHerimarqueDAO{
 		return newNotice;
 	}
 
-	/**
-	 * Retrieve the newest notice
-	 * @return newes notice object
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.dao.NoticeDAO#getNewest()
 	 */
+	@Override
 	public Notice getNewest()
 	{
 		MongoTemplate mt = new MongoTemplate(mongo, dbName);
@@ -46,21 +50,20 @@ public class NoticeDAOImpl extends SimpleHerimarqueDAO{
 		return notice;
 	}
 	
-	/**
-	 * The date of the newest notice
-	 * @return the formated date string of the newset notice(yyy/MM/dd/HH:mm:ss)
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.dao.NoticeDAO#getLastUpdateNoticeDate()
 	 */
+	@Override
 	public String getLastUpdateNoticeDate()
 	{
 		Notice notice = this.getNewest();
 		return notice.getDate();
 	}
 
-	/**
-	 * return the newest 10 notices in the order from start date 
-	 * @param start
-	 * @return noticeList with 10 
+	/* (non-Javadoc)
+	 * @see net.julnamoo.swm.herimarque.dao.NoticeDAO#getNotices(java.lang.String)
 	 */
+	@Override
 	public List<Notice> getNotices(String start)
 	{
 		MongoTemplate mt = new MongoTemplate(mongo, dbName);

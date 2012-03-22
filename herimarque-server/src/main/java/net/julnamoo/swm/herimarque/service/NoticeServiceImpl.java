@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import net.julnamoo.swm.herimarque.dao.NoticeDAOImpl;
+import net.julnamoo.swm.herimarque.dao.NoticeDAO;
 import net.julnamoo.swm.herimarque.model.Notice;
 
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class NoticeServiceImpl implements NoticeService {
 	Logger logger = LoggerFactory.getLogger(NoticeServiceImpl.class);
 	
 	@Resource(name="noticeDAO")
-	NoticeDAOImpl noticeDAO;
+	NoticeDAO noticeDAO;
 	
 	/* (non-Javadoc)
 	 * @see net.julnamoo.swm.herimarque.service.NoticeService#addNotice(java.lang.String, java.lang.String)

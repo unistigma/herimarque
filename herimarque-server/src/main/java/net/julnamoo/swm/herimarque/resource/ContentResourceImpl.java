@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -69,6 +70,7 @@ public class ContentResourceImpl implements ContentResource {
 		
 		if(ServletFileUpload.isMultipartContent(request))
 		{
+			String mapKey = null;
 			String repo = PropertiesUtil.getValueFromProperties("herimarque.properties", "mapsRepo");
 			StringBuilder sb = new StringBuilder();
 			repo = sb.append(repo).append(File.separatorChar).append(user).append(File.separatorChar).toString();
@@ -81,7 +83,7 @@ public class ContentResourceImpl implements ContentResource {
 			try 
 			{
 				items = upload.parseRequest(request);
-				logger.debug("Total params count is {}", items.size());
+				logger.debug("Total paramsjul count is {}", items.size());
 			} catch (FileUploadException e) 
 			{
 				e.printStackTrace();
@@ -152,7 +154,7 @@ public class ContentResourceImpl implements ContentResource {
 						
 						MapInfo mapInfo = new Gson().fromJson(msg, MapInfo.class);
 						mapInfo.setFilePath(mapPath);
-						
+						mapKey = contentService.uploadMap(mapInfo);
 					} catch (UnsupportedEncodingException e) 
 					{
 						e.printStackTrace();
@@ -160,8 +162,9 @@ public class ContentResourceImpl implements ContentResource {
 				}
 			}
 			
+			
 			logger.debug("Finish to save images, return 200");
-			return Response.ok().build();
+			return Response.ok(mapKey).build();
 		}
 		
 		logger.debug("the Request is not multipart/formdata, return 400");
