@@ -1,0 +1,95 @@
+<class-diagram version="1.0.7" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="net.julnamoo.swm.herimarque.dao.SimpleHerimarqueDAO" 
+    project="herimarque-server" 
+    file="/herimarque-server/src/main/java/net/julnamoo/swm/herimarque/dao/SimpleHerimarqueDAO.java" binary="false">    
+    <position height="210" width="207" x="432" y="-118"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="net.julnamoo.swm.herimarque.dao.ContentsDAOImpl" 
+    project="herimarque-server" 
+    file="/herimarque-server/src/main/java/net/julnamoo/swm/herimarque/dao/ContentsDAOImpl.java" binary="false">    
+    <position height="242" width="294" x="98" y="132"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="net.julnamoo.swm.herimarque.dao.ContentsDAO" 
+    project="herimarque-server" file="/herimarque-server/src/main/java/net/julnamoo/swm/herimarque/dao/ContentsDAO.java" 
+    binary="false">    
+    <position height="178" width="294" x="98" y="414"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="net.julnamoo.swm.herimarque.dao.NoticeDAOImpl" 
+    project="herimarque-server" 
+    file="/herimarque-server/src/main/java/net/julnamoo/swm/herimarque/dao/NoticeDAOImpl.java" binary="false">    
+    <position height="146" width="207" x="432" y="132"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="net.julnamoo.swm.herimarque.dao.UserDAOImpl" 
+    project="herimarque-server" file="/herimarque-server/src/main/java/net/julnamoo/swm/herimarque/dao/UserDAOImpl.java" 
+    binary="false">    
+    <position height="210" width="228" x="679" y="132"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface id="6" corner="BOTTOM_RIGHT" language="java" name="net.julnamoo.swm.herimarque.dao.UserDAO" 
+    project="herimarque-server" file="/herimarque-server/src/main/java/net/julnamoo/swm/herimarque/dao/UserDAO.java" 
+    binary="false">    
+    <position height="146" width="228" x="679" y="414"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface id="7" corner="BOTTOM_RIGHT" language="java" name="net.julnamoo.swm.herimarque.dao.NoticeDAO" 
+    project="herimarque-server" file="/herimarque-server/src/main/java/net/julnamoo/swm/herimarque/dao/NoticeDAO.java" 
+    binary="false">    
+    <position height="-1" width="-1" x="547" y="395"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <realization id="8">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <generalization id="9">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="11">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <realization id="12">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <realization id="13">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="7"/>  
+  </realization>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
