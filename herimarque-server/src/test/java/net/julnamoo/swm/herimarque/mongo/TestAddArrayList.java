@@ -5,16 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.xml.bind.JAXB;
 
 import net.julnamoo.swm.herimarque.model.Comment;
 import net.julnamoo.swm.herimarque.model.Location;
 import net.julnamoo.swm.herimarque.model.MapInfo;
 
-import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -30,7 +27,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
-import com.mongodb.QueryBuilder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:rootContext.xml"}) 
@@ -92,7 +88,6 @@ public class TestAddArrayList {
 		MapInfo mi = new MapInfo();
 		mi.setUploadTime(new Date().toString());
 		mi.setUser("testId");
-		mi.setFilePath("testFilePath");
 		
 		ArrayList<String> areas = new ArrayList<String>();
 		areas.add("a1");

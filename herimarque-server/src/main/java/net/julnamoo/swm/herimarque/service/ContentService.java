@@ -1,6 +1,8 @@
 package net.julnamoo.swm.herimarque.service;
 
-import net.julnamoo.swm.herimarque.model.MapInfo;
+import java.util.List;
+
+import org.apache.commons.fileupload.FileItem;
 
 
 /**
@@ -12,10 +14,11 @@ public interface ContentService {
 
 	/**
 	 * passing mapinfo to content dao for saving map info in the mongo
+	 * @param items - FileItem list, parsed from ContentResoure
 	 * @param mapInfo - json of mapinfo
 	 * @return mapId - id of uploaded map
 	 */
-	public abstract String uploadMap(MapInfo mapInfo);
+	public abstract String uploadMap(List<FileItem> items);
 
 	/**
 	 * Retrieve the map info list with the id

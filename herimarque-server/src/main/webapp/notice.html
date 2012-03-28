@@ -5,6 +5,7 @@
 <title>Herimarque Notice Management</title>
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="admincookie.js"></script>
 </head>
 <body>
 	<h1>공지사항 관리 페이지</h1>
@@ -34,6 +35,15 @@
 	<button onclick="location.href='index.html'">home</button>
 </body>
 <script type="text/javascript">
+document.body.onload = function(){
+	var admin = getCookie("admin");
+	console.log(admin);
+	if(admin == null || admin == ""){
+		$("body").hide();
+		location.href = "index.html";
+		alert("No info for authenticating admin user");
+	}
+}
 window.onload = function(){
 	var date = new Date();
 	
@@ -126,9 +136,13 @@ $("#addNotice").click(
 					title : $("#addTitle").val(),
 					content : $("#addContent").val()
 				},
+				beforeSend: function(xhr){
+					var admin = getCookie("admin");
+					xhr.setRequestHeader("admin", admin);
+				},
 				success : function(data) {
 					$(".addNoticeResult").empty().append(
-							"Success to add the notice, " + data);
+							"Success to add the notice, [" + data.date + "] " + data.title + ":" + data.content);
 				}
 			});
 		});

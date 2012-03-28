@@ -2,10 +2,14 @@ package net.julnamoo.swm.herimarque.dao;
 
 import javax.annotation.PostConstruct;
 
+import net.julnamoo.swm.herimarque.model.User;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -45,5 +49,26 @@ public abstract class SimpleHerimarqueDAO {
 		{
 			collection = db.getCollection(collectionName);
 		}else throw new IllegalStateException("Please set the collectionName");
+	}
+	
+	/**
+	 * check the authentication of the user with the id
+	 * @param id
+	 * @return
+	 */
+	protected boolean isAuthedUser(String id)
+	{
+		logger.debug("check authentication of the {}", id);
+
+		MongoTemplate mt = new MongoTemplate(mongo, dbName);
+	
+		Query q = new Query();
+		q.addCriteria(new Criteria("user").is(id));
+		
+		User expUser = mt.findOne(q, User.class, "user");
+		boolean result = expUser == null ? false : expUser.isAuth();
+		
+		logger.debug("return the autentication of the {}, {}", id, result);
+		return result;
 	}
 }

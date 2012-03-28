@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="admincookie.js"></script>
 <title>Herimarque DB management</title>
 </head>
 <body>
@@ -30,6 +31,15 @@
 <button onclick="location.href='index.html'">home</button>
 </body>
 <script type="text/javascript">
+document.body.onload = function(){
+	var admin = getCookie("admin");
+	console.log(admin);
+	if(admin == null || admin == ""){
+		$("body").hide();
+		location.href = "index.html";
+		alert("No info for authenticating admin user");
+	}
+}
 $("#checkNew").click(function(){
 	$.ajax({
 		type:'GET',

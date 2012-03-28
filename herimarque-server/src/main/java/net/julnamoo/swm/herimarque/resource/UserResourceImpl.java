@@ -160,6 +160,7 @@ public class UserResourceImpl implements UserResource {
 	public Response adminLogin(@HeaderParam("user")String user, @HeaderParam("pwd")String pwd)
 	{
 		boolean result = userService.isAdmin(user, pwd);
+		
 		if(result)
 		{
 			logger.debug("admin user login, {}", user);

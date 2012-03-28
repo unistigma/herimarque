@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 
 import net.julnamoo.swm.herimarque.model.Comment;
 import net.julnamoo.swm.herimarque.model.MapInfo;
-import net.julnamoo.swm.herimarque.model.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +51,7 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 		{
 			
 			MongoTemplate mt = new MongoTemplate(mongo, dbName);
-			logger.info("upload map info into mongo of {}", mapInfo.getFilePath());
+			logger.info("upload map info into mongo of {}", mapInfo.getTitle());
 			mt.save(mapInfo);
 			return mapInfo.getMapKey();
 		}
@@ -75,7 +74,7 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 			logger.debug("find all maps paths of {}", id);
 			MongoTemplate mt = new MongoTemplate(mongo, dbName);
 			Query query = new Query();
-			query.addCriteria(new Criteria("id").is(id));
+			query.addCriteria(new Criteria("user").is(id));
 			resultList = mt.find(query, MapInfo.class);
 			
 			logger.debug("return the {} map list, size is {}", id, resultList.size());
@@ -234,21 +233,4 @@ public class ContentsDAOImpl extends SimpleHerimarqueDAO implements ContentsDAO 
 			return false;
 		}
 	}
-	
-	private boolean isAuthedUser(String id)
-	{
-		logger.debug("check authentication of the {}", id);
-
-		MongoTemplate mt = new MongoTemplate(mongo, dbName);
-	
-		Query q = new Query();
-		q.addCriteria(new Criteria("user").is(id));
-		
-		User expUser = mt.findOne(q, User.class, "user");
-		boolean result = expUser == null ? false : expUser.isAuth();
-		
-		logger.debug("return the autentication of the {}, {}", id, result);
-		return result;
-	}
-	
 }

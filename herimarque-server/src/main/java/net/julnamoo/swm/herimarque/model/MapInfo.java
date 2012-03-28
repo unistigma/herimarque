@@ -12,7 +12,6 @@ public class MapInfo implements Serializable{
 	String title;
 	String content;
 	List<String> area;
-	String filePath;
 	List<Location> timeline;
 	String uploadTime;
 	
@@ -26,7 +25,7 @@ public class MapInfo implements Serializable{
 	@Override
 	public String toString() 
 	{
-		return "[user@" + this.user + ", filePath@" + this.filePath + "]";
+		return "[user@" + this.user + ", title@" + this.title + "]";
 	}
 
 	public String getUser() {
@@ -59,14 +58,6 @@ public class MapInfo implements Serializable{
 
 	public void setArea(List<String> area) {
 		this.area = area;
-	}
-
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
 	}
 
 	public List<Location> getTimeline() {

@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration({ "classpath:rootContext2.xml" })
 public class TestFindHeritageWithMongoBean {
 
-Item item;
+	Item item;
 	@Test
 	public void test()
 	{
@@ -26,7 +26,7 @@ Item item;
 		System.out.println("get context");
 		MongoOperations mongoOperation = (MongoOperations) ctx.getBean("mongoTemplate");
 		System.out.println("get mongooperation");
-		
+
 		//find
 		item = mongoOperation.findOne(new Query(Criteria.where("crltsNm").is("쌍조석간")), Item.class);
 		if(item != null)
@@ -36,6 +36,6 @@ Item item;
 		{
 			System.out.println("Item is null");
 		}
-		
+
 	}
 }

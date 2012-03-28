@@ -2,8 +2,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Herimarque Adming Page</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="admincookie.js"></script>
+<title>Herimarque Admin Page</title>
 <style type="text/css">
 .none { display:none; }
 </style>
@@ -17,7 +18,7 @@ password:<input type="password" id="adminPwd"><br>
 <button id="login">Login</button>
 </div>
 <div class="admin">
-<h1>Hello, Herimarque!</h1>
+<h2>관리자님, 환영합니다</h2>
 <button id="contents">지도 관리</button>
 <button id="users">사용자 관리</button>
 <input type="button" id="notice" value="공지사항관리" />
@@ -25,8 +26,18 @@ password:<input type="password" id="adminPwd"><br>
 </div>
 </body>
 <script type="text/javascript">
-window.onload = function(){
+window.onload = function()
+{
 	$(".admin").addClass("none");
+	
+	//check cookie then if there is the cookie, set logined
+	var admin = getCookie("admin");
+	console.log(admin);
+	if(admin != null && admin.length > 0){
+		$(".admin").removeClass("none");
+		$(".adminLogin").addClass("none");
+		$("h2").html(admin + "관리자님 환영합니다.");
+	}
 }
 
 $("#login").click(function(){
@@ -40,7 +51,13 @@ $("#login").click(function(){
 		success:function(){
 			$(".admin").removeClass("none");
 			$(".adminLogin").addClass("none");
-		}
+			$("h2").html($("#adminId").val() + "관리자님 환영합니다.");
+		 	var exdate = new Date();
+		 	console.log(exdate.toUTCString());
+		 	exdate.setHours(exdate.getHours()+1);
+			var value = "admin="+ $("#adminId").val() + "; expires="+exdate.toUTCString();
+			document.cookie = value;
+		},
 	});
 });
 $("#contents").click(function(){

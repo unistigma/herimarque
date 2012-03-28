@@ -1,84 +1,22 @@
 <!DOCTYPE html>
 <html>
+<head>
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="admincookie.js"></script>
+</head>
 <body>
 	<h1>Contents Manage</h1>
 	<h2>File Upload with Jersey</h2>
 	<form name="uploadForm" id="uploadForm" method="post"
 		onsubmit="setAction(this)" enctype="multipart/form-data"
 		accept-charset="UTF-8">
-		ID <input type="text" name="id" value="testId" /> <br> Upload
+		ID <input type="text" name="id" id="id" value="tuser" /> <br> Upload
 		file<br> <input type="file" name="map" size="45" /> <input
-			type="file" name="file1" size="45" /> <input type="file"
-			name="file2" size="45" /> <br>
-		<!-- <div>
-			<div>
-			지역 		
-			<select id="area">
-			<option value="11">서울</option>
-			<option value="21">부산</option>
-			<option value="22">대구</option>
-			<option value="23">인천</option>
-			<option value="24">광주</option>
-			<option value="25">대전</option>
-			<option value="26">울산</option>
-			<option value="31">경기</option>
-			<option value="32">강원</option>
-			<option value="33">충북</option>
-			<option value="34">충남</option>
-			<option value="35">전북</option>
-			<option value="36">전남</option>
-			<option value="37">경북</option>
-			<option value="38">경남</option>
-			<option value="39">제주</option>
-			<option value="ZZ">기타</option>
-			</select>
-			</div>
-			<div>
-			시대		
-			<select id="age">
-			<option value="01">선사시대</option>
-			<option value="03">석기시대</option>
-			<option value="05">청동기시대</option>
-			<option value="07">철기시대</option>
-			<option value="09">삼한시대</option>
-			<option value="10">삼국시대</option>
-			<option value="11">고구려시대</option>
-			<option value="12">백제시대</option>
-			<option value="13">신라시대</option>
-			<option value="14">가야시대</option>
-			<option value="15">발해시대</option>
-			<option value="20">통일신라시대</option>
-			<option value="30">고려시대</option>
-			<option value="40">조선시대</option>
-			<option value="45">대한제국시대</option>
-			<option value="50">일제강점기시대</option>
-			<option value="90">미상</option>
-			</select>
-			</div>
-			<div>
-			종목	
-			<select id="kind">
-			<option value="11">국보</option>
-			<option value="12">보물</option>
-			<option value="13">사적</option>
-			<option value="14">사적 및 명승</option>
-			<option value="15">명승</option>
-			<option value="16">천연기념물</option>
-			<option value="17">중요무형문화재</option>
-			<option value="18">중요민속자료</option>
-			<option value="21">시도유형문화재</option>
-			<option value="22">시도무형문화재</option>
-			<option value="23">시도기념물</option>
-			<option value="24">시도민속자료</option>
-			<option value="31">문화재자료</option>
-			<option value="79">등록문화재</option>
-			</select>
-			</div>
-		</div> -->
+			type="file" name="image" size="45" /> <input type="file"
+			name="image" size="45" /> <br>
 		<textarea rows="3" cols="50" name="mapInfo">
-{area:["서울", "경남"], timeline:[{type:"g", x:"10.1111", y:"12.1111"},{type:"i", x:"12.12412", y:"53.351351"}], title:"title", content:"testComment",user:"testId"}
+{area:["서울", "경남"], timeline:[{type:"g", x:"10.1111", y:"12.1111"},{type:"i", x:"12.12412", y:"53.351351"}], title:"title", content:"testComment",user:"tuser"}
 		</textarea>
 		<br> <input type="submit" value="Upload">
 	</form>
@@ -108,16 +46,30 @@
 		<button id="unlikeMap">unlikeMap</button>
 		<div class="unlikeMapResult"></div>
 	</div>
+	<div class="userMap">
+		<h2>Show Maps of the user</h2>
+		id:<input type="text" id="mapUser" value="testId"><br>
+		<button id="userMap">show</button>
+		<div class="userMapResult"></div>
+	</div>
 	<div class="hotMaps">
 		<h2>Hot Maps</h2>
 		<button id="getHots">HotMaps!</button>
 		<div class="hotMapsResult"></div>
 	</div>
-	
 	<button onclick="location.href='index.html'">home</button>
 </body>
 <script type="text/javascript">
-	function setAction(form) {
+document.body.onload = function(){
+	var admin = getCookie("admin");
+	console.log(admin);
+	if(admin == null || admin == ""){
+		$("body").hide();
+		location.href = "index.html";
+		alert("No info for authenticating admin user");
+	}
+}
+function setAction(form) {
 		form.action = "api/c/upload/map/" + $("#id").val();
 	}
 	$("#addComment").click(
@@ -193,5 +145,52 @@
 			}
 		});
 	});
+	$("#userMap").click(function(){
+		$.ajax({
+			type : 'GET',
+			url : 'api/c/maps/user/' + $("#mapUser").val(),
+			beforeSend : function(xhr){
+				xhr.setRequestHeader('user', 'testId');
+			},
+			statusCode : {
+				200 : function(data) {
+					$(".userMapResult").empty().append("Success to load<br>");
+					if(data.length > 1){
+						console.log(data.length);
+						for(var i = 0; i < data.length; ++i){
+							setMapView(data[i]);
+						}
+					}else{
+						setMapView(data);
+					}
+				},
+				503 : function() {
+					$(".userMapResult").empty().append("Fail to load");
+				}
+			}
+		});
+	});
+	
+	function setMapView(dom){
+		console.log(dom);
+		var div = document.createElement("div");
+		var txt = document.createTextNode('title:' + dom.title);
+		div.appendChild(txt);
+		
+		txt = document.createTextNode('area:' + dom.area);
+		div.appendChild(txt);
+		
+		if(dom.timeline != null){
+			for(var i =0; i < dom.timeline.length; ++i){
+				if(dom.timeline[i].image != null){
+					var img = document.createElement("img");
+					img.setAttribute('src', 'api/c/image/testId/title/' +dom.timeline[i].image);
+					div.appendChild(img);
+				}
+			}
+		}
+		
+		$(".userMapResult").append(div);
+	}
 </script>
 </html>

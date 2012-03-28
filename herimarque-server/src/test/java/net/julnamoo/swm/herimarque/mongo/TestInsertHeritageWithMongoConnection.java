@@ -16,8 +16,6 @@ import com.google.gson.JsonSyntaxException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.util.JSON;
@@ -43,7 +41,7 @@ public class TestInsertHeritageWithMongoConnection {
 	@Test
 	public void test() throws JsonIOException, JsonSyntaxException, IOException
 	{
-		DBCollection collection = db.getCollection("heritage");
+		DBCollection collection = db.getCollection("heritageTest");
 		
 		JsonParser jsonparser = new JsonParser();
 		
@@ -81,6 +79,7 @@ public class TestInsertHeritageWithMongoConnection {
 //		{
 //			System.out.println(result.next());
 //		}
+		collection.drop();
 	}
 	
 	@After
